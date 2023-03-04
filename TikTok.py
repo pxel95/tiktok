@@ -281,7 +281,7 @@ class TikTok(object):
         else:
             rate = 0
 
-        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]]
+        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]].replace("http://", "https://")
 
         # 显示清晰度列表
         print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))
