@@ -202,7 +202,7 @@ class TikTok(object):
 
         return awemeList
 
-    def getLiveInfo(self, web_rid: str):
+    def getLiveInfo(self, web_rid: str, option=True):
         print('[  提示  ]:正在请求的直播间 id = %s\r\n' % web_rid)
 
         # web_rid = live_url.replace('https://live.douyin.com/', '')
@@ -224,6 +224,8 @@ class TikTok(object):
         # 清空字典
         self.result.clearDict(self.result.liveDict)
 
+        # 类型
+        self.result.liveDict["awemeType"] = 2
         # 是否在播
         self.result.liveDict["status"] = live_json['data']['data'][0]['status']
 
@@ -233,6 +235,12 @@ class TikTok(object):
 
         # 直播标题
         self.result.liveDict["title"] = live_json['data']['data'][0]['title']
+
+        # 直播cover
+        self.result.liveDict["cover"] = live_json['data']['data'][0]['cover']['url_list'][0]
+
+        # 头像
+        self.result.liveDict["avatar"] = live_json['data']['data'][0]['owner']['avatar_thumb']['url_list'][0].replace("100x100", "1080x1080")
 
         # 观看人数
         self.result.liveDict["user_count"] = live_json['data']['data'][0]['user_count_str']
@@ -268,8 +276,12 @@ class TikTok(object):
         for i, f in enumerate(self.result.liveDict["flv_pull_url"].keys()):
             print('[   %s   ]: %s' % (i, f))
             flv.append(f)
+        if option:
+            rate = int(input('[   🎬   ]输入数字选择推流清晰度：'))
+        else:
+            rate = 0
 
-        rate = int(input('[   🎬   ]输入数字选择推流清晰度：'))
+        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]]
 
         # 显示清晰度列表
         print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))

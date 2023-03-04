@@ -151,7 +151,7 @@ class Result(object):
         self.awemeDict = {
             # 作品创建时间
             "create_time": "",
-            # awemeType=0 视频， awemeType=1 图集
+            # awemeType=0 视频, awemeType=1 图集, awemeType=2 直播
             "awemeType": "",
             # 作品 id
             "aweme_id": "",
@@ -179,10 +179,16 @@ class Result(object):
         self.awemeList = []
         # 直播信息
         self.liveDict = {
+            # awemeType=0 视频, awemeType=1 图集, awemeType=2 直播
+            "awemeType": "",
             # 是否在播
             "status": "",
             # 直播标题
             "title": "",
+            # 直播cover
+            "cover": "",
+            # 头像
+            "avatar": "",
             # 观看人数
             "user_count": "",
             # 昵称
@@ -195,7 +201,9 @@ class Result(object):
             "flv_pull_url": "",
             # 分区
             "partition": "",
-            "sub_partition": ""
+            "sub_partition": "",
+            # 最清晰的地址
+            "flv_pull_url0": "",
         }
 
     # 将得到的json数据（dataRaw）精简成自己定义的数据（dataNew）

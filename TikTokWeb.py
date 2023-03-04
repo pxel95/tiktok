@@ -22,7 +22,10 @@ def work(share_link):
 
     url = tk.getShareLink(share_link)
     key_type, key = tk.getKey(url)
-    datanew, dataraw = tk.getAwemeInfo(key)
+    if key_type == "aweme":
+        datanew, dataraw = tk.getAwemeInfo(key)
+    elif key_type == "live":
+        datanew = tk.getLiveInfo(key, option=False)
     return datanew
 
 
