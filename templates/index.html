@@ -44,7 +44,8 @@
 
             <p style="color:#00c4b6;font-size:32px;">抖音去水印工具</p>
             <br>
-            <p>温馨提示: 粘贴分享链接时 无需删除文案 但如果链接正确但解析失败请删掉文案后重试 https://v.douyin.com/kcvMpuN/</p>
+            <p>1.支持视频/图集解析,粘贴视频/图集分享链接时无需删除文案,但如果链接正确但解析失败请删掉文案后重试 https://v.douyin.com/kcvMpuN/</p>
+            <p>2.支持直播解析,需要网页版直播链接 https://live.douyin.com/343806013144</p>
             <p>关于抖音批量下载与去水印工具的更多实现细节请点击: <a href="https://www.imgyh.com/archives/41.html" target="_blank" style="color:#00c4b6;">抖音批量下载与去水印工具</a></p>
             <form id="form1" onsubmit="return false" action="#" method="post" class="d-flex error-page-form">
 {#                以前需要手动选择 图片 或者 视频 现在加了自动判断#}
@@ -55,7 +56,7 @@
 {#                    </select>#}
 {#                </div>#}
 
-                <input type="text" placeholder="抖音视频分享地址，复制后粘贴到此处" name="share_link" required="required">
+                <input type="text" placeholder="粘贴视频/图集分享地址、网页版直播地址" name="share_link" required="required">
                 <button type="reset" onclick="SendAjax()">解析</button>
             </form>
             {#            <div class="social-coming-icons">#}
@@ -85,20 +86,20 @@
                     <p id="nickname" class="nickname"></p>
                 </div>
                 <div class="info">
-                    <div class="icons">
-                        <div class="icon">
+                    <div id="icons" class="icons">
+                        <div id="icon" class="icon">
                             <i class="fa fa-heart" style="color:#fd325c;" aria-hidden="true"></i>
                             <p id="aweme_digg_count"></p>
                         </div>
-                        <div class="icon">
+                        <div id="icon" class="icon">
                             <i class="fa fa-comment" style="color:#efeeec;" aria-hidden="true"></i>
                             <p id="aweme_comment_count"></p>
                         </div>
-                        <div class="icon">
+                        <div id="icon" class="icon">
                             <i class="fa fa-star" style="color:#fcb505;" aria-hidden="true"></i>
                             <p id="aweme_collect_count"></p>
                         </div>
-                        <div class="icon">
+                        <div id="icon" class="icon">
                             <i class="fa fa-share" style="color:#e7e8e6;" aria-hidden="true"></i>
                             <p id="aweme_share_count"></p>
                         </div>
@@ -165,6 +166,7 @@
 <script src="https://cdn.jsdelivr.net/gh/imgyh/tiktok/static/js/naranja.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/gh/imgyh/tiktok/static/js/viewer.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/gh/imgyh/tiktok/static/js/custom.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/imgyh/tiktok/static/js/flv.min.js" type="text/javascript"></script>
 </body>
 
 </html>

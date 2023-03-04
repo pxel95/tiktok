@@ -30,62 +30,100 @@ function SendAjax() {
                     document.getElementById("images").innerHTML = licontent;
                     $("#video").attr("style", "display:none;");//隐藏 video
                 }
-                $("#cover").attr("href", result.video.cover_original_scale.url_list[0]);
-                $("#pre_video").attr("poster", result.video.dynamic_cover.url_list[0]);
-                $("#music").attr("href", result.music.play_url.url_list[0]);
+                if (result.awemeType === 0 || result.awemeType === 1) {
+                    $("#cover").attr("href", result.video.cover_original_scale.url_list[0]);
+                    $("#pre_video").attr("poster", result.video.dynamic_cover.url_list[0]);
+                    $("#music").attr("href", result.music.play_url.url_list[0]);
 
-                $("#avatar").attr("src", result.author.avatar.url_list[0]);
-                $("#avatar").attr("alt", result.author.nickname);
-                $("#nickname").html(result.author.nickname);
-                $("#desc").html(result.desc);
+                    $("#avatar").attr("src", result.author.avatar.url_list[0]);
+                    $("#avatar").attr("alt", result.author.nickname);
+                    $("#nickname").html(result.author.nickname);
+                    $("#desc").html(result.desc);
 
 
-                var count = result.statistics.digg_count;
-                var digg_count;
-                if (count < 1000) {
-                    digg_count = count
-                } else if (count >= 1000 && count < 10000) {
-                    digg_count = (count / 1000).toFixed(1) + "K"
-                } else {
-                    digg_count = (count / 10000).toFixed(1) + "W"
-                }
-                $("#aweme_digg_count").html(digg_count);
-                count = result.statistics.comment_count;
-                var comment_count;
-                if (count < 1000) {
-                    comment_count = count
-                } else if (count >= 1000 && count < 10000) {
-                    comment_count = (count / 1000).toFixed(1) + "K"
-                } else {
-                    comment_count = (count / 10000).toFixed(1) + "W"
-                }
-                $("#aweme_comment_count").html(comment_count);
-                count = result.statistics.collect_count;
-                var collect_count;
-                if (count < 1000) {
-                    collect_count = count
-                } else if (count >= 1000 && count < 10000) {
-                    collect_count = (count / 1000).toFixed(1) + "K"
-                } else {
-                    collect_count = (count / 10000).toFixed(1) + "W"
-                }
-                $("#aweme_collect_count").html(collect_count);
-                count = result.statistics.share_count;
-                var share_count;
-                if (count < 1000) {
-                    share_count = count
-                } else if (count >= 1000 && count < 10000) {
-                    share_count = (count / 1000).toFixed(1) + "K"
-                } else {
-                    share_count = (count / 10000).toFixed(1) + "W"
-                }
-                $("#aweme_share_count").html(share_count);
+                    var count = result.statistics.digg_count;
+                    var digg_count;
+                    if (count < 1000) {
+                        digg_count = count
+                    } else if (count >= 1000 && count < 10000) {
+                        digg_count = (count / 1000).toFixed(1) + "K"
+                    } else {
+                        digg_count = (count / 10000).toFixed(1) + "W"
+                    }
+                    $("#aweme_digg_count").html(digg_count);
+                    count = result.statistics.comment_count;
+                    var comment_count;
+                    if (count < 1000) {
+                        comment_count = count
+                    } else if (count >= 1000 && count < 10000) {
+                        comment_count = (count / 1000).toFixed(1) + "K"
+                    } else {
+                        comment_count = (count / 10000).toFixed(1) + "W"
+                    }
+                    $("#aweme_comment_count").html(comment_count);
+                    count = result.statistics.collect_count;
+                    var collect_count;
+                    if (count < 1000) {
+                        collect_count = count
+                    } else if (count >= 1000 && count < 10000) {
+                        collect_count = (count / 1000).toFixed(1) + "K"
+                    } else {
+                        collect_count = (count / 10000).toFixed(1) + "W"
+                    }
+                    $("#aweme_collect_count").html(collect_count);
+                    count = result.statistics.share_count;
+                    var share_count;
+                    if (count < 1000) {
+                        share_count = count
+                    } else if (count >= 1000 && count < 10000) {
+                        share_count = (count / 1000).toFixed(1) + "K"
+                    } else {
+                        share_count = (count / 10000).toFixed(1) + "W"
+                    }
+                    $("#aweme_share_count").html(share_count);
 
-                $("#loading").attr("style", "display:none;");//隐藏 loading
-                $("#download").attr("style", "display:block;");//显示 download
-                // alert("SUCCESS");
-                // 执行弹框
-                narnSuccess();
+                    $("#icons").attr("style", "display:flex;");//显示 icons
+                    $("#icon").attr("style", "display:table-row;");//显示 icon
+                    $("#music").attr("style", "display:inline;");//显示 music
+
+                    $("#loading").attr("style", "display:none;");//隐藏 loading
+                    $("#download").attr("style", "display:block;");//显示 download
+                    // alert("SUCCESS");
+                    // 执行弹框
+                    narnSuccess();
+                }
+
+                if (result.awemeType === 2) {
+                    if (result.status === 4) {
+                        console.log("进入")
+                        $("#loading").attr("style", "display:none;");//隐藏 loading
+                        $("#download").attr("style", "display:none;");//隐藏 download
+                        // 执行弹框
+                        narnWarn()
+                    } else {
+                        $("#awemeType").html("预览直播");
+                        $("#video").attr("href", result.flv_pull_url0);
+                        $("#pre_video").attr("src", result.flv_pull_url0);
+
+                        $("#cover").attr("href", result.cover);
+                        $("#pre_video").attr("poster", result.cover);
+                        $("#avatar").attr("src", result.avatar);
+                        $("#avatar").attr("alt", result.nickname);
+                        $("#nickname").html(result.nickname);
+                        $("#desc").html(result.title);
+
+                        $("#video").attr("style", "display:inline;");//显示 video
+                        $("#icons").attr("style", "display:none;");//隐藏 icons
+                        $("#icon").attr("style", "display:none;");//隐藏 icon
+                        $("#music").attr("style", "display:none;");//隐藏 music
+
+                        $("#loading").attr("style", "display:none;");//隐藏 loading
+                        $("#download").attr("style", "display:block;");//显示 download
+                        // alert("SUCCESS");
+                        // 执行弹框
+                        narnSuccess();
+                    }
+                }
             } else {
                 $("#loading").attr("style", "display:none;");//隐藏 loading
                 $("#download").attr("style", "display:none;");//隐藏 download
@@ -120,7 +158,17 @@ function narnSuccess() {
 function narnFail() {
     naranja().error({
         title: '解析失败',
-        text: '视频不存在或接口失效',
+        text: '直播/视频/图集不存在或接口失效',
+        icon: true,
+        timeout: 5000,
+        buttons: []
+    })
+}
+
+function narnWarn() {
+    naranja().warn({
+        title: '提示',
+        text: '直播未开始',
         icon: true,
         timeout: 5000,
         buttons: []
@@ -150,6 +198,22 @@ window.addEventListener('DOMContentLoaded', function () {
 
             // image.click();
             viewer.show();
+        }
+        // 预览直播
+        if (awemeType === "预览直播") {
+            if (flvjs.isSupported()) {//检查flvjs能否正常使用
+                var videoElement = document.getElementById('pre_video');//使用id选择器找到第二步设置的dom元素
+                var flvPlayer = flvjs.createPlayer({//创建一个新的flv播放器对象
+                    type: 'flv',//类型flv
+                    url: $("#video").attr("href")//flv文件地址
+                });
+                flvPlayer.attachMediaElement(videoElement);//将flv视频装载进video元素内
+                flvPlayer.load();//载入视频
+                flvPlayer.play();//播放视频，如果不想要自动播放，去掉本行
+
+                /*弹出视频播放层*/
+                $("#show-video").show();
+            }
         }
 
 
