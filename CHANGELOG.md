@@ -1,3 +1,14 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.5.1...v) (2023-03-04)
+
+
+### Features
+
+* **live:** 适配web端的直播解析 ([f7fdcd1](https://github.com/imgyh/tiktok/commit/f7fdcd141b3a9877f5fd888383bfa48875d023bf))
+* **tiktok:** 支持本地生成X-Bogus ([#3](https://github.com/imgyh/tiktok/issues/3)) ([a4328cd](https://github.com/imgyh/tiktok/commit/a4328cd53bd8a0342cf053050a8066130e008cde))
+* **web:** 增加web端直播解析 ([90aa105](https://github.com/imgyh/tiktok/commit/90aa10515f7bc90ed35c9484e2993083a533d6cc))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.5.0...v) (2023-03-02)
 
 
