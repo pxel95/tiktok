@@ -5,6 +5,7 @@
 
 * **live:** 适配web端的直播解析 ([f7fdcd1](https://github.com/imgyh/tiktok/commit/f7fdcd141b3a9877f5fd888383bfa48875d023bf))
 * **tiktok:** 支持本地生成X-Bogus ([#3](https://github.com/imgyh/tiktok/issues/3)) ([a4328cd](https://github.com/imgyh/tiktok/commit/a4328cd53bd8a0342cf053050a8066130e008cde))
+* **utils:** 重新加入远程调用X-Bogus接口作为备用,放置本地没有JS环境 ([314d9a5](https://github.com/imgyh/tiktok/commit/314d9a530f866f9d3fd4107b7a749bda0f9aeefc))
 * **web:** 增加web端直播解析 ([90aa105](https://github.com/imgyh/tiktok/commit/90aa10515f7bc90ed35c9484e2993083a533d6cc))
 
 
