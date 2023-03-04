@@ -10,10 +10,17 @@
 
 抖音去水印工具Web demo：https://dy.gyh.im/
 
+**联系方式:**
+
+> [TG](https://t.me/gyh9527)
+> [TG群组](https://t.me/GYHgroup)
+> [Email](mailto:admin@imgyh.com)
+
 ## 抖音去水印工具 Feature
 
 * 通过作品分享链接获取去水印作品、音乐、封面图、头像
 * 获取点赞数、评论数、收藏数、分享数、作品描述等信息
+* 支持直播解析
 * 基于Flask实现 Web 交互界面
 
 ![tiktokweb](img/tiktokweb.jpg)
@@ -24,8 +31,8 @@
 
 ## 抖音批量下载工具 Feature
 
-* 支持个人主页链接、作品分享链接、抖音直播Web链接、合集链接、音乐集合链接
-* 支持单个作品下载、主页作品下载、主页喜欢下载、单个合集下载、主页所有合集下载、音乐集合下载
+* 支持个人主页链接、作品分享链接、抖音直播Web链接、合集链接、音乐(原声)集合链接
+* 支持单个作品下载、主页作品下载、主页喜欢下载、直播解析、单个合集下载、主页所有合集下载、音乐(原声)集合下载
 * 下载视频、视频封面、音乐、头像
 * 去水印下载
 * 自动跳过已下载
@@ -179,7 +186,7 @@ linux与mac用户:
 python TikTokCommand.py -l https://v.douyin.com/B38oovu/ -p /path/to/downdir -M mix -n 2
 ```
 
-- 下载音乐集合下所有作品
+- 下载音乐(原声)集合下所有作品
 
 ```
 windows用户:
@@ -188,7 +195,7 @@ linux与mac用户:
 python TikTokCommand.py -l https://v.douyin.com/S6YMNXs/ -p /path/to/downdir
 ```
 
-- 下载音乐集合下前n个作品
+- 下载音乐(原声)集合下前n个作品
 
 ```
 windows用户:
@@ -219,7 +226,7 @@ python TikTokCommand.py -l https://live.douyin.com/802939216127 -p /path/to/down
 
 - [x] 单个合集下载
 - [x] 主页所有合集下载
-- [x] 获取分享的音乐链接下的所有作品
+- [x] 获取分享的音乐(原声)链接下的所有作品
 - [x] 指定下载作品数量
 - [ ] 获取热搜榜数据
 - [ ] 多主页链接批量下载
