@@ -19,6 +19,8 @@ import requests
 import execjs
 import os
 import sys
+import json
+from TikTokUrls import Urls
 
 class Utils(object):
     def __init__(self):
@@ -65,9 +67,19 @@ class Utils(object):
             xbogus = execjs.compile(open(self.resource_path(os.path.join("X-Bogus.js"))).read()).call('sign', url, user_agent)
             params = url + "&X-Bogus=" + xbogus
         except Exception as e:
-            print('[  错误  ]:X-Bogus算法异常')
-            return
+            print('[  错误  ]:X-Bogus算法异常或者本地没有JS环境')
+            try:
+                print('[  提示  ]:尝试远程调用X-Bogus接口')
+                response = json.loads(requests.post(
+                    url=Urls().GET_XB_PATH, data={"param": url}, headers=headers).text)
+                params = response["param"]
+                xbogus = response["X-Bogus"]
+            except Exception as e:
+                print('[  错误  ]:X-Bogus接口异常, 可能是访问流量高, 接口限流请稍等几分钟再次尝试')
+                return
         return params
+
+
 
     def str2bool(self, v):
         if isinstance(v, bool):
