@@ -76,7 +76,11 @@ class Urls(object):
 
         # X-Bogus Path
         # 60 秒内,请求同一URI累计超过 600 次,封锁IP 300 秒
-        self.GET_XB_PATH = 'https://tiktok.199933.xyz/xb'
+        # 两个都可以用
+        # 服务器在国外
+        # self.GET_XB_PATH = 'https://tiktok.199933.xyz/xb'
+        # 服务器在国内
+        self.GET_XB_PATH = 'http://47.115.208.101:9090/xb'
 
         #######################################################################################
 
