@@ -1,6 +1,11 @@
 # [](https://github.com/imgyh/tiktok/compare/v1.5.2...v) (2023-03-05)
 
 
+### Bug Fixes
+
+* **web:** 取消指定端口为必选项 ([1b85b19](https://github.com/imgyh/tiktok/commit/1b85b1989119cb35888e4e2d4f4018ed276f68d2))
+
+
 ### Features
 
 * **live:** 增加直播解析方法的提示信息开启或关闭选项 ([469fe2c](https://github.com/imgyh/tiktok/commit/469fe2c5217ff22e42c1523d089a119415266c23))
