@@ -15,7 +15,7 @@ Change Log  :
 
 from flask import *
 from TikTok import TikTok
-
+import argparse
 
 def work(share_link):
     tk = TikTok()
@@ -33,6 +33,13 @@ app = Flask(__name__)
 # 设置编码
 app.config['JSON_AS_ASCII'] = False
 
+def argument():
+    parser = argparse.ArgumentParser(description='抖音去水印工具 使用帮助')
+    parser.add_argument("--port", "-p", help="Web端口",
+                        type=int, required=True, default=5000)
+    args = parser.parse_args()
+
+    return args
 
 @app.route("/douyin", methods=["POST"])
 def douyin():
@@ -57,4 +64,5 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5000)
+    args = argument()
+    app.run(debug=False, host="0.0.0.0", port=args.port)
