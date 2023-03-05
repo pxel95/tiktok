@@ -1,3 +1,14 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.5.2...v) (2023-03-05)
+
+
+### Features
+
+* **live:** 增加直播解析方法的提示信息开启或关闭选项 ([469fe2c](https://github.com/imgyh/tiktok/commit/469fe2c5217ff22e42c1523d089a119415266c23))
+* **url:** 添加速度更快的X-Bogus接口 ([7c44b94](https://github.com/imgyh/tiktok/commit/7c44b9426dc30f3be97d6e5824bf628c47276a87))
+* **web:** 增加命令行指定web端口 ([98a9f74](https://github.com/imgyh/tiktok/commit/98a9f74d4b0b319ea1aeb3883c105c0b805105f1))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.5.1...v) (2023-03-04)
 
 
