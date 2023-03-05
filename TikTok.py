@@ -203,7 +203,8 @@ class TikTok(object):
         return awemeList
 
     def getLiveInfo(self, web_rid: str, option=True):
-        print('[  提示  ]:正在请求的直播间 id = %s\r\n' % web_rid)
+        if option:
+            print('[  提示  ]:正在请求的直播间 id = %s\r\n' % web_rid)
 
         # web_rid = live_url.replace('https://live.douyin.com/', '')
 
@@ -214,11 +215,13 @@ class TikTok(object):
             response = requests.get(live_api, headers=self.headers)
             live_json = json.loads(response.text)
         except Exception as e:
-            print("[  错误  ]:接口未返回数据, 请检查后重新运行!\r")
+            if option:
+                print("[  错误  ]:接口未返回数据, 请检查后重新运行!\r")
             return None
 
         if live_json == {} or live_json['status_code'] != 0:
-            print("[  错误  ]:接口未返回信息\r")
+            if option:
+                print("[  错误  ]:接口未返回信息\r")
             return None
 
         # 清空字典
@@ -230,7 +233,8 @@ class TikTok(object):
         self.result.liveDict["status"] = live_json['data']['data'][0]['status']
 
         if self.result.liveDict["status"] == 4:
-            print('[   📺   ]:当前直播已结束，正在退出')
+            if option:
+                print('[   📺   ]:当前直播已结束，正在退出')
             return self.result.liveDict
 
         # 直播标题
@@ -266,15 +270,18 @@ class TikTok(object):
             self.result.liveDict["partition"] = '无'
             self.result.liveDict["sub_partition"] = '无'
 
-        info = '[   💻   ]:直播间：%s  当前%s  主播：%s 分区：%s-%s\r' % (
-            self.result.liveDict["title"], self.result.liveDict["display_long"], self.result.liveDict["nickname"],
-            self.result.liveDict["partition"], self.result.liveDict["sub_partition"])
-        print(info)
+        if option:
+            info = '[   💻   ]:直播间：%s  当前%s  主播：%s 分区：%s-%s\r' % (
+                self.result.liveDict["title"], self.result.liveDict["display_long"], self.result.liveDict["nickname"],
+                self.result.liveDict["partition"], self.result.liveDict["sub_partition"])
+            print(info)
 
         flv = []
-        print('[   🎦   ]:直播间清晰度')
+        if option:
+            print('[   🎦   ]:直播间清晰度')
         for i, f in enumerate(self.result.liveDict["flv_pull_url"].keys()):
-            print('[   %s   ]: %s' % (i, f))
+            if option:
+                print('[   %s   ]: %s' % (i, f))
             flv.append(f)
         if option:
             rate = int(input('[   🎬   ]输入数字选择推流清晰度：'))
@@ -284,9 +291,9 @@ class TikTok(object):
         self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]].replace("http://", "https://")
 
         # 显示清晰度列表
-        print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))
-
-        print('[   📺   ]:复制链接使用下载工具下载')
+        if option:
+            print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))
+            print('[   📺   ]:复制链接使用下载工具下载')
         return self.result.liveDict
 
     def getMixInfo(self, mix_id: str, count=35, number=0):
