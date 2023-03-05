@@ -16,6 +16,7 @@ function SendAjax() {
             if (result.status_code === 200) {
                 if (result.awemeType === 0) {
                     $("#awemeType").html("预览视频");
+                    $("#AwemeOrLive").html("下载视频");
                     $("#video").attr("href", result.video.play_addr.url_list);
                     $("#pre_video").attr("src", result.video.play_addr.url_list);
                     $("#video").attr("style", "display:inline;");//显示 video
@@ -95,12 +96,12 @@ function SendAjax() {
 
                 if (result.awemeType === 2) {
                     if (result.status === 4) {
-                        console.log("进入")
                         $("#loading").attr("style", "display:none;");//隐藏 loading
                         $("#download").attr("style", "display:none;");//隐藏 download
                         // 执行弹框
                         narnWarn()
                     } else {
+                        $("#AwemeOrLive").html("下载直播");
                         $("#awemeType").html("预览直播");
                         $("#video").attr("href", result.flv_pull_url0);
                         $("#pre_video").attr("src", result.flv_pull_url0);
