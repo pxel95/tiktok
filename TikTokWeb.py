@@ -36,7 +36,7 @@ app.config['JSON_AS_ASCII'] = False
 def argument():
     parser = argparse.ArgumentParser(description='抖音去水印工具 使用帮助')
     parser.add_argument("--port", "-p", help="Web端口",
-                        type=int, required=True, default=5000)
+                        type=int, required=False, default=5000)
     args = parser.parse_args()
 
     return args
