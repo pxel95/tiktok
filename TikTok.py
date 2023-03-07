@@ -513,9 +513,12 @@ class TikTok(object):
 
             # 保存获取到的字典信息
             print("[  提示  ]:正在保存获取到的信息到 result.json\r\n")
-            with open(os.path.join(aweme_path, "result.json"), "w", encoding='utf-8') as f:
-                f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
-                f.close()
+            try:
+                with open(os.path.join(aweme_path, "result.json"), "w", encoding='utf-8') as f:
+                    f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
+                    f.close()
+            except Exception as e:
+                print("[  错误  ]:保存 result.json 出错\r\n")
 
             # 下载  视频
             if awemeDict["awemeType"] == 0:
