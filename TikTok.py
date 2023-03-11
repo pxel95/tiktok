@@ -36,6 +36,8 @@ class TikTok(object):
         'referer': 'https://www.douyin.com/',
         'Cookie': f"msToken={self.utils.generate_random_str(107)}; ttwid={self.utils.getttwid()}; odin_tt=324fb4ea4a89c0c05827e18a1ed9cf9bf8a17f7705fcc793fec935b637867e2a5a9b8168c885554d029919117a18ba69; passport_csrf_token=f61602fc63757ae0e4fd9d6bdcee4810;"
         }
+        # 用于设置重复请求某个接口的最大时间
+        self.timeout = 10
 
 
     # 从分享链接中提取网址
@@ -107,6 +109,7 @@ class TikTok(object):
         jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
             url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
 
+        start = time.time()  # 开始时间
         while True:
             # 接口不稳定, 有时服务器不返回数据, 需要重新获取
             try:
@@ -115,6 +118,9 @@ class TikTok(object):
                 if datadict is not None and datadict['aweme_detail'] is not None and datadict["status_code"] == 0:
                     break
             except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                 print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
         # 清空self.awemeDict
@@ -164,6 +170,7 @@ class TikTok(object):
                 print("[  错误  ]:模式选择错误, 仅支持post、like、mix, 请检查后重新运行!\r")
                 return None
 
+            start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
@@ -174,6 +181,9 @@ class TikTok(object):
                     if datadict is not None and datadict["status_code"] == 0:
                         break
                 except Exception as e:
+                    end = time.time()  # 结束时间
+                    if end - start > self.timeout:
+                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
@@ -210,19 +220,20 @@ class TikTok(object):
 
         live_api = self.urls.LIVE + self.utils.getXbogus(
                     url=f'aid=6383&device_platform=web&web_rid={web_rid}')
-
-        try:
-            response = requests.get(live_api, headers=self.headers)
-            live_json = json.loads(response.text)
-        except Exception as e:
-            if option:
-                print("[  错误  ]:接口未返回数据, 请检查后重新运行!\r")
-            return None
-
-        if live_json == {} or live_json['status_code'] != 0:
-            if option:
-                print("[  错误  ]:接口未返回信息\r")
-            return None
+        start = time.time()  # 开始时间
+        while True:
+            # 接口不稳定, 有时服务器不返回数据, 需要重新获取
+            try:
+                response = requests.get(live_api, headers=self.headers)
+                live_json = json.loads(response.text)
+                if live_json != {} and live_json['status_code'] == 0:
+                    break
+            except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                if option:
+                    print("[  错误  ]:接口未返回数据, 正在重新请求!\r")
 
         # 清空字典
         self.result.clearDict(self.result.liveDict)
@@ -318,6 +329,7 @@ class TikTok(object):
             url = self.urls.USER_MIX + self.utils.getXbogus(
                 url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
 
+            start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
@@ -328,6 +340,9 @@ class TikTok(object):
                     if datadict is not None:
                         break
                 except Exception as e:
+                    end = time.time()  # 结束时间
+                    if end - start > self.timeout:
+                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
@@ -378,6 +393,7 @@ class TikTok(object):
             url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
                 url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
 
+            start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
@@ -388,6 +404,9 @@ class TikTok(object):
                     if datadict is not None and datadict["status_code"] == 0:
                         break
                 except Exception as e:
+                    end = time.time()  # 结束时间
+                    if end - start > self.timeout:
+                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for mix in datadict["mix_infos"]:
@@ -434,6 +453,7 @@ class TikTok(object):
             url = self.urls.MUSIC + self.utils.getXbogus(
                 url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
 
+            start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
@@ -444,6 +464,9 @@ class TikTok(object):
                     if datadict is not None:
                         break
                 except Exception as e:
+                    end = time.time()  # 结束时间
+                    if end - start > self.timeout:
+                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
