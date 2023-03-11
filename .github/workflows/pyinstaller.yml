@@ -29,6 +29,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
           pyinstaller -i ./static/img/favicon.ico -F TikTokCommand.py --add-data "X-Bogus.js;."
+          pyinstaller -i ./static/img/favicon.ico -F TikTokWeb.py --add-data "X-Bogus.js;." --add-data "templates;templates"
 
       - name: Create Release and Upload Release Asset
         uses: softprops/action-gh-release@v1
@@ -46,5 +47,6 @@ jobs:
                                         # 如果指定了正文，正文将被添加到自动生成的注释中。
           files: | # 多个文件要加 |
             dist/TikTokCommand.exe
+            dist/TikTokWeb.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # 默认为${{ github.token }}
