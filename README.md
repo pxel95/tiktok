@@ -48,9 +48,10 @@
 
 ## 抖音去水印工具
 
-使用抖音去水印工具有三种方式
+使用抖音去水印工具有4种方式
 
 1. (推荐)直接使用我搭建的抖音去水印工具：https://dy.gyh.im/
+
 2. 使用docker运行
 
 ```
@@ -63,8 +64,16 @@ docker run -d -p 5000:5000 --name tiktok --restart=always imgyh/tiktokweb
 cd /path/to/tiktok
 python -m pip install -r requirements.txt
 python TikTokWeb.py
+```
+
+4. windows用户也可以下载 Releases 中的 [TikTokWeb.exe](https://github.com/imgyh/tiktok/releases) 文件双击运行
+
+5. 指定端口运行
+
+```
 # 指定端口运行
 python TikTokWeb.py -p 5001
+.\TikTokWeb.exe -p 5001
 ```
 
 访问: http://localhost:5000
