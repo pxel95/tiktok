@@ -37,6 +37,7 @@
 * 去水印下载
 * 自动跳过已下载
 * 支持指定下载作品数量
+* 多线程下载
 
 ![](img/tiktokcommand1.jpg)
 ![](img/tiktokcommand2.jpg)
@@ -45,6 +46,11 @@
 ![tiktokcommand download detail](img/tiktokcommanddownloaddetail.jpg)
 
 # 使用方法
+
+## 安装node.js环境(可选)
+
+> 为了快速获取X-Bogus加密参数, 推荐在本地安装node.js环境, 这样可以通过本地执行获取X-Bogus加密参数的js文件
+> 当然如果没有安装node.js环境, 程序会从我服务器上部署的接口获取X-Bogus加密参数
 
 ## 抖音去水印工具
 
@@ -114,6 +120,7 @@ python TikTokCommand.py -h
 --mode MODE, -M MODE        link是个人主页时, 设置下载发布的作品(post)或喜欢的作品(like)或者用户所有合集(mix), 默认为post
 --number NUMBER, -n NUMBER  1.当下载单个合集、音乐集合、主页作品(post模式)和喜欢(like模式)时, 可设置下载前n个作品, 默认为0全部下载 
                             2.当下载主页下所有合集(mix模式)时, 设置下载前n个合集下所有作品, 默认为0全部下载
+--thread THREAD, -t THREAD  设置线程数, 默认5个线程
 ```
 
 - 下载单个作品
@@ -224,6 +231,15 @@ linux与mac用户:
 python TikTokCommand.py -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir -a False
 ```
 
+- 除了单个作品和直播, 其余模式均支持多线程下载, 默认5个线程, 可以自己调节线程数
+
+```
+windows用户:
+.\TikTokCommand.exe -l https://v.douyin.com/kcvSCe9/ -p C:\project\test -t 8
+linux与mac用户:
+python TikTokCommand.py -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir -t 8
+```
+
 - 直播推流地址解析
 
 ```
@@ -241,7 +257,7 @@ python TikTokCommand.py -l https://live.douyin.com/802939216127 -p /path/to/down
 - [x] 指定下载作品数量
 - [ ] 获取热搜榜数据
 - [ ] 多主页链接批量下载
-- [ ] 多线程下载
+- [x] 多线程下载
 - [ ] 保存数据至数据库
 - [ ] 制作成接口
 
