@@ -19,6 +19,8 @@ import json
 import time
 import os
 import copy
+import threading
+from tqdm import tqdm
 
 from TikTokUtils import Utils
 from TikTokUrls import Urls
@@ -500,25 +502,24 @@ class TikTok(object):
         return awemeList
 
     # 来自 https://blog.csdn.net/weixin_43347550/article/details/105248223
-    def progressBarDownload(self, url, filepath):
-        start = time.time()  # 下载开始时间
+    def progressBarDownload(self, url, filepath,desc):
         response = requests.get(url, stream=True, headers=self.headers)
-        size = 0  # 初始化已下载大小
         chunk_size = 1024  # 每次下载的数据大小
         content_size = int(response.headers['content-length'])  # 下载文件总大小
         try:
             if response.status_code == 200:  # 判断是否响应成功
-                print('[开始下载]:文件大小:{size:.2f} MB'.format(
-                    size=content_size / chunk_size / 1024))  # 开始下载，显示下载文件大小
-                with open(filepath, 'wb') as file:  # 显示进度条
+                # print('[开始下载]:文件大小:{size:.2f} MB'.format(
+                #     size=content_size / chunk_size / 1024))  # 开始下载，显示下载文件大小
+                with open(filepath, 'wb') as file, tqdm(total=content_size,
+                                                        unit="iB",
+                                                        desc=desc,
+                                                        unit_scale=True,
+                                                        unit_divisor=1024,
+
+                                                         ) as bar:  # 显示进度条
                     for data in response.iter_content(chunk_size=chunk_size):
-                        file.write(data)
-                        size += len(data)
-                        print('\r' + '[下载进度]:%s%.2f%%' % (
-                            '>' * int(size * 50 / content_size), float(size / content_size * 100)), end=' ')
-            end = time.time()  # 下载结束时间
-            print('\n' + '[下载完成]:耗时: %.2f秒\n' % (
-                    end - start))  # 输出下载用时时间
+                        size = file.write(data)
+                        bar.update(size)
         except Exception as e:
             # 下载异常 删除原来下载的文件, 可能未下成功
             if os.path.exists(filepath):
@@ -539,103 +540,126 @@ class TikTok(object):
                 os.mkdir(aweme_path)
 
             # 保存获取到的字典信息
-            print("[  提示  ]:正在保存获取到的信息到 result.json\r\n")
+            # print("[  提示  ]:正在保存获取到的信息到 result.json\r\n")
             try:
                 with open(os.path.join(aweme_path, "result.json"), "w", encoding='utf-8') as f:
                     f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
                     f.close()
             except Exception as e:
-                print("[  错误  ]:保存 result.json 出错\r\n")
+                print("[  错误  ]:保存 result.json 失败\r\n")
 
+            desc = file_name[:30]
             # 下载  视频
             if awemeDict["awemeType"] == 0:
-                print("[  提示  ]:正在下载视频...\r")
+                # print("[  提示  ]:正在下载视频...\r")
                 video_path = os.path.join(aweme_path, file_name + ".mp4")
 
                 if os.path.exists(video_path):
-                    print("[  提示  ]:视频已存在为您跳过...\r\n")
+                    # print("[  提示  ]:视频已存在为您跳过...\r\n")
+                    pass
                 else:
                     try:
                         url = awemeDict["video"]["play_addr"]["url_list"]
                         if url != "":
-                            self.progressBarDownload(url, video_path)
+                            self.progressBarDownload(url, video_path, "[ 视频 ]:" + desc)
                     except Exception as e:
-                        print("[  错误  ]:无法获取到视频url\r\n")
+                        print("[  警告  ]:视频下载失败,请重试...\r\n")
 
             # 下载 图集
             if awemeDict["awemeType"] == 1:
-                print("[  提示  ]:正在下载图集...\r")
+                # print("[  提示  ]:正在下载图集...\r")
                 for ind, image in enumerate(awemeDict["images"]):
                     image_path = os.path.join(aweme_path, "image" + str(ind) + ".jpeg")
                     if os.path.exists(image_path):
-                        print("[  提示  ]:图片已存在为您跳过...\r\n")
+                        # print("[  提示  ]:图片已存在为您跳过...\r\n")
+                        pass
                     else:
                         try:
                             url = image["url_list"][0]
                             if url != "":
-                                self.progressBarDownload(url, image_path)
+                                self.progressBarDownload(url, image_path, "[ 图集 ]:" + desc)
                         except Exception as e:
-                            print("[  错误  ]:无法获取到图片url\r\n")
+                            print("[  警告  ]:图片下载失败,请重试...\r\n")
 
             # 下载  音乐
             if music:
-                print("[  提示  ]:正在下载音乐...\r")
+                # print("[  提示  ]:正在下载音乐...\r")
                 music_name = self.utils.replaceStr(awemeDict["music"]["title"])
                 music_path = os.path.join(aweme_path, music_name + ".mp3")
 
                 if os.path.exists(music_path):
-                    print("[  提示  ]:音乐已存在为您跳过...\r\n")
+                    # print("[  提示  ]:音乐已存在为您跳过...\r\n")
+                    pass
                 else:
                     try:
                         url = awemeDict["music"]["play_url"]["url_list"][0]
                         if url != "":
-                            self.progressBarDownload(url, music_path)
+                            self.progressBarDownload(url, music_path, "[ 原声 ]:" + desc)
                     except Exception as e:
-                        print("[  错误  ]:无法获取到音乐url\r\n")
+                        # print(e)
+                        print("[  警告  ]:音乐(原声)下载失败,请重试...\r\n")
 
             # 下载  cover
             if cover and awemeDict["awemeType"] == 0:
-                print("[  提示  ]:正在下载视频cover图...\r")
+                # print("[  提示  ]:正在下载视频cover图...\r")
                 cover_path = os.path.join(aweme_path, "cover.jpeg")
 
                 if os.path.exists(cover_path):
-                    print("[  提示  ]:cover 已存在为您跳过...\r\n")
+                    # print("[  提示  ]:cover 已存在为您跳过...\r\n")
+                    pass
                 else:
                     try:
                         url = awemeDict["video"]["cover_original_scale"]["url_list"][0]
                         if url != "":
-                            self.progressBarDownload(url, cover_path)
+                            self.progressBarDownload(url, cover_path, "[ 封面 ]:" + desc)
                     except Exception as e:
-                        print("[  错误  ]:无法获取到cover url\r\n")
+                        # print(e)
+                        print("[  警告  ]:cover下载失败,请重试...\r\n")
 
             # 下载  avatar
             if avatar:
-                print("[  提示  ]:正在下载用户头像...\r")
+                # print("[  提示  ]:正在下载用户头像...\r")
                 avatar_path = os.path.join(aweme_path, "avatar.jpeg")
 
                 if os.path.exists(avatar_path):
-                    print("[  提示  ]:avatar 已存在为您跳过...\r\n")
+                    # print("[  提示  ]:avatar 已存在为您跳过...\r\n")
+                    pass
                 else:
                     try:
                         url = awemeDict["author"]["avatar"]["url_list"][0]
                         if url != "":
-                            self.progressBarDownload(url, avatar_path)
+                            self.progressBarDownload(url, avatar_path, "[ 头像 ]:" + desc)
                     except Exception as e:
-                        print("[  错误  ]:无法获取到avatar url\r\n")
+                        # print(e)
+                        print("[  警告  ]:avatar下载失败,请重试...\r\n")
         except Exception as e:
-            print("[  错误  ]:请检查json信息是否正确\r\n")
+            print("[  错误  ]:下载作品时出错\r\n")
 
-    def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, savePath=os.getcwd()):
+    def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, savePath=os.getcwd(), thread=5):
         if awemeList is None:
             return
         if not os.path.exists(savePath):
             os.mkdir(savePath)
-        for ind, aweme in enumerate(awemeList):
-            print("[  提示  ]:正在下载 [%s] 的作品 %s/%s\r\n"
-                  % (aweme["author"]["nickname"], str(ind + 1), len(awemeList)))
-
-            self.awemeDownload(aweme, music, cover, avatar, savePath)
-            # time.sleep(0.5)
+        t_list = []
+        t = None
+        start = time.time()  # 开始时间
+        for aweme in awemeList:
+            # print("[  提示  ]:正在下载 [%s] 的作品 %s/%s\r\n"
+            #       % (aweme["author"]["nickname"], str(ind + 1), len(awemeList)))
+            t = threading.Thread(target=self.awemeDownload,
+                                 kwargs={'awemeDict': aweme, 'music': music, 'cover': cover, 'avatar': avatar, 'savePath': savePath})
+            t_list.append(t)
+            t.start()
+            if len(t_list) >= thread:
+                for t in t_list:
+                    t.join()
+                t_list = []
+            # self.awemeDownload(aweme, music, cover, avatar, savePath)
+        if len(t_list) < thread:
+            for t in t_list:
+                t.join()
+        end = time.time()  # 结束时间
+        print('\n' + '[下载完成]:耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
 
 
 if __name__ == "__main__":
