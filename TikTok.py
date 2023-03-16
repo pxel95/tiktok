@@ -79,12 +79,16 @@ class TikTok(object):
             # 获取作品 aweme_id
             key = re.findall('video/(\d+)?', urlstr)[0]
             key_type = "aweme"
+        elif "/note/" in urlstr:
+            # 获取note aweme_id
+            key = re.findall('note/(\d+)?', urlstr)[0]
+            key_type = "aweme"
         elif "/collection/" in urlstr:
-            # 获取作品 aweme_id
+            # 获取合集 id
             key = re.findall('collection/(\d+)?', urlstr)[0]
             key_type = "mix"
         elif "/music/" in urlstr:
-            # 获取作品 aweme_id
+            # 获取原声 id
             key = re.findall('music/(\d+)?', urlstr)[0]
             key_type = "music"
         elif "live.douyin.com" in r.url:
