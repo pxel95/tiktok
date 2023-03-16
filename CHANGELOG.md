@@ -1,3 +1,18 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.5.3...v) (2023-03-16)
+
+
+### Bug Fixes
+
+* **tiktok:** 修复接口未返回数据时重复请求的死循环(10s后还是未返回就抛异常) ([8c5863d](https://github.com/imgyh/tiktok/commit/8c5863d44f4ae4a5242c8191f98bc0f3936e8e84))
+* **tiktok:** 修复无法获取图集id ([85942f2](https://github.com/imgyh/tiktok/commit/85942f2ffce97d853dab96da87737d98f450347e)), closes [#10](https://github.com/imgyh/tiktok/issues/10)
+
+
+### Features
+
+* **tiktok:** 适配多线程下载 ([83e4632](https://github.com/imgyh/tiktok/commit/83e46322ee13bd14841332538fef22e27e2f0e59))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.5.2...v) (2023-03-05)
 
 
