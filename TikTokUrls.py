@@ -70,6 +70,7 @@ class Urls(object):
 
         # 直播
         self.LIVE = 'https://live.douyin.com/webcast/room/web/enter/?'
+        self.LIVE2 = 'https://webcast.amemv.com/webcast/room/reflow/info/?'
 
         # 音乐
         self.MUSIC = 'https://www.douyin.com/aweme/v1/web/music/aweme/?'

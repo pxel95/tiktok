@@ -93,6 +93,14 @@ class TikTok(object):
             # 获取原声 id
             key = re.findall('music/(\d+)?', urlstr)[0]
             key_type = "music"
+        elif "/webcast/reflow/" in urlstr:
+            key1 = re.findall('reflow/(\d+)?', urlstr)[0]
+            url = self.urls.LIVE2 + self.utils.getXbogus(
+                f'live_id=1&room_id={key1}&app_id=1128')
+            res = requests.get(url, headers=self.headers)
+            resjson = json.loads(res.text)
+            key = resjson['data']['room']['owner']['web_rid']
+            key_type = "live"
         elif "live.douyin.com" in r.url:
             key = r.url.replace('https://live.douyin.com/', '')
             key_type = "live"
