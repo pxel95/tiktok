@@ -245,8 +245,12 @@ python TikTokCommand.py -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir -t 
 ```
 windows用户:
 .\TikTokCommand.exe -l https://live.douyin.com/802939216127 -p /path/to/downdir
+或者
+.\TikTokCommand.exe -l https://v.douyin.com/SnXMoh2/ -p /path/to/downdir
 linux与mac用户:
 python TikTokCommand.py -l https://live.douyin.com/802939216127 -p /path/to/downdir
+或者
+python TikTokCommand.py -l https://v.douyin.com/SnXMoh2/ -p /path/to/downdir
 ```
 
 # ToDo
