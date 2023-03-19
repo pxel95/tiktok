@@ -42,7 +42,7 @@ class Utils(object):
         替换非法字符，缩短字符长度，使其能成为文件名
         """
         # 匹配 汉字 字母 数字 空格
-        match = "([0-9A-Za-z\u4e00-\u9fa5 -._]+)"
+        match = "([0-9A-Za-z\u4e00-\u9fa5 #_-]+)"
 
         result = re.findall(match, filenamestr)
 

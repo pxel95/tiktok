@@ -542,7 +542,7 @@ class TikTok(object):
 
         try:
             # 使用作品 创建时间+描述 当文件夹
-            file_name = self.utils.replaceStr(awemeDict["create_time"] + " " + awemeDict["desc"])
+            file_name = awemeDict["create_time"] + " " +  self.utils.replaceStr(awemeDict["desc"])
             aweme_path = os.path.join(savePath, file_name)
             if not os.path.exists(aweme_path):
                 os.mkdir(aweme_path)
