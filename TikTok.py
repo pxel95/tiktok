@@ -19,7 +19,7 @@ import json
 import time
 import os
 import copy
-import threading
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 from tqdm import tqdm
 
 from TikTokUtils import Utils
@@ -569,7 +569,8 @@ class TikTok(object):
                     try:
                         url = awemeDict["video"]["play_addr"]["url_list"]
                         if url != "":
-                            self.progressBarDownload(url, video_path, "[ 视频 ]:" + desc)
+                            # self.progressBarDownload(url, video_path, "[ 视频 ]:" + desc)
+                            self.alltask.append(self.tpool.submit(self.progressBarDownload,url, video_path, "[ 视频 ]:" + desc))
                     except Exception as e:
                         print("[  警告  ]:视频下载失败,请重试...\r\n")
 
@@ -585,7 +586,8 @@ class TikTok(object):
                         try:
                             url = image["url_list"][0]
                             if url != "":
-                                self.progressBarDownload(url, image_path, "[ 图集 ]:" + desc)
+                                #self.progressBarDownload(url, image_path, "[ 图集 ]:" + desc)
+                                self.alltask.append(self.tpool.submit(self.progressBarDownload, url, image_path, "[ 图集 ]:" + desc))
                         except Exception as e:
                             print("[  警告  ]:图片下载失败,请重试...\r\n")
 
@@ -602,7 +604,8 @@ class TikTok(object):
                     try:
                         url = awemeDict["music"]["play_url"]["url_list"][0]
                         if url != "":
-                            self.progressBarDownload(url, music_path, "[ 原声 ]:" + desc)
+                            # self.progressBarDownload(url, music_path, "[ 原声 ]:" + desc)
+                            self.alltask.append(self.tpool.submit(self.progressBarDownload, url, music_path, "[ 原声 ]:" + desc))
                     except Exception as e:
                         # print(e)
                         print("[  警告  ]:音乐(原声)下载失败,请重试...\r\n")
@@ -619,7 +622,8 @@ class TikTok(object):
                     try:
                         url = awemeDict["video"]["cover_original_scale"]["url_list"][0]
                         if url != "":
-                            self.progressBarDownload(url, cover_path, "[ 封面 ]:" + desc)
+                            # self.progressBarDownload(url, cover_path, "[ 封面 ]:" + desc)
+                            self.alltask.append(self.tpool.submit(self.progressBarDownload, url, cover_path, "[ 封面 ]:" + desc))
                     except Exception as e:
                         # print(e)
                         print("[  警告  ]:cover下载失败,请重试...\r\n")
@@ -636,7 +640,8 @@ class TikTok(object):
                     try:
                         url = awemeDict["author"]["avatar"]["url_list"][0]
                         if url != "":
-                            self.progressBarDownload(url, avatar_path, "[ 头像 ]:" + desc)
+                            # self.progressBarDownload(url, avatar_path, "[ 头像 ]:" + desc)
+                            self.alltask.append(self.tpool.submit(self.progressBarDownload, url, avatar_path, "[ 头像 ]:" + desc))
                     except Exception as e:
                         # print(e)
                         print("[  警告  ]:avatar下载失败,请重试...\r\n")
@@ -648,24 +653,17 @@ class TikTok(object):
             return
         if not os.path.exists(savePath):
             os.mkdir(savePath)
-        t_list = []
-        t = None
+
+        self.tpool = ThreadPoolExecutor(thread)
+        self.alltask = []
+
         start = time.time()  # 开始时间
         for aweme in awemeList:
             # print("[  提示  ]:正在下载 [%s] 的作品 %s/%s\r\n"
             #       % (aweme["author"]["nickname"], str(ind + 1), len(awemeList)))
-            t = threading.Thread(target=self.awemeDownload,
-                                 kwargs={'awemeDict': aweme, 'music': music, 'cover': cover, 'avatar': avatar, 'savePath': savePath})
-            t_list.append(t)
-            t.start()
-            if len(t_list) >= thread:
-                for t in t_list:
-                    t.join()
-                t_list = []
-            # self.awemeDownload(aweme, music, cover, avatar, savePath)
-        if len(t_list) < thread:
-            for t in t_list:
-                t.join()
+            self.awemeDownload(aweme, music, cover, avatar, savePath)
+
+        wait(self.alltask, return_when=ALL_COMPLETED)
         end = time.time()  # 结束时间
         print('\n' + '[下载完成]:耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
 
