@@ -1,3 +1,23 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.5.4...v) (2023-03-22)
+
+
+### Bug Fixes
+
+* **tiktok:** 修改命令行帮助提示信息 ([e194a28](https://github.com/imgyh/tiktok/commit/e194a2818b64aaa9b2a5ab172302c87a4f4a5790))
+* **tiktok:** 修改文件夹名的正则匹配逻辑 ([4c1a4ed](https://github.com/imgyh/tiktok/commit/4c1a4ed950476c0945bf7986254d75d108d3019f)), closes [#11](https://github.com/imgyh/tiktok/issues/11)
+* **tiktok:** 单个作品不使用多线程 ([939a417](https://github.com/imgyh/tiktok/commit/939a417654183a2ac2766a25bdecc13575752e61))
+* **tiktok:** 获取x-bogus错误后重试, 单个作品不使用多线程 ([f8ec5e3](https://github.com/imgyh/tiktok/commit/f8ec5e3745d587d08dcba6464a0f990913f55ce5))
+* **utils:** 优化获取x-bogus时出错的提示信息 ([f224557](https://github.com/imgyh/tiktok/commit/f2245574611f125f69be9bbe9a2d376c0241bc87))
+
+
+### Features
+
+* **live:** 直播解析支持APP端分享链接 ([e4a0ebb](https://github.com/imgyh/tiktok/commit/e4a0ebba4f39cc55e8d070e12b6597ab5c3745d3))
+* **tiktok:** 使用线程池代替手动创建线程 ([89d4c7c](https://github.com/imgyh/tiktok/commit/89d4c7cd4253cd3ac885b55774dff2853c0d6e4f))
+* **web:** 前端提示信息优化 ([d9c224b](https://github.com/imgyh/tiktok/commit/d9c224bd2d5fd382fb22b37f5e68a85894bb9aef))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.5.3...v) (2023-03-16)
 
 
