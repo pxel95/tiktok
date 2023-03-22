@@ -118,15 +118,15 @@ class TikTok(object):
         if aweme_id is None:
             return None
 
-        # 单作品接口返回 'aweme_detail'
-        # 主页作品接口返回 'aweme_list'->['aweme_detail']
-        jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
-            url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
-
         start = time.time()  # 开始时间
         while True:
             # 接口不稳定, 有时服务器不返回数据, 需要重新获取
             try:
+                # 单作品接口返回 'aweme_detail'
+                # 主页作品接口返回 'aweme_list'->['aweme_detail']
+                jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
+                    url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+
                 raw = requests.get(url=jx_url, headers=self.headers).text
                 datadict = json.loads(raw)
                 if datadict is not None and datadict['aweme_detail'] is not None and datadict["status_code"] == 0:
@@ -174,20 +174,21 @@ class TikTok(object):
         while True:
             times = times + 1
             print("[  提示  ]:正在对 [主页] 进行第 " + str(times) + " 次请求...\r")
-            if mode == "post":
-                url = self.urls.USER_POST + self.utils.getXbogus(
-                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
-            elif mode == "like":
-                url = self.urls.USER_FAVORITE_A + self.utils.getXbogus(
-                    url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
-            else:
-                print("[  错误  ]:模式选择错误, 仅支持post、like、mix, 请检查后重新运行!\r")
-                return None
 
             start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
+                    if mode == "post":
+                        url = self.urls.USER_POST + self.utils.getXbogus(
+                            url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
+                    elif mode == "like":
+                        url = self.urls.USER_FAVORITE_A + self.utils.getXbogus(
+                            url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+                    else:
+                        print("[  错误  ]:模式选择错误, 仅支持post、like、mix, 请检查后重新运行!\r")
+                        return None
+
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["aweme_list"])) + ' 条数据\r')
@@ -232,12 +233,13 @@ class TikTok(object):
 
         # web_rid = live_url.replace('https://live.douyin.com/', '')
 
-        live_api = self.urls.LIVE + self.utils.getXbogus(
-                    url=f'aid=6383&device_platform=web&web_rid={web_rid}')
         start = time.time()  # 开始时间
         while True:
             # 接口不稳定, 有时服务器不返回数据, 需要重新获取
             try:
+                live_api = self.urls.LIVE + self.utils.getXbogus(
+                    url=f'aid=6383&device_platform=web&web_rid={web_rid}')
+
                 response = requests.get(live_api, headers=self.headers)
                 live_json = json.loads(response.text)
                 if live_json != {} and live_json['status_code'] == 0:
@@ -340,13 +342,13 @@ class TikTok(object):
             times = times + 1
             print("[  提示  ]:正在对 [合集] 进行第 " + str(times) + " 次请求...\r")
 
-            url = self.urls.USER_MIX + self.utils.getXbogus(
-                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
-
             start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
+                    url = self.urls.USER_MIX + self.utils.getXbogus(
+                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
+
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["aweme_list"])) + ' 条数据\r')
@@ -404,13 +406,13 @@ class TikTok(object):
             times = times + 1
             print("[  提示  ]:正在对 [合集列表] 进行第 " + str(times) + " 次请求...\r")
 
-            url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
-                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
-
             start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
+                    url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
+                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
+
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["mix_infos"])) + ' 条数据\r')
@@ -464,13 +466,13 @@ class TikTok(object):
             times = times + 1
             print("[  提示  ]:正在对 [音乐集合] 进行第 " + str(times) + " 次请求...\r")
 
-            url = self.urls.MUSIC + self.utils.getXbogus(
-                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
-
             start = time.time()  # 开始时间
             while True:
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
+                    url = self.urls.MUSIC + self.utils.getXbogus(
+                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
+
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["aweme_list"])) + ' 条数据\r')
@@ -534,7 +536,7 @@ class TikTok(object):
                 os.remove(filepath)
             print("[  错误  ]:下载出错\r")
 
-    def awemeDownload(self, awemeDict: dict, music=True, cover=True, avatar=True, savePath=os.getcwd()):
+    def awemeDownload(self, awemeDict: dict, music=True, cover=True, avatar=True, savePath=os.getcwd(), usingThread = True):
         if awemeDict is None:
             return
         if not os.path.exists(savePath):
@@ -569,8 +571,10 @@ class TikTok(object):
                     try:
                         url = awemeDict["video"]["play_addr"]["url_list"]
                         if url != "":
-                            # self.progressBarDownload(url, video_path, "[ 视频 ]:" + desc)
-                            self.alltask.append(self.tpool.submit(self.progressBarDownload,url, video_path, "[ 视频 ]:" + desc))
+                            if usingThread:
+                                self.alltask.append(self.tpool.submit(self.progressBarDownload, url, video_path, "[ 视频 ]:" + desc))
+                            else:
+                                self.progressBarDownload(url, video_path, "[ 视频 ]:" + desc)
                     except Exception as e:
                         print("[  警告  ]:视频下载失败,请重试...\r\n")
 
@@ -586,8 +590,10 @@ class TikTok(object):
                         try:
                             url = image["url_list"][0]
                             if url != "":
-                                #self.progressBarDownload(url, image_path, "[ 图集 ]:" + desc)
-                                self.alltask.append(self.tpool.submit(self.progressBarDownload, url, image_path, "[ 图集 ]:" + desc))
+                                if usingThread:
+                                    self.alltask.append(self.tpool.submit(self.progressBarDownload, url, image_path, "[ 图集 ]:" + desc))
+                                else:
+                                    self.progressBarDownload(url, image_path, "[ 图集 ]:" + desc)
                         except Exception as e:
                             print("[  警告  ]:图片下载失败,请重试...\r\n")
 
@@ -604,8 +610,10 @@ class TikTok(object):
                     try:
                         url = awemeDict["music"]["play_url"]["url_list"][0]
                         if url != "":
-                            # self.progressBarDownload(url, music_path, "[ 原声 ]:" + desc)
-                            self.alltask.append(self.tpool.submit(self.progressBarDownload, url, music_path, "[ 原声 ]:" + desc))
+                            if usingThread:
+                                self.alltask.append(self.tpool.submit(self.progressBarDownload, url, music_path, "[ 原声 ]:" + desc))
+                            else:
+                                self.progressBarDownload(url, music_path, "[ 原声 ]:" + desc)
                     except Exception as e:
                         # print(e)
                         print("[  警告  ]:音乐(原声)下载失败,请重试...\r\n")
@@ -622,8 +630,10 @@ class TikTok(object):
                     try:
                         url = awemeDict["video"]["cover_original_scale"]["url_list"][0]
                         if url != "":
-                            # self.progressBarDownload(url, cover_path, "[ 封面 ]:" + desc)
-                            self.alltask.append(self.tpool.submit(self.progressBarDownload, url, cover_path, "[ 封面 ]:" + desc))
+                            if usingThread:
+                                self.alltask.append(self.tpool.submit(self.progressBarDownload, url, cover_path, "[ 封面 ]:" + desc))
+                            else:
+                                self.progressBarDownload(url, cover_path, "[ 封面 ]:" + desc)
                     except Exception as e:
                         # print(e)
                         print("[  警告  ]:cover下载失败,请重试...\r\n")
@@ -640,8 +650,10 @@ class TikTok(object):
                     try:
                         url = awemeDict["author"]["avatar"]["url_list"][0]
                         if url != "":
-                            # self.progressBarDownload(url, avatar_path, "[ 头像 ]:" + desc)
-                            self.alltask.append(self.tpool.submit(self.progressBarDownload, url, avatar_path, "[ 头像 ]:" + desc))
+                            if usingThread:
+                                self.alltask.append(self.tpool.submit(self.progressBarDownload, url, avatar_path, "[ 头像 ]:" + desc))
+                            else:
+                                self.progressBarDownload(url, avatar_path, "[ 头像 ]:" + desc)
                     except Exception as e:
                         # print(e)
                         print("[  警告  ]:avatar下载失败,请重试...\r\n")
