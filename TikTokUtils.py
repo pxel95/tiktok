@@ -75,7 +75,7 @@ class Utils(object):
                 params = response["param"]
                 xbogus = response["X-Bogus"]
             except Exception as e:
-                # print('[  错误  ]:X-Bogus接口异常, 可能是访问流量高, 接口限流请稍等几分钟再次尝试')
+                print('[  错误  ]:X-Bogus获取异常')
                 return
         return params
 
