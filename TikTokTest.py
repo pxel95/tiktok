@@ -119,8 +119,8 @@ if __name__ == "__main__":
 # python TikTokCommand.py -l https://v.douyin.com/B72QgDw/ -p /mnt/c/project/test5 -M like
 # .\TikTokCommand.exe -l https://v.douyin.com/B72QgDw/ -p .\test5 -M like
 # 单个合集
-# python TikTokCommand.py -l https://v.douyin.com/B3J63Le/ -p /mnt/c/project/test6
-# .\TikTokCommand.exe -l https://v.douyin.com/B3J63Le/ -p .\test6
+# python TikTokCommand.py -l https://v.douyin.com/AJp8D3f/ -p /mnt/c/project/test6
+# .\TikTokCommand.exe -l https://v.douyin.com/AJp8D3f/ -p .\test6
 # 用户主页下所有合集
 # python TikTokCommand.py -l https://v.douyin.com/B38oovu/ -p /mnt/c/project/test7 -M mix
 # .\TikTokCommand.exe -l https://v.douyin.com/B38oovu/ -p .\test7 -M mix
