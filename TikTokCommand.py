@@ -84,7 +84,7 @@ def main():
     elif key_type == "aweme":
         datanew, dataraw = tk.getAwemeInfo(key)
         tk.awemeDownload(awemeDict=datanew, music=args.music, cover=args.cover, avatar=args.avatar,
-                         savePath=args.path)
+                         savePath=args.path, usingThread=False)
     elif key_type == "live":
         live_json = tk.getLiveInfo(key)
         if not os.path.exists(args.path):
