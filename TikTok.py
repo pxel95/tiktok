@@ -538,7 +538,7 @@ class TikTok(object):
                 os.remove(filepath)
             print("[  错误  ]:下载出错\r")
 
-    def awemeDownload(self, awemeDict: dict, music=True, cover=True, avatar=True, savePath=os.getcwd(), usingThread = True):
+    def awemeDownload(self, awemeDict: dict, music=True, cover=True, avatar=True, resjson=True, savePath=os.getcwd(), usingThread = True):
         if awemeDict is None:
             return
         if not os.path.exists(savePath):
@@ -553,12 +553,13 @@ class TikTok(object):
 
             # 保存获取到的字典信息
             # print("[  提示  ]:正在保存获取到的信息到 result.json\r\n")
-            try:
-                with open(os.path.join(aweme_path, "result.json"), "w", encoding='utf-8') as f:
-                    f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
-                    f.close()
-            except Exception as e:
-                print("[  错误  ]:保存 result.json 失败\r\n")
+            if resjson:
+                try:
+                    with open(os.path.join(aweme_path, "result.json"), "w", encoding='utf-8') as f:
+                        f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
+                        f.close()
+                except Exception as e:
+                    print("[  错误  ]:保存 result.json 失败\r\n")
 
             desc = file_name[:30]
             # 下载  视频
@@ -662,7 +663,7 @@ class TikTok(object):
         except Exception as e:
             print("[  错误  ]:下载作品时出错\r\n")
 
-    def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, savePath=os.getcwd(), thread=5):
+    def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, resjson=True, savePath=os.getcwd(), thread=5):
         if awemeList is None:
             return
         if not os.path.exists(savePath):
@@ -675,7 +676,7 @@ class TikTok(object):
         for aweme in awemeList:
             # print("[  提示  ]:正在下载 [%s] 的作品 %s/%s\r\n"
             #       % (aweme["author"]["nickname"], str(ind + 1), len(awemeList)))
-            self.awemeDownload(aweme, music, cover, avatar, savePath)
+            self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath,usingThread=True)
 
         wait(self.alltask, return_when=ALL_COMPLETED)
         end = time.time()  # 结束时间

@@ -33,6 +33,8 @@ def argument():
                         type=Utils().str2bool, required=False, default=True)
     parser.add_argument("--avatar", "-a", help="是否下载作者的头像(True/False), 默认为True",
                         type=Utils().str2bool, required=False, default=True)
+    parser.add_argument("--json", "-j", help="是否保存获取到的数据(True/False), 默认为True",
+                        type=Utils().str2bool, required=False, default=True)
     parser.add_argument("--mode", "-M", help="link是个人主页时, 设置下载发布的作品(post)或喜欢的作品(like)或者用户所有合集(mix), 默认为post",
                         type=str, required=False, default="post")
     parser.add_argument("--number", "-n",
@@ -59,7 +61,7 @@ def main():
         return
     elif key_type == "user" and args.mode != 'mix':
         datalist = tk.getUserInfo(key, args.mode, 35, args.number)
-        tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar,
+        tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar, resjson=args.json,
                         savePath=args.path, thread=args.thread)
     elif key_type == "user" and args.mode == 'mix':
         if not os.path.exists(args.path):
@@ -70,31 +72,32 @@ def main():
             print(f'[  提示  ]:正在下载合集 [{mixIdNameDict[mix_id]}] 中的作品\r\n')
             mix_file_name = utils.replaceStr(mixIdNameDict[mix_id])
             datalist = tk.getMixInfo(mix_id, 35)
-            tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar,
+            tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar, resjson=args.json,
                         savePath=os.path.join(args.path, mix_file_name), thread=args.thread)
             print(f'[  提示  ]:合集 [{mixIdNameDict[mix_id]}] 中的作品下载完成\r\n')
     elif key_type == "mix":
         datalist = tk.getMixInfo(key,35, args.number)
-        tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar,
+        tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar, resjson=args.json,
                         savePath=args.path, thread=args.thread)
     elif key_type == "music":
         datalist = tk.getMusicInfo(key,35, args.number)
-        tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar,
+        tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar, resjson=args.json,
                         savePath=args.path, thread=args.thread)
     elif key_type == "aweme":
         datanew, dataraw = tk.getAwemeInfo(key)
-        tk.awemeDownload(awemeDict=datanew, music=args.music, cover=args.cover, avatar=args.avatar,
+        tk.awemeDownload(awemeDict=datanew, music=args.music, cover=args.cover, avatar=args.avatar, resjson=args.json,
                          savePath=args.path, usingThread=False)
     elif key_type == "live":
         live_json = tk.getLiveInfo(key)
-        if not os.path.exists(args.path):
-            os.mkdir(args.path)
+        if  args.json:
+            if not os.path.exists(args.path):
+                os.mkdir(args.path)
 
-        # 保存获取到json
-        print("[  提示  ]:正在保存获取到的信息到result.json\r\n")
-        with open(os.path.join(args.path, "result.json"), "w", encoding='utf-8') as f:
-            f.write(json.dumps(live_json, ensure_ascii=False, indent=2))
-            f.close()
+            # 保存获取到json
+            print("[  提示  ]:正在保存获取到的信息到result.json\r\n")
+            with open(os.path.join(args.path, "result.json"), "w", encoding='utf-8') as f:
+                f.write(json.dumps(live_json, ensure_ascii=False, indent=2))
+                f.close()
 
 
 if __name__ == "__main__":
