@@ -180,6 +180,8 @@ class TikTok(object):
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
                     if mode == "post":
+                        # referer 需要指定为如下格式
+                        self.headers['referer'] = 'https://www.douyin.com/user/' + sec_uid
                         url = self.urls.USER_POST + self.utils.getXbogus(
                             url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
                     elif mode == "like":
