@@ -85,9 +85,9 @@ class TikTok(object):
             # 获取note aweme_id
             key = re.findall('note/(\d+)?', urlstr)[0]
             key_type = "aweme"
-        elif "/collection/" in urlstr:
+        elif "/share/mix/detail/" in urlstr:
             # 获取合集 id
-            key = re.findall('collection/(\d+)?', urlstr)[0]
+            key = re.findall('/share/mix/detail/(\d+)?', urlstr)[0]
             key_type = "mix"
         elif "/music/" in urlstr:
             # 获取原声 id
