@@ -111,12 +111,12 @@ python TikTokCommand.py -h
 
 ```
 -h, --help                  展示帮助页
---link LINK, -l LINK        1.作品(视频或图集)、合集、音乐集合、个人主页抖音分享链接(删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/)
-                            2.解析直播网页版网址(https://live.douyin.com/802939216127)
+--link LINK, -l LINK        作品(视频或图集)、直播、合集、音乐集合、个人主页抖音分享链接(删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/)
 --path PATH, -p PATH        下载保存位置
 --music MUSIC, -m MUSIC     是否下载视频中的音乐(True/False), 默认为True
 --cover COVER, -c COVER     是否下载视频的封面(True/False), 默认为True, 当下载视频时有效
 --avatar AVATAR, -a AVATAR  是否下载作者的头像(True/False), 默认为True
+--json JSON, -j JSON        是否保存获取到的数据(True/False), 默认为True
 --mode MODE, -M MODE        link是个人主页时, 设置下载发布的作品(post)或喜欢的作品(like)或者用户所有合集(mix), 默认为post
 --number NUMBER, -n NUMBER  1.当下载单个合集、音乐集合、主页作品(post模式)和喜欢(like模式)时, 可设置下载前n个作品, 默认为0全部下载 
                             2.当下载主页下所有合集(mix模式)时, 设置下载前n个合集下所有作品, 默认为0全部下载
@@ -222,7 +222,7 @@ linux与mac用户:
 python TikTokCommand.py -l https://v.douyin.com/S6YMNXs/ -p /path/to/downdir -n 30
 ```
 
-- 关闭头像下载, cover, music 也是一样的设置对应选项为 False
+- 关闭头像下载, cover, music json数据也是一样的设置对应选项为 False
 
 ```
 windows用户:
