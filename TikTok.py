@@ -600,6 +600,7 @@ class TikTok(object):
                     try:
                         url = awemeDict["video"]["play_addr"]["url_list"]
                         if url != "":
+                            self.isdwownload = False
                             task_id = self.progress.add_task("download", filename="[ 视频 ]:" + desc, start=False)
                             self.alltask.append(self.pool.submit(self.copy_url, task_id, url, video_path))
                     except Exception as e:
@@ -617,6 +618,7 @@ class TikTok(object):
                         try:
                             url = image["url_list"][0]
                             if url != "":
+                                self.isdwownload = False
                                 task_id = self.progress.add_task("download", filename="[ 图集 ]:" + desc, start=False)
                                 self.alltask.append(self.pool.submit(self.copy_url, task_id, url, image_path))
                         except Exception as e:
@@ -635,6 +637,7 @@ class TikTok(object):
                     try:
                         url = awemeDict["music"]["play_url"]["url_list"][0]
                         if url != "":
+                            self.isdwownload = False
                             task_id = self.progress.add_task("download", filename="[ 原声 ]:" + desc, start=False)
                             self.alltask.append(self.pool.submit(self.copy_url, task_id, url, music_path))
                     except Exception as e:
@@ -652,6 +655,7 @@ class TikTok(object):
                     try:
                         url = awemeDict["video"]["cover_original_scale"]["url_list"][0]
                         if url != "":
+                            self.isdwownload = False
                             task_id = self.progress.add_task("download", filename="[ 封面 ]:" + desc, start=False)
                             self.alltask.append(self.pool.submit(self.copy_url, task_id, url, cover_path))
                     except Exception as e:
@@ -666,6 +670,7 @@ class TikTok(object):
                     # print("[  提示  ]:avatar 已存在为您跳过...\r\n")
                     pass
                 else:
+                    self.isdwownload = False
                     try:
                         url = awemeDict["author"]["avatar"]["url_list"][0]
                         if url != "":
@@ -691,17 +696,22 @@ class TikTok(object):
                 for aweme in awemeList:
                     self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
                     # time.sleep(0.5)
-        wait(self.alltask, return_when=ALL_COMPLETED)
-        # 清除上一步的进度条
-        for taskid in self.progress.task_ids:
-            self.progress.remove_task(taskid)
-        # 下载上一步失败的
-        with self.progress:
-            with ThreadPoolExecutor(max_workers=thread) as self.pool:
-                self.progress.console.log("正在重试下载失败的内容...")
-                for aweme in awemeList:
-                    self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
-                    # time.sleep(0.5)
+        while True:
+            wait(self.alltask, return_when=ALL_COMPLETED)
+            # 清除上一步的进度条
+            for taskid in self.progress.task_ids:
+                self.progress.remove_task(taskid)
+
+            self.isdwownload = True
+            # 下载上一步失败的
+            with self.progress:
+                with ThreadPoolExecutor(max_workers=thread) as self.pool:
+                    self.progress.console.log("正在检查下载是否完成...")
+                    for aweme in awemeList:
+                        self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+                        # time.sleep(0.5)
+            if self.isdwownload:
+                break
 
         wait(self.alltask, return_when=ALL_COMPLETED)
         end = time.time()  # 结束时间
