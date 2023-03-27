@@ -207,8 +207,6 @@ class TikTok(object):
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
                     if mode == "post":
-                        # referer 需要指定为如下格式
-                        self.headers['referer'] = 'https://www.douyin.com/user/' + sec_uid
                         url = self.urls.USER_POST + self.utils.getXbogus(
                             url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
                     elif mode == "like":
@@ -690,18 +688,27 @@ class TikTok(object):
         self.alltask = []
 
         start = time.time()  # 开始时间
-        with self.progress:
-            with ThreadPoolExecutor(max_workers=thread) as self.pool:
-                self.progress.console.log("请耐心等待下载完成(终端尺寸越长显示的进度条越多)...")
-                for aweme in awemeList:
-                    self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
-                    # time.sleep(0.5)
-        while True:
-            wait(self.alltask, return_when=ALL_COMPLETED)
-            # 清除上一步的进度条
-            for taskid in self.progress.task_ids:
-                self.progress.remove_task(taskid)
 
+        # 分块下载
+        for i in range(0, len(awemeList), thread):
+            batchAwemeList = awemeList[i:i + thread]
+
+
+        for awemeList2 in batchAwemeList:
+            with self.progress:
+                with ThreadPoolExecutor(max_workers=thread) as self.pool:
+                    # self.progress.console.log("请耐心等待下载完成(终端尺寸越长显示的进度条越多)...")
+                    for aweme in awemeList2:
+                        self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+                        # time.sleep(0.5)
+            wait(self.alltask, return_when=ALL_COMPLETED)
+            # self.alltask = []
+            # 清除上一步的进度条
+            # for taskid in self.progress.task_ids:
+            #     self.progress.remove_task(taskid)
+
+        # 检查下载是否完成
+        while True:
             self.isdwownload = True
             # 下载上一步失败的
             with self.progress:
@@ -710,10 +717,15 @@ class TikTok(object):
                     for aweme in awemeList:
                         self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
                         # time.sleep(0.5)
+            wait(self.alltask, return_when=ALL_COMPLETED)
+            # self.alltask = []
+            # 清除上一步的进度条
+            # for taskid in self.progress.task_ids:
+            #     self.progress.remove_task(taskid)
+
             if self.isdwownload:
                 break
 
-        wait(self.alltask, return_when=ALL_COMPLETED)
         end = time.time()  # 结束时间
         print('\n' + '[下载完成]:耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
 
