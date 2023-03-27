@@ -85,8 +85,10 @@ def main():
                         savePath=args.path, thread=args.thread)
     elif key_type == "aweme":
         datanew, dataraw = tk.getAwemeInfo(key)
-        tk.awemeDownload(awemeDict=datanew, music=args.music, cover=args.cover, avatar=args.avatar, resjson=args.json,
-                         savePath=args.path, usingThread=False)
+        datalist = []
+        datalist.append(datanew)
+        tk.userDownload(awemeList=datalist, music=args.music, cover=args.cover, avatar=args.avatar, resjson=args.json,
+                        savePath=args.path, thread=args.thread)
     elif key_type == "live":
         live_json = tk.getLiveInfo(key)
         if  args.json:
