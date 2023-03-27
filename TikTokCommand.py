@@ -23,7 +23,7 @@ from TikTokUtils import Utils
 def argument():
     parser = argparse.ArgumentParser(description='抖音批量下载工具 使用帮助')
     parser.add_argument("--link", "-l",
-                        help="作品(视频或图集)、直播、合集、音乐集合、个人主页抖音分享链接(删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/)",
+                        help="作品(视频或图集)、直播、合集、音乐集合、个人主页的分享链接或者电脑浏览器网址(删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/ 或者 https://www.douyin.com/开头的)",
                         type=str, required=True)
     parser.add_argument("--path", "-p", help="下载保存位置",
                         type=str, required=True)

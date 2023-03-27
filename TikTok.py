@@ -95,7 +95,7 @@ class TikTok(object):
         # https://www.douyin.com/collection/7093490319085307918
         urlstr = str(r.request.path_url)
 
-        if "/share/user/" in urlstr:
+        if "/user/" in urlstr:
             # 获取用户 sec_uid
             if '?' in r.request.path_url:
                 for one in re.finditer(r'user\/([\d\D]*)([?])', str(r.request.path_url)):
@@ -104,7 +104,7 @@ class TikTok(object):
                 for one in re.finditer(r'user\/([\d\D]*)', str(r.request.path_url)):
                     key = one.group(1)
             key_type = "user"
-        elif "/share/video/" in urlstr:
+        elif "/video/" in urlstr:
             # 获取作品 aweme_id
             key = re.findall('video/(\d+)?', urlstr)[0]
             key_type = "aweme"
@@ -112,9 +112,13 @@ class TikTok(object):
             # 获取note aweme_id
             key = re.findall('note/(\d+)?', urlstr)[0]
             key_type = "aweme"
-        elif "/share/mix/detail/" in urlstr:
+        elif "/mix/detail/" in urlstr:
             # 获取合集 id
-            key = re.findall('/share/mix/detail/(\d+)?', urlstr)[0]
+            key = re.findall('/mix/detail/(\d+)?', urlstr)[0]
+            key_type = "mix"
+        elif "/collection/" in urlstr:
+            # 获取合集 id
+            key = re.findall('/collection/(\d+)?', urlstr)[0]
             key_type = "mix"
         elif "/music/" in urlstr:
             # 获取原声 id
