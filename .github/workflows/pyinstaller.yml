@@ -48,5 +48,6 @@ jobs:
           files: | # 多个文件要加 |
             dist/TikTokCommand.exe
             dist/TikTokWeb.exe
+            config.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # 默认为${{ github.token }}
