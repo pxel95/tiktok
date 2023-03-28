@@ -15,6 +15,7 @@ Change Log  :
 
 import argparse
 import os
+import sys
 import json
 import yaml
 import time
@@ -82,7 +83,7 @@ def argument():
     return args
 
 def yamlConfig():
-    curPath = os.path.dirname(os.path.abspath(__file__))
+    curPath = os.path.dirname(os.path.realpath(sys.argv[0]))
     yamlPath = os.path.join(curPath, "config.yml")
     f = open(yamlPath, 'r', encoding='utf-8')
     cfg = f.read()
@@ -167,7 +168,7 @@ def main():
         configModel["cover"] = args.cover
         configModel["avatar"] = args.avatar
         configModel["json"] = args.json
-        configModel["mode"] = args.mode
+        configModel["mode"] = list(set(args.mode))
         configModel["number"]["post"] = args.postnumber
         configModel["number"]["like"] = args.likenumber
         configModel["number"]["allmix"] = args.allmixnumber
@@ -188,15 +189,19 @@ def main():
         os.mkdir(configModel["path"])
 
     for link in configModel["link"]:
+        print("--------------------------------------------------------------------------------")
         print("[  提示  ]:正在请求的链接: " + link + "\r\n")
         url = tk.getShareLink(link)
         key_type, key = tk.getKey(url)
         if key_type == "user":
+            print("[  提示  ]:正在请求用户主页下作品\r\n")
             userPath = os.path.join(configModel["path"], "user_"+key)
             if not os.path.exists(userPath):
                 os.mkdir(userPath)
 
             for mode in configModel["mode"]:
+                print("--------------------------------------------------------------------------------")
+                print("[  提示  ]:正在请求用户主页模式: " + mode + "\r\n")
                 if mode == 'post' or mode == 'like':
                     datalist = tk.getUserInfo(key, mode, 35, configModel["number"][mode])
                     if datalist is not None and datalist != []:
@@ -222,6 +227,7 @@ def main():
                                                 savePath=os.path.join(modePath, mix_file_name), thread=configModel["thread"])
                                 print(f'[  提示  ]:合集 [{mixIdNameDict[mix_id]}] 中的作品下载完成\r\n')
         elif key_type == "mix":
+            print("[  提示  ]:正在请求单个合集下作品\r\n")
             datalist = tk.getMixInfo(key,35, configModel["number"]["mix"])
             if datalist is not None and datalist != []:
                 mixPath = os.path.join(configModel["path"], "mix_" + key)
@@ -231,6 +237,7 @@ def main():
                                 avatar=configModel["avatar"], resjson=configModel["json"],
                                 savePath=mixPath, thread=configModel["thread"])
         elif key_type == "music":
+            print("[  提示  ]:正在请求音乐(原声)下作品\r\n")
             datalist = tk.getMusicInfo(key,35, configModel["number"]["music"])
             if datalist is not None and datalist != []:
                 musicPath = os.path.join(configModel["path"], "music_" + key)
@@ -240,6 +247,7 @@ def main():
                                 avatar=configModel["avatar"], resjson=configModel["json"],
                                 savePath=musicPath, thread=configModel["thread"])
         elif key_type == "aweme":
+            print("[  提示  ]:正在请求单个作品\r\n")
             datanew, dataraw = tk.getAwemeInfo(key)
             if datanew is not None and datanew != {}:
                 datalist = []
@@ -251,6 +259,7 @@ def main():
                                 avatar=configModel["avatar"], resjson=configModel["json"],
                                 savePath=awemePath, thread=configModel["thread"])
         elif key_type == "live":
+            print("[  提示  ]:正在进行直播解析\r\n")
             live_json = tk.getLiveInfo(key)
             if  configModel["json"]:
                 livePath = os.path.join(configModel["path"], "live")
