@@ -249,24 +249,24 @@ python TikTokCommand.py -h
 
 ```
 windows用户:
-.\TikTokCommand.exe -C True \
-  -l https://live.douyin.com/759547612580 \
-  -l https://v.douyin.com/BugmVVD/ \
-  -l https://v.douyin.com/BugrFTN/ \
-  -l https://v.douyin.com/B72pdU5/ \
-  -l https://v.douyin.com/B72QgDw/ \
-  -l https://v.douyin.com/AJp8D3f/ \
-  -l https://v.douyin.com/B38oovu/ \
-  -l https://v.douyin.com/S6YMNXs/ \
-  -p /path/to/downdir \
-  -M post \
-  -M like \
-  -M mix \
-  --postnumber 5 \
-  --likenumber 5 \
-  --allmixnumber 1 \
-  --mixnumber 5 \
-  --musicnumber 5 \
+.\TikTokCommand.exe -C True `
+  -l https://live.douyin.com/759547612580 `
+  -l https://v.douyin.com/BugmVVD/ `
+  -l https://v.douyin.com/BugrFTN/ `
+  -l https://v.douyin.com/B72pdU5/ `
+  -l https://v.douyin.com/B72QgDw/ `
+  -l https://v.douyin.com/AJp8D3f/ `
+  -l https://v.douyin.com/B38oovu/ `
+  -l https://v.douyin.com/S6YMNXs/ `
+  -p /path/to/downdir `
+  -M post `
+  -M like `
+  -M mix `
+  --postnumber 5 `
+  --likenumber 5 `
+  --allmixnumber 1 `
+  --mixnumber 5 `
+  --musicnumber 5 `
   --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 
 linux与mac用户:
