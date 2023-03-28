@@ -165,8 +165,10 @@ class TikTok(object):
             except Exception as e:
                 end = time.time()  # 结束时间
                 if end - start > self.timeout:
-                    raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
+                    # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                    print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                    return {}
+                # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
         # 清空self.awemeDict
         self.result.clearDict(self.result.awemeDict)
@@ -229,15 +231,18 @@ class TikTok(object):
                 except Exception as e:
                     end = time.time()  # 结束时间
                     if end - start > self.timeout:
-                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                    print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
+                        # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        return awemeList
+                    # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
                 # 获取 aweme_id
                 aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
                 datanew, dataraw = self.getAwemeInfo(aweme_id)
-                awemeList.append(copy.deepcopy(datanew))
+                if datanew is not None and datanew != {}:
+                    awemeList.append(copy.deepcopy(datanew))
                 if numflag:
                     number-=1
                     if number==0:
@@ -278,9 +283,11 @@ class TikTok(object):
             except Exception as e:
                 end = time.time()  # 结束时间
                 if end - start > self.timeout:
-                    raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                if option:
-                    print("[  错误  ]:接口未返回数据, 正在重新请求!\r")
+                    # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                    print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                    return {}
+                # if option:
+                #     print("[  错误  ]:接口未返回数据, 正在重新请求!\r")
 
         # 清空字典
         self.result.clearDict(self.result.liveDict)
@@ -389,15 +396,18 @@ class TikTok(object):
                 except Exception as e:
                     end = time.time()  # 结束时间
                     if end - start > self.timeout:
-                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                    print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
+                        # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        return awemeList
+                    # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
                 # 获取 aweme_id
                 aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
                 datanew, dataraw = self.getAwemeInfo(aweme_id)
-                awemeList.append(copy.deepcopy(datanew))
+                if datanew is not None and datanew != {}:
+                    awemeList.append(copy.deepcopy(datanew))
                 if numflag:
                     number -= 1
                     if number == 0:
@@ -453,8 +463,10 @@ class TikTok(object):
                 except Exception as e:
                     end = time.time()  # 结束时间
                     if end - start > self.timeout:
-                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                    print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
+                        # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        return mixIdNameDict
+                    # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for mix in datadict["mix_infos"]:
                 mixIdNameDict[mix["mix_id"]] = mix["mix_name"]
@@ -513,15 +525,18 @@ class TikTok(object):
                 except Exception as e:
                     end = time.time()  # 结束时间
                     if end - start > self.timeout:
-                        raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                    print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
+                        # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
+                        return awemeList
+                    # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
                 # 获取 aweme_id
                 aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
                 datanew, dataraw = self.getAwemeInfo(aweme_id)
-                awemeList.append(copy.deepcopy(datanew))
+                if datanew is not None and datanew != {}:
+                    awemeList.append(copy.deepcopy(datanew))
                 if numflag:
                     number -= 1
                     if number == 0:
