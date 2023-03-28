@@ -9,6 +9,7 @@
 * **tiktok:** 修复配置文件路径获取问题 ([2496ccd](https://github.com/imgyh/tiktok/commit/2496ccd90ca5232c61a2ed213f85235fa26354b3))
 * **tiktok:** 修改文件名匹配正则表达式 ([8ce13c0](https://github.com/imgyh/tiktok/commit/8ce13c0d72379accbfd38ba083728df87719d471))
 * **tiktok:** 增加文件下载失败重试机制 ([794632d](https://github.com/imgyh/tiktok/commit/794632d6c5dce68b9eade8094e74231aa90421f0))
+* **tiktok:** 缩短文件名长度 ([01fbd74](https://github.com/imgyh/tiktok/commit/01fbd743f82552e52099637871246ddc21949fc2))
 * **tiktok:** 重试失败后返回已经获取到的数据, 而不是抛异常 ([9fc37f1](https://github.com/imgyh/tiktok/commit/9fc37f1048fbd182e00eea89b71ec644f7d9df56))
 
 
