@@ -47,8 +47,8 @@ class Utils(object):
         result = re.findall(match, filenamestr)
 
         result = "".join(result).strip()
-        if len(result) > 80:
-            result = result[:80]
+        if len(result) > 20:
+            result = result[:20]
         # 去除前后空格
         return result
 
