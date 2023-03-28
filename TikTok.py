@@ -19,20 +19,22 @@ import json
 import time
 import os
 import copy
+from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
-from functools import partial
-from urllib.request import urlopen
-import signal
-from threading import Event
-from rich.progress import (
-    BarColumn,
-    DownloadColumn,
-    Progress,
-    TaskID,
-    TextColumn,
-    TimeRemainingColumn,
-    TransferSpeedColumn
-)
+# rich 进度条
+# from functools import partial
+# from urllib.request import urlopen
+# import signal
+# from threading import Event
+# from rich.progress import (
+#     BarColumn,
+#     DownloadColumn,
+#     Progress,
+#     TaskID,
+#     TextColumn,
+#     TimeRemainingColumn,
+#     TransferSpeedColumn
+# )
 
 from TikTokUtils import Utils
 from TikTokUrls import Urls
@@ -54,19 +56,19 @@ class TikTok(object):
         self.timeout = 10
 
         # rich 进度条
-        self.progress = Progress(
-            TextColumn("[bold blue]{task.fields[filename]}", justify="left"),
-            BarColumn(bar_width=20),
-            "[progress.percentage]{task.percentage:>3.1f}%",
-            "•",
-            DownloadColumn(),
-            "•",
-            TransferSpeedColumn(),
-            "•",
-            TimeRemainingColumn(),
-        )
-        self.done_event = Event()
-        signal.signal(signal.SIGINT, self.handle_sigint)
+        # self.progress = Progress(
+        #     TextColumn("[bold blue]{task.fields[filename]}", justify="left"),
+        #     BarColumn(bar_width=20),
+        #     "[progress.percentage]{task.percentage:>3.1f}%",
+        #     "•",
+        #     DownloadColumn(),
+        #     "•",
+        #     TransferSpeedColumn(),
+        #     "•",
+        #     TimeRemainingColumn(),
+        # )
+        # self.done_event = Event()
+        # signal.signal(signal.SIGINT, self.handle_sigint)
 
 
     # 从分享链接中提取网址
@@ -557,28 +559,54 @@ class TikTok(object):
 
         return awemeList
 
+    # rich 进度条
     # https://github.com/textualize/rich/blob/master/examples/downloader.py
-    def handle_sigint(self, signum, frame):
-        self.done_event.set()
+    # def handle_sigint(self, signum, frame):
+    #     self.done_event.set()
+    #
+    # def copy_url(self, task_id: TaskID, url: str, path: str) -> None:
+    #     """Copy data from a url to a local file."""
+    #     # self.progress.console.log(f"Requesting {url}")
+    #     response = urlopen(url)
+    #     try:
+    #         # This will break if the response doesn't contain content length
+    #         self.progress.update(task_id, total=int(response.info()["Content-length"]))
+    #         with open(path, "wb") as dest_file:
+    #             self.progress.start_task(task_id)
+    #             for data in iter(partial(response.read, 32768), b""):
+    #                 dest_file.write(data)
+    #                 self.progress.update(task_id, advance=len(data))
+    #                 if self.done_event.is_set():
+    #                     return
+    #     except Exception as e:
+    #         # 下载异常 删除原来下载的文件, 可能未下成功
+    #         if os.path.exists(path):
+    #             os.remove(path)
+    #         print("[  错误  ]:下载出错\r")
 
-    def copy_url(self, task_id: TaskID, url: str, path: str) -> None:
-        """Copy data from a url to a local file."""
-        # self.progress.console.log(f"Requesting {url}")
-        response = urlopen(url)
+    # 来自 https://blog.csdn.net/weixin_43347550/article/details/105248223
+    def progressBarDownload(self, url, filepath, desc):
+        response = requests.get(url, stream=True, headers=self.headers)
+        chunk_size = 1024  # 每次下载的数据大小
+        content_size = int(response.headers['content-length'])  # 下载文件总大小
         try:
-            # This will break if the response doesn't contain content length
-            self.progress.update(task_id, total=int(response.info()["Content-length"]))
-            with open(path, "wb") as dest_file:
-                self.progress.start_task(task_id)
-                for data in iter(partial(response.read, 32768), b""):
-                    dest_file.write(data)
-                    self.progress.update(task_id, advance=len(data))
-                    if self.done_event.is_set():
-                        return
+            if response.status_code == 200:  # 判断是否响应成功
+                # print('[开始下载]:文件大小:{size:.2f} MB'.format(
+                #     size=content_size / chunk_size / 1024))  # 开始下载，显示下载文件大小
+                with open(filepath, 'wb') as file, tqdm(total=content_size,
+                                                        unit="iB",
+                                                        desc=desc,
+                                                        unit_scale=True,
+                                                        unit_divisor=1024,
+
+                                                        ) as bar:  # 显示进度条
+                    for data in response.iter_content(chunk_size=chunk_size):
+                        size = file.write(data)
+                        bar.update(size)
         except Exception as e:
             # 下载异常 删除原来下载的文件, 可能未下成功
-            if os.path.exists(path):
-                os.remove(path)
+            if os.path.exists(filepath):
+                os.remove(filepath)
             print("[  错误  ]:下载出错\r")
 
     def awemeDownload(self, awemeDict: dict, music=True, cover=True, avatar=True, resjson=True, savePath=os.getcwd()):
@@ -618,8 +646,10 @@ class TikTok(object):
                         url = awemeDict["video"]["play_addr"]["url_list"]
                         if url != "":
                             self.isdwownload = False
-                            task_id = self.progress.add_task("download", filename="[ 视频 ]:" + desc, start=False)
-                            self.alltask.append(self.pool.submit(self.copy_url, task_id, url, video_path))
+                            # task_id = self.progress.add_task("download", filename="[ 视频 ]:" + desc, start=False)
+                            # self.alltask.append(self.pool.submit(self.copy_url, task_id, url, video_path))
+                            self.alltask.append(
+                                self.pool.submit(self.progressBarDownload, url, video_path, "[ 视频 ]:" + desc))
                     except Exception as e:
                         print("[  警告  ]:视频下载失败,请重试...\r\n")
 
@@ -636,8 +666,10 @@ class TikTok(object):
                             url = image["url_list"][0]
                             if url != "":
                                 self.isdwownload = False
-                                task_id = self.progress.add_task("download", filename="[ 图集 ]:" + desc, start=False)
-                                self.alltask.append(self.pool.submit(self.copy_url, task_id, url, image_path))
+                                # task_id = self.progress.add_task("download", filename="[ 图集 ]:" + desc, start=False)
+                                # self.alltask.append(self.pool.submit(self.copy_url, task_id, url, image_path))
+                                self.alltask.append(
+                                    self.pool.submit(self.progressBarDownload, url, image_path, "[ 图集 ]:" + desc))
                         except Exception as e:
                             print("[  警告  ]:图片下载失败,请重试...\r\n")
 
@@ -655,8 +687,10 @@ class TikTok(object):
                         url = awemeDict["music"]["play_url"]["url_list"][0]
                         if url != "":
                             self.isdwownload = False
-                            task_id = self.progress.add_task("download", filename="[ 原声 ]:" + desc, start=False)
-                            self.alltask.append(self.pool.submit(self.copy_url, task_id, url, music_path))
+                            # task_id = self.progress.add_task("download", filename="[ 原声 ]:" + desc, start=False)
+                            # self.alltask.append(self.pool.submit(self.copy_url, task_id, url, music_path))
+                            self.alltask.append(
+                                self.pool.submit(self.progressBarDownload, url, music_path, "[ 原声 ]:" + desc))
                     except Exception as e:
                         print("[  警告  ]:音乐(原声)下载失败,请重试...\r\n")
 
@@ -673,8 +707,10 @@ class TikTok(object):
                         url = awemeDict["video"]["cover_original_scale"]["url_list"][0]
                         if url != "":
                             self.isdwownload = False
-                            task_id = self.progress.add_task("download", filename="[ 封面 ]:" + desc, start=False)
-                            self.alltask.append(self.pool.submit(self.copy_url, task_id, url, cover_path))
+                            # task_id = self.progress.add_task("download", filename="[ 封面 ]:" + desc, start=False)
+                            # self.alltask.append(self.pool.submit(self.copy_url, task_id, url, cover_path))
+                            self.alltask.append(
+                                self.pool.submit(self.progressBarDownload, url, cover_path, "[ 封面 ]:" + desc))
                     except Exception as e:
                         print("[  警告  ]:cover下载失败,请重试...\r\n")
 
@@ -691,12 +727,65 @@ class TikTok(object):
                     try:
                         url = awemeDict["author"]["avatar"]["url_list"][0]
                         if url != "":
-                            task_id = self.progress.add_task("download", filename="[ 头像 ]:" + desc, start=False)
-                            self.alltask.append(self.pool.submit(self.copy_url, task_id, url, avatar_path))
+                            # task_id = self.progress.add_task("download", filename="[ 头像 ]:" + desc, start=False)
+                            # self.alltask.append(self.pool.submit(self.copy_url, task_id, url, avatar_path))
+                            self.alltask.append(
+                                self.pool.submit(self.progressBarDownload, url, avatar_path, "[ 头像 ]:" + desc))
                     except Exception as e:
                         print("[  警告  ]:avatar下载失败,请重试...\r\n")
         except Exception as e:
             print("[  错误  ]:下载作品时出错\r\n")
+
+    # def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, resjson=True, savePath=os.getcwd(), thread=5):
+    #     if awemeList is None:
+    #         return
+    #     if not os.path.exists(savePath):
+    #         os.mkdir(savePath)
+    #
+    #     self.alltask = []
+    #
+    #     start = time.time()  # 开始时间
+    #
+    #     # 分块下载
+    #     for i in range(0, len(awemeList), thread):
+    #         batchAwemeList = awemeList[i:i + thread]
+    #
+    #
+    #     for awemeList2 in batchAwemeList:
+    #         with self.progress:
+    #             with ThreadPoolExecutor(max_workers=thread) as self.pool:
+    #                 # self.progress.console.log("请耐心等待下载完成(终端尺寸越长显示的进度条越多)...")
+    #                 for aweme in awemeList2:
+    #                     self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+    #                     # time.sleep(0.5)
+    #         wait(self.alltask, return_when=ALL_COMPLETED)
+    #         # self.alltask = []
+    #         # 清除上一步的进度条
+    #         # for taskid in self.progress.task_ids:
+    #         #     self.progress.remove_task(taskid)
+    #
+    #     # 检查下载是否完成
+    #     while True:
+    #         self.isdwownload = True
+    #         # 下载上一步失败的
+    #         with self.progress:
+    #             with ThreadPoolExecutor(max_workers=thread) as self.pool:
+    #                 self.progress.console.log("正在检查下载是否完成...")
+    #                 for aweme in awemeList:
+    #                     self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+    #                     # time.sleep(0.5)
+    #         wait(self.alltask, return_when=ALL_COMPLETED)
+    #         # self.alltask = []
+    #         # 清除上一步的进度条
+    #         # for taskid in self.progress.task_ids:
+    #         #     self.progress.remove_task(taskid)
+    #
+    #         if self.isdwownload:
+    #             break
+    #
+    #     end = time.time()  # 结束时间
+    #     print('\n' + '[下载完成]:耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
+
 
     def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, resjson=True, savePath=os.getcwd(), thread=5):
         if awemeList is None:
@@ -705,49 +794,30 @@ class TikTok(object):
             os.mkdir(savePath)
 
         self.alltask = []
+        self.pool = ThreadPoolExecutor(max_workers=thread)
 
         start = time.time()  # 开始时间
 
-        # 分块下载
-        for i in range(0, len(awemeList), thread):
-            batchAwemeList = awemeList[i:i + thread]
-
-
-        for awemeList2 in batchAwemeList:
-            with self.progress:
-                with ThreadPoolExecutor(max_workers=thread) as self.pool:
-                    # self.progress.console.log("请耐心等待下载完成(终端尺寸越长显示的进度条越多)...")
-                    for aweme in awemeList2:
-                        self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
-                        # time.sleep(0.5)
-            wait(self.alltask, return_when=ALL_COMPLETED)
-            # self.alltask = []
-            # 清除上一步的进度条
-            # for taskid in self.progress.task_ids:
-            #     self.progress.remove_task(taskid)
+        for aweme in awemeList:
+            self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+            # time.sleep(0.5)
+        wait(self.alltask, return_when=ALL_COMPLETED)
 
         # 检查下载是否完成
         while True:
+            print("[  提示  ]:正在检查下载是否完成...")
             self.isdwownload = True
             # 下载上一步失败的
-            with self.progress:
-                with ThreadPoolExecutor(max_workers=thread) as self.pool:
-                    self.progress.console.log("正在检查下载是否完成...")
-                    for aweme in awemeList:
-                        self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
-                        # time.sleep(0.5)
+            for aweme in awemeList:
+                self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+                # time.sleep(0.5)
             wait(self.alltask, return_when=ALL_COMPLETED)
-            # self.alltask = []
-            # 清除上一步的进度条
-            # for taskid in self.progress.task_ids:
-            #     self.progress.remove_task(taskid)
 
             if self.isdwownload:
                 break
 
         end = time.time()  # 结束时间
         print('\n' + '[下载完成]:耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
-
 
 if __name__ == "__main__":
     pass
