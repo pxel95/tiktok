@@ -1,3 +1,25 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.5.5...v) (2023-03-28)
+
+
+### Bug Fixes
+
+* **tiktok:** 修复主页作品获取失败 ([c5b9ec5](https://github.com/imgyh/tiktok/commit/c5b9ec5faf90c4d00c5cc24b48a774404344be19)), closes [#15](https://github.com/imgyh/tiktok/issues/15)
+* **tiktok:** 修复获取单个合集id失败 ([f753c5c](https://github.com/imgyh/tiktok/commit/f753c5c52e4fa54f04f05d555d61b22b544a2169))
+* **tiktok:** 增加文件下载失败重试机制 ([794632d](https://github.com/imgyh/tiktok/commit/794632d6c5dce68b9eade8094e74231aa90421f0))
+* **tiktok:** 重试失败后返回已经获取到的数据, 而不是抛异常 ([9fc37f1](https://github.com/imgyh/tiktok/commit/9fc37f1048fbd182e00eea89b71ec644f7d9df56))
+
+
+### Features
+
+* **tiktok:** 使用rich进度条 ([0fb3739](https://github.com/imgyh/tiktok/commit/0fb3739b4734910b6a0d35fdb0033921ef854adb))
+* **tiktok:** 单个作品使用多线程下载 ([38fc768](https://github.com/imgyh/tiktok/commit/38fc76826d20257ec63bb7fcdea6eeca38a8aa6d))
+* **tiktok:** 增加json数据是否保存的开关 ([8ea8871](https://github.com/imgyh/tiktok/commit/8ea8871cc88b1199bfcb6c2ff7aef16fd1f733c3))
+* **tiktok:** 增加配置文件, 手动传入自己的cookie ([ec559e2](https://github.com/imgyh/tiktok/commit/ec559e2913c70836b97ea2634604ac6ca6734a60)), closes [#16](https://github.com/imgyh/tiktok/issues/16)
+* **tiktok:** 支持电脑网页版url作为链接 ([c9ece0b](https://github.com/imgyh/tiktok/commit/c9ece0bf502c1a6a6e6b2e12c8ffcbce3303ce6a))
+* **tiktok:** 进度条滚动显示 ([20350b8](https://github.com/imgyh/tiktok/commit/20350b8889343bb93ec60081e6369f96d868203b))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.5.4...v) (2023-03-22)
 
 
