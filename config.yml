@@ -1,0 +1,81 @@
+#######################################
+# 说明:
+# 1. 井号(#)为注释
+# 2. 缩进严格对齐，使用空格缩进, 注意有些冒号后面有一个空格, 有些没有空格
+# 3. 请使用英文字符
+# 4. 更多yaml语法请上网查看
+#######################################
+
+
+# 作品(视频或图集)、直播、合集、音乐集合、个人主页的分享链接或者电脑浏览器网址
+# (删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/ 或者 https://www.douyin.com/开头的)
+# 可以设置多个链接, 确保至少一个链接
+# 必选
+link:
+  - https://live.douyin.com/759547612580
+  - https://v.douyin.com/BugmVVD/
+  - https://v.douyin.com/BugrFTN/
+  - https://v.douyin.com/B72pdU5/
+  - https://v.douyin.com/B72QgDw/
+  - https://v.douyin.com/AJp8D3f/
+  - https://v.douyin.com/B38oovu/
+  - https://v.douyin.com/S6YMNXs/
+
+# 下载保存位置, 默认当前文件位置
+# 必选
+path: /mnt/c/project/test333
+
+# 是否下载视频中的音乐(True/False), 默认为True
+# 可选
+music: True
+
+# 是否下载视频的封面(True/False), 默认为True, 当下载视频时有效
+# 可选
+cover: True
+
+# 是否下载作者的头像(True/False), 默认为True
+# 可选
+avatar: True
+
+# 是否保存获取到的数据(True/False), 默认为True
+# 可选
+json: True
+
+# link是个人主页时, 设置下载发布的作品(post)或喜欢的作品(like)或者用户所有合集(mix), 默认为post, 可以设置多种模式
+# 可选
+mode:
+  - post
+  - like
+  - mix
+
+# 下载作品个数设置
+# 可选
+number:
+  post: 5     # 主页下作品下载个数设置, 默认为0 全部下载
+  like: 5     # 主页下喜欢下载个数设置, 默认为0 全部下载
+  allmix: 1   # 主页下合集下载个数设置, 默认为0 全部下载
+  mix: 5      # 单个合集下作品下载个数设置, 默认为0 全部下载
+  music: 5    # 音乐(原声)下作品下载个数设置, 默认为0 全部下载
+
+# 设置线程数, 默认5个线程
+# 可选
+thread: 5
+
+# cookie 请登录网页抖音后F12查看
+# cookies 和 cookie 二选一, 要使用这种形式, 请注释下面的cookie
+# 目前只需要msToken、ttwid、odin_tt、passport_csrf_token、sid_guard
+# 可以动态添加, 程序会根据填的键查找，并没有写死, 如果抖音需要更多的cookie自己加上就行了
+cookies:
+  msToken: xxx
+  ttwid: xxx
+  odin_tt: xxx
+  passport_csrf_token: xxx
+  sid_guard: xxx
+
+# cookie 请登录网页抖音后F12查看
+# cookies 和 cookie 二选一, 要使用这种形式, 请注释上面的cookies及包含的所有键值对
+# 设置了这个后上面的cookies选项自动失效, 这个优先级更高
+# 格式: "name1=value1; name2=value2;" 注意要加冒号
+# 冒号中的内容包括不限于以下键值对, 如果抖音需要更多的cookie自己加上就行了
+#cookie: "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
+
