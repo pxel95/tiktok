@@ -169,7 +169,7 @@ class TikTok(object):
                 if end - start > self.timeout:
                     # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                    return {}
+                    return {},{}
                 # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
         # 清空self.awemeDict
@@ -617,7 +617,7 @@ class TikTok(object):
 
         try:
             # 使用作品 创建时间+描述 当文件夹
-            file_name = awemeDict["create_time"] + " " +  self.utils.replaceStr(awemeDict["desc"])
+            file_name = awemeDict["create_time"] + "_" +  self.utils.replaceStr(awemeDict["desc"])
             aweme_path = os.path.join(savePath, file_name)
             if not os.path.exists(aweme_path):
                 os.mkdir(aweme_path)
@@ -723,10 +723,10 @@ class TikTok(object):
                     # print("[  提示  ]:avatar 已存在为您跳过...\r\n")
                     pass
                 else:
-                    self.isdwownload = False
                     try:
                         url = awemeDict["author"]["avatar"]["url_list"][0]
                         if url != "":
+                            self.isdwownload = False
                             # task_id = self.progress.add_task("download", filename="[ 头像 ]:" + desc, start=False)
                             # self.alltask.append(self.pool.submit(self.copy_url, task_id, url, avatar_path))
                             self.alltask.append(
