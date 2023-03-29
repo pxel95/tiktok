@@ -151,7 +151,7 @@ link:
 
 # 下载保存位置, 默认当前文件位置
 # 必选
-path: /mnt/c/project/test333
+path: /path/to/downdir
 
 # 是否下载视频中的音乐(True/False), 默认为True
 # 可选
@@ -258,7 +258,7 @@ windows用户:
   -l https://v.douyin.com/AJp8D3f/ `
   -l https://v.douyin.com/B38oovu/ `
   -l https://v.douyin.com/S6YMNXs/ `
-  -p /path/to/downdir `
+  -p C:\project\test `
   -M post `
   -M like `
   -M mix `
@@ -279,7 +279,7 @@ python TikTokCommand.py -C True \
   -l https://v.douyin.com/AJp8D3f/ \
   -l https://v.douyin.com/B38oovu/ \
   -l https://v.douyin.com/S6YMNXs/ \
-  -p C:\project\test \
+  -p /path/to/downdir \
   -M post \
   -M like \
   -M mix \
