@@ -60,7 +60,7 @@ def argument():
     parser.add_argument("--json", "-j", help="是否保存获取到的数据(True/False), 默认为True",
                         type=Utils().str2bool, required=False, default=True)
     parser.add_argument("--mode", "-M", help="link是个人主页时, 设置下载发布的作品(post)或喜欢的作品(like)或者用户所有合集(mix), 默认为post, 可以设置多种模式",
-                        type=str, required=False, default=["post"], action="append")
+                        type=str, required=False, default=[], action="append")
     parser.add_argument("--postnumber", help="主页下作品下载个数设置, 默认为0 全部下载",
                         type=int, required=False, default=0)
     parser.add_argument("--likenumber", help="主页下喜欢下载个数设置, 默认为0 全部下载",
@@ -90,67 +90,82 @@ def yamlConfig():
     configDict = yaml.load(stream=cfg,Loader=yaml.FullLoader)
 
     try:
-        configModel["link"] = configDict["link"]
+        if configDict["link"] != None:
+            configModel["link"] = configDict["link"]
     except Exception as e:
         print("[  警告  ]:link未设置, 程序退出...\r\n")
     try:
-        configModel["path"] = configDict["path"]
+        if configDict["path"] != None:
+            configModel["path"] = configDict["path"]
     except Exception as e:
         print("[  警告  ]:path未设置, 使用当前路径...\r\n")
     try:
-        configModel["music"] = configDict["music"]
+        if configDict["music"] != None:
+            configModel["music"] = configDict["music"]
     except Exception as e:
         print("[  警告  ]:music未设置, 使用默认值True...\r\n")
     try:
-        configModel["cover"] = configDict["cover"]
+        if configDict["cover"] != None:
+            configModel["cover"] = configDict["cover"]
     except Exception as e:
         print("[  警告  ]:cover未设置, 使用默认值True...\r\n")
     try:
-        configModel["avatar"] = configDict["avatar"]
+        if configDict["avatar"] != None:
+            configModel["avatar"] = configDict["avatar"]
     except Exception as e:
         print("[  警告  ]:avatar未设置, 使用默认值True...\r\n")
     try:
-        configModel["json"] = configDict["json"]
+        if configDict["json"] != None:
+            configModel["json"] = configDict["json"]
     except Exception as e:
         print("[  警告  ]:json未设置, 使用默认值True...\r\n")
     try:
-        configModel["mode"] = configDict["mode"]
+        if configDict["mode"] != None:
+            configModel["mode"] = configDict["mode"]
     except Exception as e:
         print("[  警告  ]:mode未设置, 使用默认值post...\r\n")
     try:
-        configModel["number"]["post"] = configDict["number"]["post"]
+        if configDict["number"]["post"] != None:
+            configModel["number"]["post"] = configDict["number"]["post"]
     except Exception as e:
         print("[  警告  ]:post number未设置, 使用默认值0...\r\n")
     try:
-        configModel["number"]["like"] = configDict["number"]["like"]
+        if configDict["number"]["like"] != None:
+            configModel["number"]["like"] = configDict["number"]["like"]
     except Exception as e:
         print("[  警告  ]:like number未设置, 使用默认值0...\r\n")
     try:
-        configModel["number"]["allmix"] = configDict["number"]["allmix"]
+        if configDict["number"]["allmix"] != None:
+            configModel["number"]["allmix"] = configDict["number"]["allmix"]
     except Exception as e:
         print("[  警告  ]:allmix number未设置, 使用默认值0...\r\n")
     try:
-        configModel["number"]["mix"] = configDict["number"]["mix"]
+        if configDict["number"]["mix"] != None:
+            configModel["number"]["mix"] = configDict["number"]["mix"]
     except Exception as e:
         print("[  警告  ]:mix number未设置, 使用默认值0...\r\n")
     try:
-        configModel["number"]["music"] = configDict["number"]["music"]
+        if configDict["number"]["music"] != None:
+            configModel["number"]["music"] = configDict["number"]["music"]
     except Exception as e:
         print("[  警告  ]:music number未设置, 使用默认值0...\r\n")
     try:
-        configModel["thread"] = configDict["thread"]
+        if configDict["thread"] != None:
+            configModel["thread"] = configDict["thread"]
     except Exception as e:
         print("[  警告  ]:thread未设置, 使用默认值5...\r\n")
     try:
-        cookiekey = configDict["cookies"].keys()
-        cookieStr = ""
-        for i in cookiekey:
-            cookieStr = cookieStr +  i + "=" + configDict["cookies"][i] + "; "
-        configModel["cookie"] = cookieStr
+        if configDict["cookies"] != None:
+            cookiekey = configDict["cookies"].keys()
+            cookieStr = ""
+            for i in cookiekey:
+                cookieStr = cookieStr +  i + "=" + configDict["cookies"][i] + "; "
+            configModel["cookie"] = cookieStr
     except Exception as e:
         pass
     try:
-        configModel["cookie"] = configDict["cookie"]
+        if configDict["cookie"] != None:
+            configModel["cookie"] = configDict["cookie"]
     except Exception as e:
         pass
 
@@ -168,6 +183,9 @@ def main():
         configModel["cover"] = args.cover
         configModel["avatar"] = args.avatar
         configModel["json"] = args.json
+        if args.mode == None or args.mode == []:
+            args.mode=[]
+            args.mode.append("post")
         configModel["mode"] = list(set(args.mode))
         configModel["number"]["post"] = args.postnumber
         configModel["number"]["like"] = args.likenumber
