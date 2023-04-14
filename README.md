@@ -22,6 +22,7 @@
 * 获取点赞数、评论数、收藏数、分享数、作品描述等信息
 * 支持直播解析
 * 基于Flask实现 Web 交互界面
+* 批量下载中所有功能制作成接口，支持单个作品、直播、主页喜欢、主页作品、主页合集、合集、音乐(原声)通过接口获取
 
 ![tiktokweb](img/tiktokweb.jpg)
 ![tiktokweb video](img/tiktokwebvideo.jpg)
@@ -47,6 +48,20 @@
 ![tiktokcommand download detail](img/tiktokcommanddownloaddetail.jpg)
 
 # 使用方法
+
+- 支持的地址格式, 形如
+
+```
+抖音app分享链接:
+1. 作品(视频或图集)、直播、合集、音乐集合、个人主页    https://v.douyin.com/BugmVVD/    
+抖音网页版浏览器URL:
+2. 单个视频             https://www.douyin.com/video/6915675899241450760
+3. 单个图集             https://www.douyin.com/note/7014363562642623777
+4. 用户主页             https://www.douyin.com/user/MS4wLjABAAAA06y3Ctu8QmuefqvUSU7vr0c_ZQnCqB0eaglgkelLTek
+5. 单个合集             https://www.douyin.com/collection/7208829743762769975
+6. 音乐(原声)下的视频     https://www.douyin.com/music/7149936801028131598
+7. 直播                https://live.douyin.com/759547612580                     
+```
 
 ## 安装node.js环境(可选)
 
@@ -85,25 +100,103 @@ python TikTokWeb.py -p 5001
 
 访问: http://localhost:5000
 
+### Web版接口
+
+1. 单个作品、图集、直播解析接口
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin
+   请求方式: POST
+   请求参数(body体): 
+   {
+   "share_link":"https://v.douyin.com/kcvMpuN/",
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+2. 主页作品
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/user/post
+   请求方式: POST
+   请求参数(body体): 
+   {
+   "share_link":"https://v.douyin.com/B72pdU5/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+3. 主页喜欢
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/user/like
+   请求方式: POST
+   请求参数(body体): 
+   {
+   "share_link":"https://v.douyin.com/AoWVvYH/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+4. 主页合集
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/user/mix
+   请求方式: POST
+   请求参数(body体): 
+   {
+   "share_link":"https://v.douyin.com/B38oovu/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+5. 单个合集
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/mix
+   请求方式: POST
+   请求参数(body体): 
+   {
+   "share_link":"https://www.douyin.com/collection/7217644759668492345", // https://v.douyin.com 这种类型也可以
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+6. 音乐(原声)
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/music
+   请求方式: POST
+   请求参数(body体): 
+   {
+   "share_link":"https://v.douyin.com/S6YMNXs/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+
+
+
 ## 抖音批量下载工具
 
 批量下载有两种方式运行, 配置文件和命令行
 
 默认使用配置文件方式
-
-- link支持的地址格式, 形如
-
-```
-抖音app分享链接:
-1. 作品(视频或图集)、直播、合集、音乐集合、个人主页    https://v.douyin.com/BugmVVD/    
-抖音网页版浏览器URL:
-2. 单个视频             https://www.douyin.com/video/6915675899241450760
-3. 单个图集             https://www.douyin.com/note/7014363562642623777
-4. 用户主页             https://www.douyin.com/user/MS4wLjABAAAA06y3Ctu8QmuefqvUSU7vr0c_ZQnCqB0eaglgkelLTek
-5. 单个合集             https://www.douyin.com/collection/7208829743762769975
-6. 音乐(原声)下的视频     https://www.douyin.com/music/7149936801028131598
-7. 直播                https://live.douyin.com/759547612580                     
-```
 
 ### 安装依赖
 
@@ -431,7 +524,9 @@ python TikTokCommand.py -C True -l https://v.douyin.com/SnXMoh2/ -p /path/to/dow
 - [x] 多链接批量下载
 - [x] 多线程下载
 - [ ] 保存数据至数据库
-- [ ] 制作成接口
+- [x] 制作成接口
+- [ ] 获取收藏与观看历史
+- [ ] 直播间数据
 
 # 鸣谢
 
