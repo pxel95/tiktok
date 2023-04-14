@@ -189,6 +189,50 @@ class TikTok(object):
 
         return self.result.awemeDict, datadict
 
+
+    def getUserInfoApi(self, sec_uid, mode="post", count=35, max_cursor=0):
+        if sec_uid is None:
+            return None
+
+        awemeList = []
+
+        try:
+            if mode == "post":
+                url = self.urls.USER_POST + self.utils.getXbogus(
+                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
+            elif mode == "like":
+                url = self.urls.USER_FAVORITE_A + self.utils.getXbogus(
+                    url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+            else:
+                return None
+
+            res = requests.get(url=url, headers=self.headers)
+            datadict = json.loads(res.text)
+
+        except Exception as e:
+            return awemeList
+
+        for aweme in datadict["aweme_list"]:
+            # 清空self.awemeDict
+            self.result.clearDict(self.result.awemeDict)
+
+            # 默认为视频
+            awemeType = 0
+            try:
+                if aweme["images"] is not None:
+                    awemeType = 1
+            except Exception as e:
+                # print("[  警告  ]:接口中未找到 images\r")
+                pass
+
+            # 转换成我们自己的格式
+            self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
+
+            if self.result.awemeDict is not None and self.result.awemeDict != {}:
+                awemeList.append(copy.deepcopy(self.result.awemeDict))
+
+        return awemeList, datadict["max_cursor"], datadict["has_more"]
+
     # 传入 url 支持 https://www.iesdouyin.com 与 https://v.douyin.com
     # mode : post | like 模式选择 like为用户点赞 post为用户发布
     def getUserInfo(self, sec_uid, mode="post", count=35, number=0):
@@ -379,6 +423,44 @@ class TikTok(object):
             print('[   📺   ]:复制链接使用下载工具下载')
         return self.result.liveDict
 
+    def getMixInfoApi(self, mix_id: str, count=35, cursor=0):
+        if mix_id is None:
+            return None
+
+        awemeList = []
+
+        try:
+            url = self.urls.USER_MIX + self.utils.getXbogus(
+                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
+
+            res = requests.get(url=url, headers=self.headers)
+            datadict = json.loads(res.text)
+
+        except Exception as e:
+            return awemeList
+
+
+        for aweme in datadict["aweme_list"]:
+
+            # 清空self.awemeDict
+            self.result.clearDict(self.result.awemeDict)
+
+            # 默认为视频
+            awemeType = 0
+            try:
+                if aweme["images"] is not None:
+                    awemeType = 1
+            except Exception as e:
+                print("[  警告  ]:接口中未找到 images\r")
+
+            # 转换成我们自己的格式
+            self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
+
+            if self.result.awemeDict is not None and self.result.awemeDict != {}:
+                awemeList.append(copy.deepcopy(self.result.awemeDict))
+
+        return awemeList, datadict["cursor"], datadict["has_more"]
+
     def getMixInfo(self, mix_id: str, count=35, number=0):
         print('[  提示  ]:正在请求的合集 id = %s\r\n' % mix_id)
         if mix_id is None:
@@ -462,6 +544,30 @@ class TikTok(object):
 
         return awemeList
 
+    def getUserAllMixInfoApi(self, sec_uid, count=35, cursor=0):
+
+        if sec_uid is None:
+            return None
+
+        mixIdlist = []
+
+        try:
+            url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
+                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
+
+            res = requests.get(url=url, headers=self.headers)
+            datadict = json.loads(res.text)
+        except Exception as e:
+            return mixIdlist
+
+        for mix in datadict["mix_infos"]:
+            mixIdNameDict={}
+            mixIdNameDict["https://www.douyin.com/collection/" + mix["mix_id"]] = mix["mix_name"]
+            mixIdlist.append(mixIdNameDict)
+
+        return mixIdlist, datadict["cursor"], datadict["has_more"]
+
+
     def getUserAllMixInfo(self, sec_uid, count=35, number=0):
         print('[  提示  ]:正在请求的用户 id = %s\r\n' % sec_uid)
         if sec_uid is None:
@@ -523,6 +629,43 @@ class TikTok(object):
                 print("\r\n[  提示  ]:[合集列表] 第 " + str(times) + " 次请求成功...\r\n")
 
         return mixIdNameDict
+
+    def getMusicInfoApi(self, music_id: str, count=35, cursor=0):
+        if music_id is None:
+            return None
+
+        awemeList = []
+
+        try:
+            url = self.urls.MUSIC + self.utils.getXbogus(
+                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
+
+            res = requests.get(url=url, headers=self.headers)
+            datadict = json.loads(res.text)
+
+        except Exception as e:
+            return awemeList
+
+
+        for aweme in datadict["aweme_list"]:
+            # 清空self.awemeDict
+            self.result.clearDict(self.result.awemeDict)
+
+            # 默认为视频
+            awemeType = 0
+            try:
+                if aweme["images"] is not None:
+                    awemeType = 1
+            except Exception as e:
+                print("[  警告  ]:接口中未找到 images\r")
+
+            # 转换成我们自己的格式
+            self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
+
+            if self.result.awemeDict is not None and self.result.awemeDict != {}:
+                awemeList.append(copy.deepcopy(self.result.awemeDict))
+
+        return awemeList, datadict["cursor"], datadict["has_more"]
 
     def getMusicInfo(self, music_id: str, count=35, number=0):
         print('[  提示  ]:正在请求的音乐集合 id = %s\r\n' % music_id)
