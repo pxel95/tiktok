@@ -227,7 +227,7 @@ class TikTok(object):
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["aweme_list"])) + ' 条数据\r')
-                    print('[  提示  ]:开始对 ' + str(len(datadict["aweme_list"])) + ' 条数据请求作品详情\r\n')
+                    # print('[  提示  ]:开始对 ' + str(len(datadict["aweme_list"])) + ' 条数据请求作品详情\r\n')
                     if datadict is not None and datadict["status_code"] == 0:
                         break
                 except Exception as e:
@@ -240,11 +240,27 @@ class TikTok(object):
 
             for aweme in datadict["aweme_list"]:
                 # 获取 aweme_id
-                aweme_id = aweme["aweme_id"]
+                # aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
-                datanew, dataraw = self.getAwemeInfo(aweme_id)
-                if datanew is not None and datanew != {}:
-                    awemeList.append(copy.deepcopy(datanew))
+                # datanew, dataraw = self.getAwemeInfo(aweme_id)
+
+                # 清空self.awemeDict
+                self.result.clearDict(self.result.awemeDict)
+
+                # 默认为视频
+                awemeType = 0
+                try:
+                    if aweme["images"] is not None:
+                        awemeType = 1
+                except Exception as e:
+                    print("[  警告  ]:接口中未找到 images\r")
+
+                # 转换成我们自己的格式
+                self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
+
+                if self.result.awemeDict is not None and self.result.awemeDict != {}:
+                    awemeList.append(copy.deepcopy(self.result.awemeDict))
+
                 if numflag:
                     number-=1
                     if number==0:
@@ -392,7 +408,7 @@ class TikTok(object):
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["aweme_list"])) + ' 条数据\r')
-                    print('[  提示  ]:开始对 ' + str(len(datadict["aweme_list"])) + ' 条数据请求作品详情\r\n')
+                    # print('[  提示  ]:开始对 ' + str(len(datadict["aweme_list"])) + ' 条数据请求作品详情\r\n')
                     if datadict is not None:
                         break
                 except Exception as e:
@@ -405,11 +421,27 @@ class TikTok(object):
 
             for aweme in datadict["aweme_list"]:
                 # 获取 aweme_id
-                aweme_id = aweme["aweme_id"]
+                # aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
-                datanew, dataraw = self.getAwemeInfo(aweme_id)
-                if datanew is not None and datanew != {}:
-                    awemeList.append(copy.deepcopy(datanew))
+                # datanew, dataraw = self.getAwemeInfo(aweme_id)
+
+                # 清空self.awemeDict
+                self.result.clearDict(self.result.awemeDict)
+
+                # 默认为视频
+                awemeType = 0
+                try:
+                    if aweme["images"] is not None:
+                        awemeType = 1
+                except Exception as e:
+                    print("[  警告  ]:接口中未找到 images\r")
+
+                # 转换成我们自己的格式
+                self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
+
+                if self.result.awemeDict is not None and self.result.awemeDict != {}:
+                    awemeList.append(copy.deepcopy(self.result.awemeDict))
+
                 if numflag:
                     number -= 1
                     if number == 0:
@@ -459,7 +491,7 @@ class TikTok(object):
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["mix_infos"])) + ' 条数据\r')
-                    print('[  提示  ]:开始对 ' + str(len(datadict["mix_infos"])) + ' 条数据请求作品详情\r\n')
+                    # print('[  提示  ]:开始对 ' + str(len(datadict["mix_infos"])) + ' 条数据请求作品详情\r\n')
                     if datadict is not None and datadict["status_code"] == 0:
                         break
                 except Exception as e:
@@ -521,7 +553,7 @@ class TikTok(object):
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["aweme_list"])) + ' 条数据\r')
-                    print('[  提示  ]:开始对 ' + str(len(datadict["aweme_list"])) + ' 条数据请求作品详情\r\n')
+                    # print('[  提示  ]:开始对 ' + str(len(datadict["aweme_list"])) + ' 条数据请求作品详情\r\n')
                     if datadict is not None:
                         break
                 except Exception as e:
@@ -534,11 +566,27 @@ class TikTok(object):
 
             for aweme in datadict["aweme_list"]:
                 # 获取 aweme_id
-                aweme_id = aweme["aweme_id"]
+                # aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
-                datanew, dataraw = self.getAwemeInfo(aweme_id)
-                if datanew is not None and datanew != {}:
-                    awemeList.append(copy.deepcopy(datanew))
+                # datanew, dataraw = self.getAwemeInfo(aweme_id)
+
+                # 清空self.awemeDict
+                self.result.clearDict(self.result.awemeDict)
+
+                # 默认为视频
+                awemeType = 0
+                try:
+                    if aweme["images"] is not None:
+                        awemeType = 1
+                except Exception as e:
+                    print("[  警告  ]:接口中未找到 images\r")
+
+                # 转换成我们自己的格式
+                self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
+
+                if self.result.awemeDict is not None and self.result.awemeDict != {}:
+                    awemeList.append(copy.deepcopy(self.result.awemeDict))
+
                 if numflag:
                     number -= 1
                     if number == 0:
@@ -630,7 +678,7 @@ class TikTok(object):
                         f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
                         f.close()
                 except Exception as e:
-                    print("[  错误  ]:保存 result.json 失败\r\n")
+                    print("[  错误  ]:保存 result.json 失败... 作品名: " + file_name +"\r\n")
 
             desc = file_name[:30]
             # 下载  视频
@@ -651,7 +699,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, video_path, "[ 视频 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:视频下载失败,请重试...\r\n")
+                        print("[  警告  ]:视频下载失败,请重试... 作品名: " + file_name +"\r\n")
 
             # 下载 图集
             if awemeDict["awemeType"] == 1:
@@ -671,7 +719,7 @@ class TikTok(object):
                                 self.alltask.append(
                                     self.pool.submit(self.progressBarDownload, url, image_path, "[ 图集 ]:" + desc))
                         except Exception as e:
-                            print("[  警告  ]:图片下载失败,请重试...\r\n")
+                            print("[  警告  ]:图片下载失败,请重试... 作品名: " + file_name +"\r\n")
 
             # 下载  音乐
             if music:
@@ -692,7 +740,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, music_path, "[ 原声 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:音乐(原声)下载失败,请重试...\r\n")
+                        print("[  警告  ]:音乐(原声)下载失败,请重试... 作品名: " + file_name +"\r\n")
 
             # 下载  cover
             if cover and awemeDict["awemeType"] == 0:
@@ -704,7 +752,7 @@ class TikTok(object):
                     pass
                 else:
                     try:
-                        url = awemeDict["video"]["cover_original_scale"]["url_list"][0]
+                        url = awemeDict["video"]["origin_cover"]["url_list"][0]
                         if url != "":
                             self.isdwownload = False
                             # task_id = self.progress.add_task("download", filename="[ 封面 ]:" + desc, start=False)
@@ -712,7 +760,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, cover_path, "[ 封面 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:cover下载失败,请重试...\r\n")
+                        print("[  警告  ]:cover下载失败,请重试... 作品名: " + file_name +"\r\n")
 
             # 下载  avatar
             if avatar:
@@ -732,7 +780,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, avatar_path, "[ 头像 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:avatar下载失败,请重试...\r\n")
+                        print("[  警告  ]:avatar下载失败,请重试... 作品名: " + file_name +"\r\n")
         except Exception as e:
             print("[  错误  ]:下载作品时出错\r\n")
 
