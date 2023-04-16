@@ -50,7 +50,7 @@ jobs:
           # 生成多平台镜像, 看 基础镜像 有哪些平台的镜像，下面就写哪些。
           platforms: |
             linux/amd64
-            linux/386
+            linux/arm/v7
             linux/arm64/v8
           # docker build arg, 注入 APP_NAME/APP_VERSION
           build-args: |
