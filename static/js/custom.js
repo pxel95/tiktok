@@ -14,6 +14,7 @@ function SendAjax() {
         success: function (result) {
             // console.log(result);//打印服务端返回的数据(调试用)
             if (result.status_code === 200) {
+                result = result.data
                 if (result.awemeType === 0) {
                     $("#awemeType").html("预览视频");
                     $("#AwemeOrLive").html("下载视频");
