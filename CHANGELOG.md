@@ -4,6 +4,7 @@
 ### Bug Fixes
 
 * **command:** 修复mode命令解析问题 ([aebc144](https://github.com/imgyh/tiktok/commit/aebc14429ded01203b2d3b3385d7f1bdcbafae1a))
+* **tiktok:** 增加请求重试机制 ([8f6c1ea](https://github.com/imgyh/tiktok/commit/8f6c1ea70dd4da63c772f45f0326047deb3daef7))
 * **tiktok:** 更改多作品接口请求逻辑, 不再调用单个作品的方法 ([2ea2ac0](https://github.com/imgyh/tiktok/commit/2ea2ac07a844421d665684e3273c3b6b8e7064a6))
 * **tiktok:** 缩短文件名长度,只使用数字字母汉字作为文件名 ([99c6292](https://github.com/imgyh/tiktok/commit/99c62922ca701de2e7eccb68b3c3e67b98d9fcef)), closes [#19](https://github.com/imgyh/tiktok/issues/19)
 * **web:** 前端适配新接口 ([2f13bd5](https://github.com/imgyh/tiktok/commit/2f13bd5122b25e507cf55a58aea24396016414da))
