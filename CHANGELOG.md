@@ -1,3 +1,22 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.6.0...v) (2023-04-16)
+
+
+### Bug Fixes
+
+* **command:** 修复mode命令解析问题 ([aebc144](https://github.com/imgyh/tiktok/commit/aebc14429ded01203b2d3b3385d7f1bdcbafae1a))
+* **tiktok:** 更改多作品接口请求逻辑, 不再调用单个作品的方法 ([2ea2ac0](https://github.com/imgyh/tiktok/commit/2ea2ac07a844421d665684e3273c3b6b8e7064a6))
+* **tiktok:** 缩短文件名长度,只使用数字字母汉字作为文件名 ([99c6292](https://github.com/imgyh/tiktok/commit/99c62922ca701de2e7eccb68b3c3e67b98d9fcef)), closes [#19](https://github.com/imgyh/tiktok/issues/19)
+* **web:** 前端适配新接口 ([2f13bd5](https://github.com/imgyh/tiktok/commit/2f13bd5122b25e507cf55a58aea24396016414da))
+
+
+### Features
+
+* **command:** 未传入cookie则使用默认值 ([596a0fc](https://github.com/imgyh/tiktok/commit/596a0fc63308c2ea515c305161f115e6914f7504))
+* **web:** 增加解析接口 ([918d6c9](https://github.com/imgyh/tiktok/commit/918d6c9ebaa47ce7259fc2f23efbd53b320095a9)), closes [#28](https://github.com/imgyh/tiktok/issues/28)
+* **web:** 所有接口支持json与form两种格式, cookie不传使用默认值 ([d3d091d](https://github.com/imgyh/tiktok/commit/d3d091d9ddadf1f01588b7e273b40356ed09cfa2)), closes [#31](https://github.com/imgyh/tiktok/issues/31)
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.5.5...v) (2023-03-28)
 
 
