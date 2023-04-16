@@ -201,7 +201,9 @@ def main():
         return
 
     tk = TikTok()
-    tk.headers["Cookie"] = configModel["cookie"]
+
+    if configModel["cookie"] is not None and configModel["cookie"] != "":
+        tk.headers["Cookie"] = configModel["cookie"]
 
     if not os.path.exists(configModel["path"]):
         os.mkdir(configModel["path"])
