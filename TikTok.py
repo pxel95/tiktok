@@ -144,6 +144,36 @@ class TikTok(object):
 
         return key_type, key
 
+
+    def getAwemeInfoApi(self, aweme_id):
+        if aweme_id is None:
+            return None
+
+        try:
+            jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
+                url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+
+            raw = requests.get(url=jx_url, headers=self.headers).text
+            datadict = json.loads(raw)
+        except Exception as e:
+            return None
+
+        # 清空self.awemeDict
+        self.result.clearDict(self.result.awemeDict)
+
+        # 默认为视频
+        awemeType = 0
+        try:
+            if datadict['aweme_detail']["images"] is not None:
+                awemeType = 1
+        except Exception as e:
+            pass
+
+        # 转换成我们自己的格式
+        self.result.dataConvert(awemeType, self.result.awemeDict, datadict['aweme_detail'])
+
+        return self.result.awemeDict, datadict
+
     # 传入 aweme_id
     # 返回 数据 字典
     def getAwemeInfo(self, aweme_id):
@@ -210,7 +240,7 @@ class TikTok(object):
             datadict = json.loads(res.text)
 
         except Exception as e:
-            return awemeList
+            return None
 
         for aweme in datadict["aweme_list"]:
             # 清空self.awemeDict
@@ -222,7 +252,6 @@ class TikTok(object):
                 if aweme["images"] is not None:
                     awemeType = 1
             except Exception as e:
-                # print("[  警告  ]:接口中未找到 images\r")
                 pass
 
             # 转换成我们自己的格式
@@ -231,7 +260,7 @@ class TikTok(object):
             if self.result.awemeDict is not None and self.result.awemeDict != {}:
                 awemeList.append(copy.deepcopy(self.result.awemeDict))
 
-        return awemeList, datadict["max_cursor"], datadict["has_more"]
+        return awemeList, datadict, datadict["max_cursor"], datadict["has_more"]
 
     # 传入 url 支持 https://www.iesdouyin.com 与 https://v.douyin.com
     # mode : post | like 模式选择 like为用户点赞 post为用户发布
@@ -325,9 +354,73 @@ class TikTok(object):
 
         return awemeList
 
-    def getLiveInfo(self, web_rid: str, option=True):
-        if option:
-            print('[  提示  ]:正在请求的直播间 id = %s\r\n' % web_rid)
+    def getLiveInfoApi(self, web_rid: str):
+        try:
+            live_api = self.urls.LIVE + self.utils.getXbogus(
+                url=f'aid=6383&device_platform=web&web_rid={web_rid}')
+
+            response = requests.get(live_api, headers=self.headers)
+            live_json = json.loads(response.text)
+
+        except Exception as e:
+            return None
+
+        # 清空字典
+        self.result.clearDict(self.result.liveDict)
+
+        # 类型
+        self.result.liveDict["awemeType"] = 2
+        # 是否在播
+        self.result.liveDict["status"] = live_json['data']['data'][0]['status']
+
+        if self.result.liveDict["status"] == 4:
+            return self.result.liveDict, live_json
+
+        # 直播标题
+        self.result.liveDict["title"] = live_json['data']['data'][0]['title']
+
+        # 直播cover
+        self.result.liveDict["cover"] = live_json['data']['data'][0]['cover']['url_list'][0]
+
+        # 头像
+        self.result.liveDict["avatar"] = live_json['data']['data'][0]['owner']['avatar_thumb']['url_list'][0].replace("100x100", "1080x1080")
+
+        # 观看人数
+        self.result.liveDict["user_count"] = live_json['data']['data'][0]['user_count_str']
+
+        # 昵称
+        self.result.liveDict["nickname"] = live_json['data']['data'][0]['owner']['nickname']
+
+        # sec_uid
+        self.result.liveDict["sec_uid"] = live_json['data']['data'][0]['owner']['sec_uid']
+
+        # 直播间观看状态
+        self.result.liveDict["display_long"] = live_json['data']['data'][0]['room_view_stats']['display_long']
+
+        # 推流
+        self.result.liveDict["flv_pull_url"] = live_json['data']['data'][0]['stream_url']['flv_pull_url']
+
+        try:
+            # 分区
+            self.result.liveDict["partition"] = live_json['data']['partition_road_map']['partition']['title']
+            self.result.liveDict["sub_partition"] = live_json['data']['partition_road_map']['sub_partition']['partition'][
+                'title']
+        except Exception as e:
+            self.result.liveDict["partition"] = '无'
+            self.result.liveDict["sub_partition"] = '无'
+
+
+        flv = []
+
+        for i, f in enumerate(self.result.liveDict["flv_pull_url"].keys()):
+            flv.append(f)
+
+        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[0]].replace("http://", "https://")
+
+        return self.result.liveDict, live_json
+
+    def getLiveInfo(self, web_rid: str):
+        print('[  提示  ]:正在请求的直播间 id = %s\r\n' % web_rid)
 
         # web_rid = live_url.replace('https://live.douyin.com/', '')
 
@@ -348,8 +441,6 @@ class TikTok(object):
                     # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     return {}
-                # if option:
-                #     print("[  错误  ]:接口未返回数据, 正在重新请求!\r")
 
         # 清空字典
         self.result.clearDict(self.result.liveDict)
@@ -360,8 +451,7 @@ class TikTok(object):
         self.result.liveDict["status"] = live_json['data']['data'][0]['status']
 
         if self.result.liveDict["status"] == 4:
-            if option:
-                print('[   📺   ]:当前直播已结束，正在退出')
+            print('[   📺   ]:当前直播已结束，正在退出')
             return self.result.liveDict
 
         # 直播标题
@@ -397,30 +487,24 @@ class TikTok(object):
             self.result.liveDict["partition"] = '无'
             self.result.liveDict["sub_partition"] = '无'
 
-        if option:
-            info = '[   💻   ]:直播间：%s  当前%s  主播：%s 分区：%s-%s\r' % (
-                self.result.liveDict["title"], self.result.liveDict["display_long"], self.result.liveDict["nickname"],
-                self.result.liveDict["partition"], self.result.liveDict["sub_partition"])
-            print(info)
+        info = '[   💻   ]:直播间：%s  当前%s  主播：%s 分区：%s-%s\r' % (
+            self.result.liveDict["title"], self.result.liveDict["display_long"], self.result.liveDict["nickname"],
+            self.result.liveDict["partition"], self.result.liveDict["sub_partition"])
+        print(info)
 
         flv = []
-        if option:
-            print('[   🎦   ]:直播间清晰度')
+        print('[   🎦   ]:直播间清晰度')
         for i, f in enumerate(self.result.liveDict["flv_pull_url"].keys()):
-            if option:
-                print('[   %s   ]: %s' % (i, f))
+            print('[   %s   ]: %s' % (i, f))
             flv.append(f)
-        if option:
-            rate = int(input('[   🎬   ]输入数字选择推流清晰度：'))
-        else:
-            rate = 0
+
+        rate = int(input('[   🎬   ]输入数字选择推流清晰度：'))
 
         self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]].replace("http://", "https://")
 
         # 显示清晰度列表
-        if option:
-            print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))
-            print('[   📺   ]:复制链接使用下载工具下载')
+        print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))
+        print('[   📺   ]:复制链接使用下载工具下载')
         return self.result.liveDict
 
     def getMixInfoApi(self, mix_id: str, count=35, cursor=0):
@@ -437,7 +521,7 @@ class TikTok(object):
             datadict = json.loads(res.text)
 
         except Exception as e:
-            return awemeList
+            return None
 
 
         for aweme in datadict["aweme_list"]:
@@ -451,7 +535,7 @@ class TikTok(object):
                 if aweme["images"] is not None:
                     awemeType = 1
             except Exception as e:
-                print("[  警告  ]:接口中未找到 images\r")
+                pass
 
             # 转换成我们自己的格式
             self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
@@ -459,7 +543,7 @@ class TikTok(object):
             if self.result.awemeDict is not None and self.result.awemeDict != {}:
                 awemeList.append(copy.deepcopy(self.result.awemeDict))
 
-        return awemeList, datadict["cursor"], datadict["has_more"]
+        return awemeList, datadict, datadict["cursor"], datadict["has_more"]
 
     def getMixInfo(self, mix_id: str, count=35, number=0):
         print('[  提示  ]:正在请求的合集 id = %s\r\n' % mix_id)
@@ -558,14 +642,14 @@ class TikTok(object):
             res = requests.get(url=url, headers=self.headers)
             datadict = json.loads(res.text)
         except Exception as e:
-            return mixIdlist
+            return None
 
         for mix in datadict["mix_infos"]:
             mixIdNameDict={}
             mixIdNameDict["https://www.douyin.com/collection/" + mix["mix_id"]] = mix["mix_name"]
             mixIdlist.append(mixIdNameDict)
 
-        return mixIdlist, datadict["cursor"], datadict["has_more"]
+        return mixIdlist, datadict, datadict["cursor"], datadict["has_more"]
 
 
     def getUserAllMixInfo(self, sec_uid, count=35, number=0):
@@ -644,7 +728,7 @@ class TikTok(object):
             datadict = json.loads(res.text)
 
         except Exception as e:
-            return awemeList
+            return None
 
 
         for aweme in datadict["aweme_list"]:
@@ -657,7 +741,7 @@ class TikTok(object):
                 if aweme["images"] is not None:
                     awemeType = 1
             except Exception as e:
-                print("[  警告  ]:接口中未找到 images\r")
+                pass
 
             # 转换成我们自己的格式
             self.result.dataConvert(awemeType, self.result.awemeDict, aweme)
@@ -665,7 +749,7 @@ class TikTok(object):
             if self.result.awemeDict is not None and self.result.awemeDict != {}:
                 awemeList.append(copy.deepcopy(self.result.awemeDict))
 
-        return awemeList, datadict["cursor"], datadict["has_more"]
+        return awemeList, datadict, datadict["cursor"], datadict["has_more"]
 
     def getMusicInfo(self, music_id: str, count=35, number=0):
         print('[  提示  ]:正在请求的音乐集合 id = %s\r\n' % music_id)
