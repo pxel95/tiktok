@@ -148,15 +148,20 @@ class TikTok(object):
     def getAwemeInfoApi(self, aweme_id):
         if aweme_id is None:
             return None
+        start = time.time()  # 开始时间
+        while True:
+            try:
+                jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
+                    url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
 
-        try:
-            jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
-                url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
-
-            raw = requests.get(url=jx_url, headers=self.headers).text
-            datadict = json.loads(raw)
-        except Exception as e:
-            return None
+                raw = requests.get(url=jx_url, headers=self.headers).text
+                datadict = json.loads(raw)
+                if datadict is not None and datadict["status_code"] == 0:
+                    break
+            except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    return None
 
         # 清空self.awemeDict
         self.result.clearDict(self.result.awemeDict)
@@ -192,7 +197,7 @@ class TikTok(object):
 
                 raw = requests.get(url=jx_url, headers=self.headers).text
                 datadict = json.loads(raw)
-                if datadict is not None and datadict['aweme_detail'] is not None and datadict["status_code"] == 0:
+                if datadict is not None and datadict["status_code"] == 0:
                     break
             except Exception as e:
                 end = time.time()  # 结束时间
@@ -226,21 +231,26 @@ class TikTok(object):
 
         awemeList = []
 
-        try:
-            if mode == "post":
-                url = self.urls.USER_POST + self.utils.getXbogus(
-                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
-            elif mode == "like":
-                url = self.urls.USER_FAVORITE_A + self.utils.getXbogus(
-                    url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
-            else:
-                return None
+        start = time.time()  # 开始时间
+        while True:
+            try:
+                if mode == "post":
+                    url = self.urls.USER_POST + self.utils.getXbogus(
+                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
+                elif mode == "like":
+                    url = self.urls.USER_FAVORITE_A + self.utils.getXbogus(
+                        url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+                else:
+                    return None
 
-            res = requests.get(url=url, headers=self.headers)
-            datadict = json.loads(res.text)
-
-        except Exception as e:
-            return None
+                res = requests.get(url=url, headers=self.headers)
+                datadict = json.loads(res.text)
+                if datadict is not None and datadict["status_code"] == 0:
+                    break
+            except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    return None
 
         for aweme in datadict["aweme_list"]:
             # 清空self.awemeDict
@@ -355,15 +365,20 @@ class TikTok(object):
         return awemeList
 
     def getLiveInfoApi(self, web_rid: str):
-        try:
-            live_api = self.urls.LIVE + self.utils.getXbogus(
-                url=f'aid=6383&device_platform=web&web_rid={web_rid}')
+        start = time.time()  # 开始时间
+        while True:
+            try:
+                live_api = self.urls.LIVE + self.utils.getXbogus(
+                    url=f'aid=6383&device_platform=web&web_rid={web_rid}')
 
-            response = requests.get(live_api, headers=self.headers)
-            live_json = json.loads(response.text)
-
-        except Exception as e:
-            return None
+                response = requests.get(live_api, headers=self.headers)
+                live_json = json.loads(response.text)
+                if live_json != {} and live_json['status_code'] == 0:
+                    break
+            except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    return None
 
         # 清空字典
         self.result.clearDict(self.result.liveDict)
@@ -513,15 +528,20 @@ class TikTok(object):
 
         awemeList = []
 
-        try:
-            url = self.urls.USER_MIX + self.utils.getXbogus(
-                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
+        start = time.time()  # 开始时间
+        while True:
+            try:
+                url = self.urls.USER_MIX + self.utils.getXbogus(
+                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
 
-            res = requests.get(url=url, headers=self.headers)
-            datadict = json.loads(res.text)
-
-        except Exception as e:
-            return None
+                res = requests.get(url=url, headers=self.headers)
+                datadict = json.loads(res.text)
+                if datadict is not None:
+                    break
+            except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    return None
 
 
         for aweme in datadict["aweme_list"]:
@@ -635,14 +655,20 @@ class TikTok(object):
 
         mixIdlist = []
 
-        try:
-            url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
-                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
+        start = time.time()  # 开始时间
+        while True:
+            try:
+                url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
+                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
 
-            res = requests.get(url=url, headers=self.headers)
-            datadict = json.loads(res.text)
-        except Exception as e:
-            return None
+                res = requests.get(url=url, headers=self.headers)
+                datadict = json.loads(res.text)
+                if datadict is not None and datadict["status_code"] == 0:
+                    break
+            except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    return None
 
         for mix in datadict["mix_infos"]:
             mixIdNameDict={}
@@ -720,15 +746,20 @@ class TikTok(object):
 
         awemeList = []
 
-        try:
-            url = self.urls.MUSIC + self.utils.getXbogus(
-                url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
+        start = time.time()  # 开始时间
+        while True:
+            try:
+                url = self.urls.MUSIC + self.utils.getXbogus(
+                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
 
-            res = requests.get(url=url, headers=self.headers)
-            datadict = json.loads(res.text)
-
-        except Exception as e:
-            return None
+                res = requests.get(url=url, headers=self.headers)
+                datadict = json.loads(res.text)
+                if datadict is not None and datadict["status_code"] == 0:
+                    break
+            except Exception as e:
+                end = time.time()  # 结束时间
+                if end - start > self.timeout:
+                    return None
 
 
         for aweme in datadict["aweme_list"]:
@@ -781,7 +812,7 @@ class TikTok(object):
                     datadict = json.loads(res.text)
                     print('[  提示  ]:本次请求返回 ' + str(len(datadict["aweme_list"])) + ' 条数据\r')
                     # print('[  提示  ]:开始对 ' + str(len(datadict["aweme_list"])) + ' 条数据请求作品详情\r\n')
-                    if datadict is not None:
+                    if datadict is not None and datadict["status_code"] == 0:
                         break
                 except Exception as e:
                     end = time.time()  # 结束时间
