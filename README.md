@@ -22,7 +22,7 @@
 * 获取点赞数、评论数、收藏数、分享数、作品描述等信息
 * 支持直播解析
 * 基于Flask实现 Web 交互界面
-* 批量下载中所有功能制作成接口，支持单个作品、直播、主页喜欢、主页作品、主页合集、合集、音乐(原声)通过接口获取
+* 提供相关接口，支持单个作品、直播、主页喜欢、主页作品、主页合集、合集、音乐(原声)通过接口获取
 
 ![tiktokweb](img/tiktokweb.jpg)
 ![tiktokweb video](img/tiktokwebvideo.jpg)
@@ -70,6 +70,8 @@
 
 ## 抖音去水印工具
 
+### 使用方式
+
 使用抖音去水印工具有4种方式
 
 1. (推荐)直接使用我搭建的抖音去水印工具：https://dy.gyh.im/
@@ -100,97 +102,6 @@ python TikTokWeb.py -p 5001
 
 访问: http://localhost:5000
 
-### Web版接口
-
-1. 单个作品、图集、直播解析接口
-
-   ```
-   接口地址: 127.0.0.1:5000/douyin
-   请求方式: POST
-   请求参数(body体): 
-   {
-   "share_link":"https://v.douyin.com/kcvMpuN/",
-   "cookie":"xxxx"
-   }
-   ```
-
-   
-
-2. 主页作品
-
-   ```
-   接口地址: 127.0.0.1:5000/douyin/user/post
-   请求方式: POST
-   请求参数(body体): 
-   {
-   "share_link":"https://v.douyin.com/B72pdU5/",
-   "cursor":0,
-   "cookie":"xxxx"
-   }
-   ```
-
-   
-
-3. 主页喜欢
-
-   ```
-   接口地址: 127.0.0.1:5000/douyin/user/like
-   请求方式: POST
-   请求参数(body体): 
-   {
-   "share_link":"https://v.douyin.com/AoWVvYH/",
-   "cursor":0,
-   "cookie":"xxxx"
-   }
-   ```
-
-   
-
-4. 主页合集
-
-   ```
-   接口地址: 127.0.0.1:5000/douyin/user/mix
-   请求方式: POST
-   请求参数(body体): 
-   {
-   "share_link":"https://v.douyin.com/B38oovu/",
-   "cursor":0,
-   "cookie":"xxxx"
-   }
-   ```
-
-   
-
-5. 单个合集
-
-   ```
-   接口地址: 127.0.0.1:5000/douyin/mix
-   请求方式: POST
-   请求参数(body体): 
-   {
-   "share_link":"https://www.douyin.com/collection/7217644759668492345", // https://v.douyin.com 这种类型也可以
-   "cursor":0,
-   "cookie":"xxxx"
-   }
-   ```
-
-   
-
-6. 音乐(原声)
-
-   ```
-   接口地址: 127.0.0.1:5000/douyin/music
-   请求方式: POST
-   请求参数(body体): 
-   {
-   "share_link":"https://v.douyin.com/S6YMNXs/",
-   "cursor":0,
-   "cookie":"xxxx"
-   }
-   ```
-
-
-
 
 ## 抖音批量下载工具
 
@@ -209,6 +120,19 @@ linux与mac用户下载本项目, 在本地`python3.9`环境中运行, 首先需
 cd /path/to/tiktok
 python -m pip install -r requirements.txt
 ```
+
+### 使用Docker
+
+请映射以下两个目录(三个位置需要修改), 根据实际情况修改目录地址
+
+`/path/to/tiktok` 源代码目录
+`/path/to/downloads` 下载位置
+
+```
+docker run -d -p 5000:5000 --name tiktok --restart=always -v /path/to/tiktok:/app -v /path/to/downloads:/path/to/downloads imgyh/tiktokweb
+```
+
+将所有用到 `python TikTokCommand.py` 替换成 `docker exec -it tiktok python3 TikTokCommand.py`
 
 ### 配置文件方式
 
@@ -513,6 +437,111 @@ python TikTokCommand.py -C True -l https://live.douyin.com/802939216127 -p /path
 或者
 python TikTokCommand.py -C True -l https://v.douyin.com/SnXMoh2/ -p /path/to/downdir --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
+
+
+
+# Web版接口
+
+1. 单个作品、图集接口
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/aweme
+   请求方式: POST
+   请求参数, JSON或form表单: 
+   {
+   "share_link":"https://v.douyin.com/kcvMpuN/",
+   "cookie":"xxxx"
+   }
+   ```
+
+2. 直播解析接口
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/live
+   请求方式: POST
+   请求参数, JSON或form表单: 
+   {
+   "share_link":"https://v.douyin.com/DdWaSBd/",
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+3. 主页作品
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/user/post
+   请求方式: POST
+   请求参数, JSON或form表单: 
+   {
+   "share_link":"https://v.douyin.com/B72pdU5/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+4. 主页喜欢
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/user/like
+   请求方式: POST
+   请求参数, JSON或form表单: 
+   {
+   "share_link":"https://v.douyin.com/AoWVvYH/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+5. 主页合集
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/user/mix
+   请求方式: POST
+   请求参数, JSON或form表单: 
+   {
+   "share_link":"https://v.douyin.com/B38oovu/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+6. 单个合集
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/mix
+   请求方式: POST
+   请求参数, JSON或form表单: 
+   {
+   "share_link":"https://www.douyin.com/collection/7217644759668492345", // https://v.douyin.com 这种类型也可以
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+   
+
+7. 音乐(原声)
+
+   ```
+   接口地址: 127.0.0.1:5000/douyin/music
+   请求方式: POST
+   请求参数, JSON或form表单: 
+   {
+   "share_link":"https://v.douyin.com/S6YMNXs/",
+   "cursor":0,
+   "cookie":"xxxx"
+   }
+   ```
+
+
 
 # ToDo
 
