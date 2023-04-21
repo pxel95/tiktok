@@ -230,10 +230,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
 function removeHttp(url) {
-    console.log(url)
     if (typeof (url) == 'string') {
         url = url.replace(/^https?:/, '');
     }
-    console.log(url)
     return url;
 }
