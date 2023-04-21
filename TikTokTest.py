@@ -73,22 +73,21 @@ def getMusicInfo():
 
 def test():
     utils=TikTokUtils.Utils()
-    user_all_mix_link = 'https://www.douyin.com/aweme/v1/web/aweme/post/?'+\
-                        utils.getXbogus(url='device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id=MS4wLjABAAAA7G3S983y0b0m_7bcTSK7UzY-3hFJdHvMv-aVbbz0kIg&max_cursor=1626149119000&count=10')
-    headers1 = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-        'referer': 'https://www.douyin.com/',
-        'Cookie': 'passport_csrf_token=f61602fc63757ae0e4fd9d6bdcee4810; ttwid=1|S3B70hT91P08fJIZJfOQETOCRyfySRp95cXKBpdd2KA|1677745253|be2b0a6c96f4400315e013b22e949756d3028d25434bd028f415b50f2fc9d98d; msToken=58OWeEpSkfMK4IAYaYYLEGdsYU8ZZONYG4Y1iUTayG1P6s0PxSoQsfhT5qn0vTem7kSyk6U-M4a0P0o2ttjY_N2TaID0AcPCQEuTcucnWEkKUQe7MABFmaP9WLGpnA==;'    }
+    user_all_mix_link = 'https://www.douyin.com/aweme/v1/web/aweme/favorite/?'+\
+                        utils.getXbogus(url='device_platform=webapp&aid=6383&sec_user_id=MS4wLjABAAAAjQn6ONfaGgUpk0Q1ep8dPiD3W4T_lxTJmemfy3MTJ64&max_cursor=1676441180000&count=10')
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
         'referer': 'https://www.douyin.com/',
-        'Cookie': 'ttwid=1|sGp2L-Krm46cXHcK7BsKghavVeVQIIOYtQInA1LV0-w|1676899557|3e483426230c481bd34f4d6529d6252372c154b75be7d4a2baec8edbfd0a742c; __ac_signature=_02B4Z6wo00f01CEKaogAAIDBqkHxaCCYIyghKm4AAGu9c3; s_v_web_id=verify_ledo1j1t_0NwhDQFJ_nLca_42o5_8tAA_T8CWm5E2M6LF; msToken=%s;odin_tt=324fb4ea4a89c0c05827e18a1ed9cf9bf8a17f7705fcc793fec935b637867e2a5a9b8168c885554d029919117a18ba69;' % utils.generate_random_str(
-            107)
-    }
+        'accept-encoding': None,
+        'Cookie': 'ttwid=1|oLudm-Hi5ikxQQhmAnv4Km4LjwwvLa4Qk_JGrKffuYU|1681878460|b0f581d97797bb67d2260bf92d65e8808b90713afc08bf5d8100f571fd70a275; passport_csrf_token=570d671dcd8d8598fcde4c3f7c99664d; passport_csrf_token_default=570d671dcd8d8598fcde4c3f7c99664d; s_v_web_id=verify_lgn70gzw_sAVtjJdD_Clyk_43UL_8M9L_6JiTtPC2TyU0; n_mh=vrLGYVtwqutbPLOGNTDUGahwaD9AyYjn4iVvAO2Xt0s; sso_uid_tt=92e014dfb6653bdc319ecc6a6ceea870; sso_uid_tt_ss=92e014dfb6653bdc319ecc6a6ceea870; toutiao_sso_user=d0bd8d5cc0f75420799903572941ce83; toutiao_sso_user_ss=d0bd8d5cc0f75420799903572941ce83; passport_auth_status=5c576b088f4a19448eb4efd7aaeb7c5e,; passport_auth_status_ss=5c576b088f4a19448eb4efd7aaeb7c5e,; uid_tt=564215aecc985785d033c9e4c9d00fc4; uid_tt_ss=564215aecc985785d033c9e4c9d00fc4; sid_tt=f14390d924c81856fde84b1cd534bf09; sessionid=f14390d924c81856fde84b1cd534bf09; sessionid_ss=f14390d924c81856fde84b1cd534bf09; odin_tt=0aa1c100d17bf3541dce9e8dd62c6353302b8abaaa0a5998d5c437313feb245d8f7b6391a69772e4afa7d3c718878837; passport_assist_user=CjwC3fi9JyApG4DN-HiFI6n5FcGAdzNDT29nR-nSDJYAVfqh2BYI77qdTN2GRfgagkYLRi1wxNp1akHBwGcaSAo8XDkNT-UWnkFmc_0eXMYCb8OIh4G_YnH8pylwwdfS-7PCTekX3trj0JyENUVWLWFxnKuG5HhSS4FB2CtxEJ7yrg0Yia_WVCIBA9bY7IU=; sid_ucp_sso_v1=1.0.0-KDc0NmY3NzA5ZWFhNzI2YzMyOWMxMDMwNjAwMDg3YzRjYzg3ZjlhODcKHQjG-7zT9QEQ5dv9oQYY7zEgDDCL_7nMBTgGQPQHGgJscSIgZDBiZDhkNWNjMGY3NTQyMDc5OTkwMzU3Mjk0MWNlODM; ssid_ucp_sso_v1=1.0.0-KDc0NmY3NzA5ZWFhNzI2YzMyOWMxMDMwNjAwMDg3YzRjYzg3ZjlhODcKHQjG-7zT9QEQ5dv9oQYY7zEgDDCL_7nMBTgGQPQHGgJscSIgZDBiZDhkNWNjMGY3NTQyMDc5OTkwMzU3Mjk0MWNlODM; publish_badge_show_info="0,0,0,1681878505305"; LOGIN_STATUS=1; store-region=cn-sc; store-region-src=uid; sid_guard=f14390d924c81856fde84b1cd534bf09|1681878504|5183998|Sun,+18-Jun-2023+04:28:22+GMT; sid_ucp_v1=1.0.0-KGY5OGQ3OTQ4YmVkYzczODgzYzM0MmJmOWYxMzhkMDliMTc5NGI3NjMKGQjG-7zT9QEQ6Nv9oQYY7zEgDDgGQPQHSAQaAmxmIiBmMTQzOTBkOTI0YzgxODU2ZmRlODRiMWNkNTM0YmYwOQ; ssid_ucp_v1=1.0.0-KGY5OGQ3OTQ4YmVkYzczODgzYzM0MmJmOWYxMzhkMDliMTc5NGI3NjMKGQjG-7zT9QEQ6Nv9oQYY7zEgDDgGQPQHSAQaAmxmIiBmMTQzOTBkOTI0YzgxODU2ZmRlODRiMWNkNTM0YmYwOQ; download_guide="3/20230419"; pwa2="3|0"; FOLLOW_NUMBER_YELLOW_POINT_INFO="MS4wLjABAAAA-jD2lukp--I21BF8VQsmYUqJDbj3FmU-kGQTHl2y1Cw/1681920000000/0/0/1681900423333"; __ac_nonce=0644234d60042cacebbb6; __ac_signature=_02B4Z6wo00f01eZN0dAAAIDAhUcRuQz7dNHmbdVAAB3TRUC7i8VqXQejR8jv-D8UggBx1MBLH564PE.cCZf00m7Cw640CNUvcc5jJfhgn8u5FhvVndykvwbQb.HEpSfGN-8eqql7GpuGZJ8f1d; strategyABtestKey="1682060514.261"; passport_fe_beating_status=true; csrf_session_id=405b0ec4f6338a5d893a5f14f6fd1a64; bd_ticket_guard_client_data=eyJiZC10aWNrZXQtZ3VhcmQtdmVyc2lvbiI6MiwiYmQtdGlja2V0LWd1YXJkLWl0ZXJhdGlvbi12ZXJzaW9uIjoxLCJiZC10aWNrZXQtZ3VhcmQtY2xpZW50LWNlcnQiOiItLS0tLUJFR0lOIENFUlRJRklDQVRFLS0tLS1cbk1JSUNGRENDQWJxZ0F3SUJBZ0lVR1ljQ3FuQUh0UUJBZm5WWkYxQW84cUtjY2Zrd0NnWUlLb1pJemowRUF3SXdcbk1URUxNQWtHQTFVRUJoTUNRMDR4SWpBZ0JnTlZCQU1NR1hScFkydGxkRjluZFdGeVpGOWpZVjlsWTJSellWOHlcbk5UWXdIaGNOTWpNd016STNNRE15T0RBeldoY05Nek13TXpJM01URXlPREF6V2pBbk1Rc3dDUVlEVlFRR0V3SkRcblRqRVlNQllHQTFVRUF3d1BZbVJmZEdsamEyVjBYMmQxWVhKa01Ga3dFd1lIS29aSXpqMENBUVlJS29aSXpqMERcbkFRY0RRZ0FFNmZ1Z3d0MEJnZUh5akVub1FvNWtXUS9qc2daTTV1YXBiNTQ4KytTV0dRSjMwb2lSTHNtYlVFSUZcblFIYzh3UEthZzZmdXNPTm91WncxOEdNYm5vTStwNk9CdVRDQnRqQU9CZ05WSFE4QkFmOEVCQU1DQmFBd01RWURcblZSMGxCQ293S0FZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ0JnZ3JCZ0VGQlFjREF3WUlLd1lCQlFVSEF3UXdcbktRWURWUjBPQkNJRUlPV3Y3d01ZUGhoeUNPL2ZwenJGNDJNeEQ4ZGIzN0YyTDgxaW8zVTVlVFpaTUNzR0ExVWRcbkl3UWtNQ0tBSURLbForcU9aRWdTamN4T1RVQjdjeFNiUjIxVGVxVFJnTmQ1bEpkN0lrZURNQmtHQTFVZEVRUVNcbk1CQ0NEbmQzZHk1a2IzVjVhVzR1WTI5dE1Bb0dDQ3FHU000OUJBTUNBMGdBTUVVQ0lCbm9xRDBRbVdUSlNLOVNcbkFZRjJ6YkljYzBsZjFRMDVTUGxXMURDQ0FMVUpBaUVBazJFRWpKdkdFRnl0YzBWbXRoRTA5bFpGeFFkUmlGN21cbk9pdE5IZzBOZUJrPVxuLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLVxuIn0=; msToken=qSfWwAdwksuBS5wmQAvpzUsf2ovkFFKefOLSvZDKA1Z_FX7ith-wCknpVQB08kft4ISWp00GHeQBaPwV9tcWJq6xBC-mPnQKNjBVINeOQGvFtSdsfacWMtWpa8x1RJE=; FOLLOW_LIVE_POINT_INFO="MS4wLjABAAAA-jD2lukp--I21BF8VQsmYUqJDbj3FmU-kGQTHl2y1Cw/1682092800000/0/0/1682061497980"; msToken=jDwC5gjTRXV6hrFvGMG-AkOBXHGrt_Mp5NaltB1upOUm0aQnZ7sy7qlSEn2tQbGHShp2X7ayNMDQQlPekSTV9MkxBv56LR9zepTlYNOoqbH_RdjDvbl-MZDrmui3OEE=; tt_scid=hERl4ibL-B89BGXb9wUfsmVkQh-G2dvL2wI0QvEDYLooFsvwoz.q6J4ZA0WErn0Tb9fb; home_can_add_dy_2_desktop="1"'    }
+
     import requests
 
-    res = requests.get(user_all_mix_link,headers=headers1)
-    print(res.text)
+    res = requests.get(user_all_mix_link,headers=headers).text
+    import json
+    datadict = json.loads(res)
+    print(datadict["aweme_list"][0]["video"]["bit_rate"])
+    print(len(datadict["aweme_list"][0]["video"]["bit_rate"]))
 
 if __name__ == "__main__":
     # test()
