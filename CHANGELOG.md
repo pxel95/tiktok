@@ -1,3 +1,18 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.6.1...v) (2023-04-21)
+
+
+### Bug Fixes
+
+* **result:** 修复1080p清晰度链接 ([ada1851](https://github.com/imgyh/tiktok/commit/ada1851e869ae4a65a43fb07eff3c22baeced087))
+* **tiktok:** 修复接口失效问题 ([9aaab2f](https://github.com/imgyh/tiktok/commit/9aaab2f691adff5f43c0f40899b1eb37cd4665d5)), closes [#33](https://github.com/imgyh/tiktok/issues/33)
+
+
+### Features
+
+* **web:** 前段静态文件使用国内cdn ([72aca75](https://github.com/imgyh/tiktok/commit/72aca75960b0f2fe4ef918682debec5c9af8cb59))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.6.0...v) (2023-04-16)
 
 
