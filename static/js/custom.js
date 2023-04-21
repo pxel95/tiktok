@@ -18,8 +18,8 @@ function SendAjax() {
                 if (result.awemeType === 0) {
                     $("#awemeType").html("预览视频");
                     $("#AwemeOrLive").html("下载视频");
-                    $("#video").attr("href", result.video.play_addr.url_list);
-                    $("#pre_video").attr("src", result.video.play_addr.url_list);
+                    $("#video").attr("href", removeHttp(result.video.play_addr.url_list[0]));
+                    $("#pre_video").attr("src", removeHttp(result.video.play_addr.url_list[0]));
                     $("#video").attr("style", "display:inline;");//显示 video
                 }
                 if (result.awemeType === 1) {
@@ -27,17 +27,17 @@ function SendAjax() {
                     var images = result.images;
                     var licontent = ""; // 拼接输入的 li 标签的字符串
                     for (var i = 0; i < images.length; i++) {
-                        licontent += "<li><img src= " + images[i].url_list[0] + "></li>"
+                        licontent += "<li><img src= " + removeHttp(images[i].url_list[0]) + "></li>"
                     }
                     document.getElementById("images").innerHTML = licontent;
                     $("#video").attr("style", "display:none;");//隐藏 video
                 }
                 if (result.awemeType === 0 || result.awemeType === 1) {
-                    $("#cover").attr("href", result.video.cover_original_scale.url_list[0]);
-                    $("#pre_video").attr("poster", result.video.dynamic_cover.url_list[0]);
-                    $("#music").attr("href", result.music.play_url.url_list[0]);
+                    $("#cover").attr("href", removeHttp(result.video.cover_original_scale.url_list[0]));
+                    $("#pre_video").attr("poster", removeHttp(result.video.dynamic_cover.url_list[0]));
+                    $("#music").attr("href", removeHttp(result.music.play_url.url_list[0]));
 
-                    $("#avatar").attr("src", result.author.avatar.url_list[0]);
+                    $("#avatar").attr("src", removeHttp(result.author.avatar.url_list[0]));
                     $("#avatar").attr("alt", result.author.nickname);
                     $("#nickname").html(result.author.nickname);
                     $("#desc").html(result.desc);
@@ -104,12 +104,12 @@ function SendAjax() {
                     } else {
                         $("#AwemeOrLive").html("下载直播");
                         $("#awemeType").html("预览直播");
-                        $("#video").attr("href", result.flv_pull_url0);
-                        $("#pre_video").attr("src", result.flv_pull_url0);
+                        $("#video").attr("href", removeHttp(result.flv_pull_url0));
+                        $("#pre_video").attr("src", removeHttp(result.flv_pull_url0));
 
-                        $("#cover").attr("href", result.cover);
+                        $("#cover").attr("href", removeHttp(result.cover));
                         $("#pre_video").attr("poster", result.cover);
-                        $("#avatar").attr("src", result.avatar);
+                        $("#avatar").attr("src", removeHttp(result.avatar));
                         $("#avatar").attr("alt", result.nickname);
                         $("#nickname").html(result.nickname);
                         $("#desc").html(result.title);
@@ -227,3 +227,8 @@ window.addEventListener('DOMContentLoaded', function () {
         $("#show-video").hide();
     })
 });
+
+
+function removeHttp(url) {
+    return url.replace(/^https?:/, '');
+}
