@@ -83,6 +83,7 @@ class TikTok(object):
             userVideoUrls.append(videoRealUrl)
         return userVideoUrls
 
+
 tk = TikTok()
 # tk.oneVideoInfo()
 tk.userVideoInfo()

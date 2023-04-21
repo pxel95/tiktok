@@ -33,7 +33,8 @@ def work(share_link, max_cursor, mode, cookie):
     has_more = None
     if key_type == "user":
         if mode == 'post' or mode == 'like':
-            datalist, rawdatalist, cursor, has_more = tk.getUserInfoApi(sec_uid=key, mode=mode, count=35, max_cursor=max_cursor)
+            datalist, rawdatalist, cursor, has_more = tk.getUserInfoApi(sec_uid=key, mode=mode, count=35,
+                                                                        max_cursor=max_cursor)
         elif mode == 'mix':
             datalist, rawdatalist, cursor, has_more = tk.getUserAllMixInfoApi(sec_uid=key, count=35, cursor=max_cursor)
     elif key_type == "mix":
@@ -45,7 +46,7 @@ def work(share_link, max_cursor, mode, cookie):
     elif key_type == "live":
         datalist, rawdatalist = tk.getLiveInfoApi(web_rid=key)
 
-    datadict={}
+    datadict = {}
 
     if datalist is not None and datalist != []:
         datadict["data"] = datalist
@@ -56,6 +57,7 @@ def work(share_link, max_cursor, mode, cookie):
     else:
         datadict["status_code"] = 500
     return datadict
+
 
 def deal(mode=None):
     usefuldict = {}
@@ -83,9 +85,11 @@ def deal(mode=None):
         usefuldict["status_code"] = 500
     return jsonify(usefuldict)
 
+
 app = Flask(__name__)
 # 设置编码
 app.config['JSON_AS_ASCII'] = False
+
 
 def argument():
     parser = argparse.ArgumentParser(description='抖音去水印工具 使用帮助')
@@ -95,33 +99,41 @@ def argument():
 
     return args
 
+
 @app.route("/douyin/music", methods=["POST"])
 def douyinMusic():
     return deal()
+
 
 @app.route("/douyin/mix", methods=["POST"])
 def douyinMix():
     return deal()
 
+
 @app.route("/douyin/user/mix", methods=["POST"])
 def douyinUserMix():
     return deal(mode="mix")
+
 
 @app.route("/douyin/user/like", methods=["POST"])
 def douyinUserLike():
     return deal(mode="like")
 
+
 @app.route("/douyin/user/post", methods=["POST"])
 def douyinUserPost():
     return deal(mode="post")
+
 
 @app.route("/douyin/aweme", methods=["POST"])
 def douyinAweme():
     return deal()
 
+
 @app.route("/douyin/live", methods=["POST"])
 def douyinLive():
     return deal()
+
 
 @app.route("/douyin", methods=["POST"])
 def douyin():

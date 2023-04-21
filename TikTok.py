@@ -48,10 +48,10 @@ class TikTok(object):
         self.utils = Utils()
         self.result = Result()
         self.headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-        'referer': 'https://www.douyin.com/',
-        'accept-encoding': None,
-        'Cookie': f"msToken={self.utils.generate_random_str(107)}; ttwid={self.utils.getttwid()}; odin_tt=324fb4ea4a89c0c05827e18a1ed9cf9bf8a17f7705fcc793fec935b637867e2a5a9b8168c885554d029919117a18ba69; passport_csrf_token=f61602fc63757ae0e4fd9d6bdcee4810;"
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+            'referer': 'https://www.douyin.com/',
+            'accept-encoding': None,
+            'Cookie': f"msToken={self.utils.generate_random_str(107)}; ttwid={self.utils.getttwid()}; odin_tt=324fb4ea4a89c0c05827e18a1ed9cf9bf8a17f7705fcc793fec935b637867e2a5a9b8168c885554d029919117a18ba69; passport_csrf_token=f61602fc63757ae0e4fd9d6bdcee4810;"
         }
         # 用于设置重复请求某个接口的最大时间
         self.timeout = 10
@@ -70,7 +70,6 @@ class TikTok(object):
         # )
         # self.done_event = Event()
         # signal.signal(signal.SIGINT, self.handle_sigint)
-
 
     # 从分享链接中提取网址
     def getShareLink(self, string):
@@ -145,7 +144,6 @@ class TikTok(object):
 
         return key_type, key
 
-
     def getAwemeInfoApi(self, aweme_id):
         if aweme_id is None:
             return None
@@ -205,7 +203,7 @@ class TikTok(object):
                 if end - start > self.timeout:
                     # raise RuntimeError("重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
                     print("[  提示  ]:重复请求该接口" + str(self.timeout) + "s, 仍然未获取到数据")
-                    return {},{}
+                    return {}, {}
                 # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
         # 清空self.awemeDict
@@ -224,7 +222,6 @@ class TikTok(object):
         self.result.dataConvert(awemeType, self.result.awemeDict, datadict['aweme_detail'])
 
         return self.result.awemeDict, datadict
-
 
     def getUserInfoApi(self, sec_uid, mode="post", count=35, max_cursor=0):
         if sec_uid is None:
@@ -346,10 +343,10 @@ class TikTok(object):
                     awemeList.append(copy.deepcopy(self.result.awemeDict))
 
                 if numflag:
-                    number-=1
-                    if number==0:
+                    number -= 1
+                    if number == 0:
                         break
-            if numflag and number==0:
+            if numflag and number == 0:
                 print("\r\n[  提示  ]: [主页] 下指定数量作品数据获取完成...\r\n")
                 break
 
@@ -399,7 +396,8 @@ class TikTok(object):
         self.result.liveDict["cover"] = live_json['data']['data'][0]['cover']['url_list'][0]
 
         # 头像
-        self.result.liveDict["avatar"] = live_json['data']['data'][0]['owner']['avatar_thumb']['url_list'][0].replace("100x100", "1080x1080")
+        self.result.liveDict["avatar"] = live_json['data']['data'][0]['owner']['avatar_thumb']['url_list'][0].replace(
+            "100x100", "1080x1080")
 
         # 观看人数
         self.result.liveDict["user_count"] = live_json['data']['data'][0]['user_count_str']
@@ -419,19 +417,20 @@ class TikTok(object):
         try:
             # 分区
             self.result.liveDict["partition"] = live_json['data']['partition_road_map']['partition']['title']
-            self.result.liveDict["sub_partition"] = live_json['data']['partition_road_map']['sub_partition']['partition'][
+            self.result.liveDict["sub_partition"] = \
+            live_json['data']['partition_road_map']['sub_partition']['partition'][
                 'title']
         except Exception as e:
             self.result.liveDict["partition"] = '无'
             self.result.liveDict["sub_partition"] = '无'
-
 
         flv = []
 
         for i, f in enumerate(self.result.liveDict["flv_pull_url"].keys()):
             flv.append(f)
 
-        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[0]].replace("http://", "https://")
+        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[0]].replace("http://",
+                                                                                                     "https://")
 
         return self.result.liveDict, live_json
 
@@ -477,7 +476,8 @@ class TikTok(object):
         self.result.liveDict["cover"] = live_json['data']['data'][0]['cover']['url_list'][0]
 
         # 头像
-        self.result.liveDict["avatar"] = live_json['data']['data'][0]['owner']['avatar_thumb']['url_list'][0].replace("100x100", "1080x1080")
+        self.result.liveDict["avatar"] = live_json['data']['data'][0]['owner']['avatar_thumb']['url_list'][0].replace(
+            "100x100", "1080x1080")
 
         # 观看人数
         self.result.liveDict["user_count"] = live_json['data']['data'][0]['user_count_str']
@@ -497,7 +497,8 @@ class TikTok(object):
         try:
             # 分区
             self.result.liveDict["partition"] = live_json['data']['partition_road_map']['partition']['title']
-            self.result.liveDict["sub_partition"] = live_json['data']['partition_road_map']['sub_partition']['partition'][
+            self.result.liveDict["sub_partition"] = \
+            live_json['data']['partition_road_map']['sub_partition']['partition'][
                 'title']
         except Exception as e:
             self.result.liveDict["partition"] = '无'
@@ -516,7 +517,8 @@ class TikTok(object):
 
         rate = int(input('[   🎬   ]输入数字选择推流清晰度：'))
 
-        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]].replace("http://", "https://")
+        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]].replace("http://",
+                                                                                                        "https://")
 
         # 显示清晰度列表
         print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))
@@ -543,7 +545,6 @@ class TikTok(object):
                 end = time.time()  # 结束时间
                 if end - start > self.timeout:
                     return None
-
 
         for aweme in datadict["aweme_list"]:
 
@@ -672,12 +673,11 @@ class TikTok(object):
                     return None
 
         for mix in datadict["mix_infos"]:
-            mixIdNameDict={}
+            mixIdNameDict = {}
             mixIdNameDict["https://www.douyin.com/collection/" + mix["mix_id"]] = mix["mix_name"]
             mixIdlist.append(mixIdNameDict)
 
         return mixIdlist, datadict, datadict["cursor"], datadict["has_more"]
-
 
     def getUserAllMixInfo(self, sec_uid, count=35, number=0):
         print('[  提示  ]:正在请求的用户 id = %s\r\n' % sec_uid)
@@ -761,7 +761,6 @@ class TikTok(object):
                 end = time.time()  # 结束时间
                 if end - start > self.timeout:
                     return None
-
 
         for aweme in datadict["aweme_list"]:
             # 清空self.awemeDict
@@ -924,7 +923,7 @@ class TikTok(object):
 
         try:
             # 使用作品 创建时间+描述 当文件夹
-            file_name = awemeDict["create_time"] + "_" +  self.utils.replaceStr(awemeDict["desc"])
+            file_name = awemeDict["create_time"] + "_" + self.utils.replaceStr(awemeDict["desc"])
             aweme_path = os.path.join(savePath, file_name)
             if not os.path.exists(aweme_path):
                 os.mkdir(aweme_path)
@@ -937,7 +936,7 @@ class TikTok(object):
                         f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
                         f.close()
                 except Exception as e:
-                    print("[  错误  ]:保存 result.json 失败... 作品名: " + file_name +"\r\n")
+                    print("[  错误  ]:保存 result.json 失败... 作品名: " + file_name + "\r\n")
 
             desc = file_name[:30]
             # 下载  视频
@@ -958,7 +957,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, video_path, "[ 视频 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:视频下载失败,请重试... 作品名: " + file_name +"\r\n")
+                        print("[  警告  ]:视频下载失败,请重试... 作品名: " + file_name + "\r\n")
 
             # 下载 图集
             if awemeDict["awemeType"] == 1:
@@ -978,7 +977,7 @@ class TikTok(object):
                                 self.alltask.append(
                                     self.pool.submit(self.progressBarDownload, url, image_path, "[ 图集 ]:" + desc))
                         except Exception as e:
-                            print("[  警告  ]:图片下载失败,请重试... 作品名: " + file_name +"\r\n")
+                            print("[  警告  ]:图片下载失败,请重试... 作品名: " + file_name + "\r\n")
 
             # 下载  音乐
             if music:
@@ -999,7 +998,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, music_path, "[ 原声 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:音乐(原声)下载失败,请重试... 作品名: " + file_name +"\r\n")
+                        print("[  警告  ]:音乐(原声)下载失败,请重试... 作品名: " + file_name + "\r\n")
 
             # 下载  cover
             if cover and awemeDict["awemeType"] == 0:
@@ -1019,7 +1018,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, cover_path, "[ 封面 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:cover下载失败,请重试... 作品名: " + file_name +"\r\n")
+                        print("[  警告  ]:cover下载失败,请重试... 作品名: " + file_name + "\r\n")
 
             # 下载  avatar
             if avatar:
@@ -1039,7 +1038,7 @@ class TikTok(object):
                             self.alltask.append(
                                 self.pool.submit(self.progressBarDownload, url, avatar_path, "[ 头像 ]:" + desc))
                     except Exception as e:
-                        print("[  警告  ]:avatar下载失败,请重试... 作品名: " + file_name +"\r\n")
+                        print("[  警告  ]:avatar下载失败,请重试... 作品名: " + file_name + "\r\n")
         except Exception as e:
             print("[  错误  ]:下载作品时出错\r\n")
 
@@ -1093,8 +1092,8 @@ class TikTok(object):
     #     end = time.time()  # 结束时间
     #     print('\n' + '[下载完成]:耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
 
-
-    def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, resjson=True, savePath=os.getcwd(), thread=5):
+    def userDownload(self, awemeList: list, music=True, cover=True, avatar=True, resjson=True, savePath=os.getcwd(),
+                     thread=5):
         if awemeList is None:
             return
         if not os.path.exists(savePath):
@@ -1106,7 +1105,8 @@ class TikTok(object):
         start = time.time()  # 开始时间
 
         for aweme in awemeList:
-            self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+            self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson,
+                               savePath=savePath)
             # time.sleep(0.5)
         wait(self.alltask, return_when=ALL_COMPLETED)
 
@@ -1116,7 +1116,8 @@ class TikTok(object):
             self.isdwownload = True
             # 下载上一步失败的
             for aweme in awemeList:
-                self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson, savePath=savePath)
+                self.awemeDownload(awemeDict=aweme, music=music, cover=cover, avatar=avatar, resjson=resjson,
+                                   savePath=savePath)
                 # time.sleep(0.5)
             wait(self.alltask, return_when=ALL_COMPLETED)
 
@@ -1125,6 +1126,7 @@ class TikTok(object):
 
         end = time.time()  # 结束时间
         print('\n' + '[下载完成]:耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
+
 
 if __name__ == "__main__":
     pass

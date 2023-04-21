@@ -153,7 +153,7 @@ button:hover {
 }
 
 /*--//wrapper--*/
- .error-61-mian {
+.error-61-mian {
     background: url(https://testingcf.jsdelivr.net/gh/imgyh/tiktok/static/img/banner.jpg) no-repeat bottom;
     background-size: cover;
     -webkit-background-size: cover;
@@ -167,7 +167,7 @@ button:hover {
     align-items: center;
 }
 
- .error-61-mian:before {
+.error-61-mian:before {
     content: "";
     background: rgba(66, 21, 2, 0.45);
     position: absolute;
@@ -178,19 +178,19 @@ button:hover {
     z-index: -1;
 }
 
- .errors-16-top {
+.errors-16-top {
     max-width: 600px;
     margin: 0 auto;
     text-align: center
 }
 
- .errors-16-mid {
+.errors-16-mid {
     max-width: 600px;
     margin: 0 auto;
     text-align: center
 }
 
- .error-61-mian h3 {
+.error-61-mian h3 {
     font-size: 223px;
     line-height: 200px;
     color: #fff;
@@ -199,21 +199,21 @@ button:hover {
     text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
 }
 
- .error-61-mian p {
+.error-61-mian p {
     font-size: 18px;
     line-height: 30px;
     color: #fff;
     letter-spacing: 1px;
 }
 
- .error-page-form {
+.error-page-form {
     border: 2px solid #fff;
     border-radius: 25px;
     padding: 5px;
     margin: 20px 0;
 }
 
- .error-page-form input {
+.error-page-form input {
     color: #fff;
     font-size: 18px;
     border: none;
@@ -247,7 +247,7 @@ button:hover {
     background: transparent;
 }
 
- .error-page-form button {
+.error-page-form button {
     color: var(--theme-green);
     background: #fff;
     border: none;
@@ -260,13 +260,13 @@ button:hover {
     border-radius: 25px;
 }
 
- .error-page-form button:hover {
+.error-page-form button:hover {
     color: #fff;
     background: #0099CC; /*#394247*/
 
 }
 
- .social-coming-icons a {
+.social-coming-icons a {
     background: transparent;
     border-radius: 50%;
     width: 34px;
@@ -278,13 +278,13 @@ button:hover {
     color: #fff;
 }
 
- .social-coming-icons a span {
+.social-coming-icons a span {
     font-size: 18px;
     line-height: 30px;
 
 }
 
- .social-coming-icons a:hover {
+.social-coming-icons a:hover {
     color: #0099CC; /*#394247*/
     border: 2px solid #0099CC; /*#394247*/
     transition: 0.5s ease;
@@ -294,30 +294,30 @@ button:hover {
     -moz-transition: 0.5s ease;
 }
 
- .copy-right {
+.copy-right {
     margin: 0 auto;
     text-align: center
 }
 
- .copy-right p {
+.copy-right p {
     font-size: 18px;
     line-height: 29px;
     color: #f9f9f9;
 }
 
- .copy-right a {
+.copy-right a {
     color: #00c4b6;
 }
 
 @media (max-width: 1280px) {
-     .error-61-mian h3 {
+    .error-61-mian h3 {
         font-size: 180px;
         line-height: 170px;
     }
 }
 
 @media (max-width: 1280px) {
-     .error-61-mian h3 {
+    .error-61-mian h3 {
         font-size: 125px;
         line-height: 120px;
         color: #fff;
@@ -327,21 +327,21 @@ button:hover {
 }
 
 @media (max-width: 990px) {
-     .error-61-mian h3 {
+    .error-61-mian h3 {
         font-size: 125px;
         line-height: 110px;
     }
 }
 
 @media (max-width: 667px) {
-     .error-61-mian h3 {
+    .error-61-mian h3 {
         font-size: 115px;
         line-height: 110px;
     }
 }
 
 @media (max-width: 600px) {
-     .error-61-mian {
+    .error-61-mian {
         background: url(https://testingcf.jsdelivr.net/gh/imgyh/tiktok/static/img/banner.jpg) no-repeat right;
         background-size: cover;
         -webkit-background-size: cover;
@@ -352,14 +352,14 @@ button:hover {
 }
 
 @media (max-width: 440px) {
-     .error-61-mian h3 {
+    .error-61-mian h3 {
         font-size: 105px;
         line-height: 100px;
     }
 }
 
 @media (max-width: 384px) {
-     .error-61-mian h3 {
+    .error-61-mian h3 {
         font-size: 95px;
         line-height: 90px;
     }
@@ -615,7 +615,7 @@ button:hover {
     position: absolute;
     right: 50px;
     top: 50px;
-    z-index: 10 ;
+    z-index: 10;
     cursor: pointer;
 
 }

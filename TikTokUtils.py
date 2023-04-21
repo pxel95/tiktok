@@ -22,6 +22,7 @@ import sys
 import json
 from TikTokUrls import Urls
 
+
 class Utils(object):
     def __init__(self):
         pass
@@ -52,7 +53,7 @@ class Utils(object):
         # 去除前后空格
         return result
 
-    def resource_path(self,relative_path):
+    def resource_path(self, relative_path):
         if getattr(sys, 'frozen', False):  # 是否Bundle Resource
             base_path = sys._MEIPASS
         else:
@@ -62,9 +63,10 @@ class Utils(object):
     def getXbogus(self, url, headers=None):
         # getXbogus算法开源地址https://github.com/B1gM8c/tiktok
         user_agent = headers.get(
-                'User-Agent') if headers else "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+            'User-Agent') if headers else "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
         try:
-            xbogus = execjs.compile(open(self.resource_path(os.path.join("X-Bogus.js"))).read()).call('sign', url, user_agent)
+            xbogus = execjs.compile(open(self.resource_path(os.path.join("X-Bogus.js"))).read()).call('sign', url,
+                                                                                                      user_agent)
             params = url + "&X-Bogus=" + xbogus
         except Exception as e:
             # print('[  错误  ]:X-Bogus算法异常或者本地没有JS环境')
@@ -78,8 +80,6 @@ class Utils(object):
                 print('[  错误  ]:X-Bogus获取异常')
                 return
         return params
-
-
 
     def str2bool(self, v):
         if isinstance(v, bool):
@@ -97,7 +97,7 @@ class Utils(object):
         data = '{"region":"cn","aid":1768,"needFid":false,"service":"www.ixigua.com","migrate_info":{"ticket":"","source":"node"},"cbUrlProtocol":"https","union":true}'
         res = requests.post(url=url, data=data)
 
-        for i,j in res.cookies.items():
+        for i, j in res.cookies.items():
             return j
 
 

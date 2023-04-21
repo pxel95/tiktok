@@ -16,6 +16,7 @@ Change Log  :
 import time
 import copy
 
+
 class Result(object):
     def __init__(self):
         # 作者信息

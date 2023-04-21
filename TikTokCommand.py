@@ -42,6 +42,7 @@ configModel = {
 
 }
 
+
 def argument():
     parser = argparse.ArgumentParser(description='抖音批量下载工具 使用帮助')
     parser.add_argument("--cmd", "-C", help="使用命令行(True)或者配置文件(False), 默认为False",
@@ -50,7 +51,7 @@ def argument():
                         help="作品(视频或图集)、直播、合集、音乐集合、个人主页的分享链接或者电脑浏览器网址, 可以设置多个链接(删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/ 或者 https://www.douyin.com/开头的)",
                         type=str, required=False, default=[], action="append")
     parser.add_argument("--path", "-p", help="下载保存位置, 默认当前文件位置",
-                        type=str, required=False,default=os.getcwd())
+                        type=str, required=False, default=os.getcwd())
     parser.add_argument("--music", "-m", help="是否下载视频中的音乐(True/False), 默认为True",
                         type=Utils().str2bool, required=False, default=True)
     parser.add_argument("--cover", "-c", help="是否下载视频的封面(True/False), 默认为True, 当下载视频时有效",
@@ -82,12 +83,13 @@ def argument():
 
     return args
 
+
 def yamlConfig():
     curPath = os.path.dirname(os.path.realpath(sys.argv[0]))
     yamlPath = os.path.join(curPath, "config.yml")
     f = open(yamlPath, 'r', encoding='utf-8')
     cfg = f.read()
-    configDict = yaml.load(stream=cfg,Loader=yaml.FullLoader)
+    configDict = yaml.load(stream=cfg, Loader=yaml.FullLoader)
 
     try:
         if configDict["link"] != None:
@@ -159,7 +161,7 @@ def yamlConfig():
             cookiekey = configDict["cookies"].keys()
             cookieStr = ""
             for i in cookiekey:
-                cookieStr = cookieStr +  i + "=" + configDict["cookies"][i] + "; "
+                cookieStr = cookieStr + i + "=" + configDict["cookies"][i] + "; "
             configModel["cookie"] = cookieStr
     except Exception as e:
         pass
@@ -184,7 +186,7 @@ def main():
         configModel["avatar"] = args.avatar
         configModel["json"] = args.json
         if args.mode == None or args.mode == []:
-            args.mode=[]
+            args.mode = []
             args.mode.append("post")
         configModel["mode"] = list(set(args.mode))
         configModel["number"]["post"] = args.postnumber
@@ -215,7 +217,7 @@ def main():
         key_type, key = tk.getKey(url)
         if key_type == "user":
             print("[  提示  ]:正在请求用户主页下作品\r\n")
-            userPath = os.path.join(configModel["path"], "user_"+key)
+            userPath = os.path.join(configModel["path"], "user_" + key)
             if not os.path.exists(userPath):
                 os.mkdir(userPath)
 
@@ -242,13 +244,15 @@ def main():
                                 modePath = os.path.join(userPath, mode)
                                 if not os.path.exists(modePath):
                                     os.mkdir(modePath)
-                                tk.userDownload(awemeList=datalist, music=configModel["music"], cover=configModel["cover"],
+                                tk.userDownload(awemeList=datalist, music=configModel["music"],
+                                                cover=configModel["cover"],
                                                 avatar=configModel["avatar"], resjson=configModel["json"],
-                                                savePath=os.path.join(modePath, mix_file_name), thread=configModel["thread"])
+                                                savePath=os.path.join(modePath, mix_file_name),
+                                                thread=configModel["thread"])
                                 print(f'[  提示  ]:合集 [{mixIdNameDict[mix_id]}] 中的作品下载完成\r\n')
         elif key_type == "mix":
             print("[  提示  ]:正在请求单个合集下作品\r\n")
-            datalist = tk.getMixInfo(key,35, configModel["number"]["mix"])
+            datalist = tk.getMixInfo(key, 35, configModel["number"]["mix"])
             if datalist is not None and datalist != []:
                 mixPath = os.path.join(configModel["path"], "mix_" + key)
                 if not os.path.exists(mixPath):
@@ -258,7 +262,7 @@ def main():
                                 savePath=mixPath, thread=configModel["thread"])
         elif key_type == "music":
             print("[  提示  ]:正在请求音乐(原声)下作品\r\n")
-            datalist = tk.getMusicInfo(key,35, configModel["number"]["music"])
+            datalist = tk.getMusicInfo(key, 35, configModel["number"]["music"])
             if datalist is not None and datalist != []:
                 musicPath = os.path.join(configModel["path"], "music_" + key)
                 if not os.path.exists(musicPath):
@@ -281,19 +285,20 @@ def main():
         elif key_type == "live":
             print("[  提示  ]:正在进行直播解析\r\n")
             live_json = tk.getLiveInfo(key)
-            if  configModel["json"]:
+            if configModel["json"]:
                 livePath = os.path.join(configModel["path"], "live")
                 if not os.path.exists(livePath):
                     os.mkdir(livePath)
                 live_file_name = utils.replaceStr(key + live_json["nickname"])
                 # 保存获取到json
                 print("[  提示  ]:正在保存获取到的信息到result.json\r\n")
-                with open(os.path.join(livePath,  live_file_name + ".json"), "w", encoding='utf-8') as f:
+                with open(os.path.join(livePath, live_file_name + ".json"), "w", encoding='utf-8') as f:
                     f.write(json.dumps(live_json, ensure_ascii=False, indent=2))
                     f.close()
 
     end = time.time()  # 结束时间
     print('\n' + '[下载完成]:总耗时: %d分钟%d秒\n' % (int((end - start) / 60), ((end - start) % 60)))  # 输出下载用时时间
+
 
 if __name__ == "__main__":
     main()
