@@ -121,7 +121,7 @@ class Result(object):
         self.videoDict = {
             "play_addr": {
                 "uri": "",
-                "url_list": "",
+                "url_list": [],
             },
             "cover_original_scale": {
                 "height": "",
@@ -259,7 +259,7 @@ class Result(object):
                     # 使用 这个api 可以获得1080p
                     # dataNew[item]["url_list"] = "https://aweme.snssdk.com/aweme/v1/play/?video_id=%s&ratio=1080p&line=0" \
                     #                             % dataNew[item]["uri"]
-                    dataNew[item]["url_list"] = dataRaw["bit_rate"][0]["play_addr"]["url_list"][0]
+                    dataNew[item]["url_list"] = copy.deepcopy(dataRaw["bit_rate"][0]["play_addr"]["url_list"])
                     continue
 
                 # 常规 递归遍历 字典

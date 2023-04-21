@@ -418,8 +418,7 @@ class TikTok(object):
             # 分区
             self.result.liveDict["partition"] = live_json['data']['partition_road_map']['partition']['title']
             self.result.liveDict["sub_partition"] = \
-            live_json['data']['partition_road_map']['sub_partition']['partition'][
-                'title']
+                live_json['data']['partition_road_map']['sub_partition']['partition']['title']
         except Exception as e:
             self.result.liveDict["partition"] = '无'
             self.result.liveDict["sub_partition"] = '无'
@@ -429,8 +428,7 @@ class TikTok(object):
         for i, f in enumerate(self.result.liveDict["flv_pull_url"].keys()):
             flv.append(f)
 
-        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[0]].replace("http://",
-                                                                                                     "https://")
+        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[0]]
 
         return self.result.liveDict, live_json
 
@@ -498,8 +496,7 @@ class TikTok(object):
             # 分区
             self.result.liveDict["partition"] = live_json['data']['partition_road_map']['partition']['title']
             self.result.liveDict["sub_partition"] = \
-            live_json['data']['partition_road_map']['sub_partition']['partition'][
-                'title']
+                live_json['data']['partition_road_map']['sub_partition']['partition']['title']
         except Exception as e:
             self.result.liveDict["partition"] = '无'
             self.result.liveDict["sub_partition"] = '无'
@@ -517,8 +514,7 @@ class TikTok(object):
 
         rate = int(input('[   🎬   ]输入数字选择推流清晰度：'))
 
-        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]].replace("http://",
-                                                                                                        "https://")
+        self.result.liveDict["flv_pull_url0"] = self.result.liveDict["flv_pull_url"][flv[rate]]
 
         # 显示清晰度列表
         print('[   %s   ]:%s' % (flv[rate], self.result.liveDict["flv_pull_url"][flv[rate]]))
@@ -949,7 +945,7 @@ class TikTok(object):
                     pass
                 else:
                     try:
-                        url = awemeDict["video"]["play_addr"]["url_list"]
+                        url = awemeDict["video"]["play_addr"]["url_list"][0]
                         if url != "":
                             self.isdwownload = False
                             # task_id = self.progress.add_task("download", filename="[ 视频 ]:" + desc, start=False)
