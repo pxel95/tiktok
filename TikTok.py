@@ -50,6 +50,7 @@ class TikTok(object):
         self.headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
         'referer': 'https://www.douyin.com/',
+        'accept-encoding': None,
         'Cookie': f"msToken={self.utils.generate_random_str(107)}; ttwid={self.utils.getttwid()}; odin_tt=324fb4ea4a89c0c05827e18a1ed9cf9bf8a17f7705fcc793fec935b637867e2a5a9b8168c885554d029919117a18ba69; passport_csrf_token=f61602fc63757ae0e4fd9d6bdcee4810;"
         }
         # 用于设置重复请求某个接口的最大时间
@@ -152,7 +153,7 @@ class TikTok(object):
         while True:
             try:
                 jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
-                    url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+                    url=f'aweme_id={aweme_id}&device_platform=webapp&aid=6383')
 
                 raw = requests.get(url=jx_url, headers=self.headers).text
                 datadict = json.loads(raw)
@@ -193,7 +194,7 @@ class TikTok(object):
                 # 单作品接口返回 'aweme_detail'
                 # 主页作品接口返回 'aweme_list'->['aweme_detail']
                 jx_url = self.urls.POST_DETAIL + self.utils.getXbogus(
-                    url=f'aweme_id={aweme_id}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+                    url=f'aweme_id={aweme_id}&device_platform=webapp&aid=6383')
 
                 raw = requests.get(url=jx_url, headers=self.headers).text
                 datadict = json.loads(raw)
@@ -236,10 +237,10 @@ class TikTok(object):
             try:
                 if mode == "post":
                     url = self.urls.USER_POST + self.utils.getXbogus(
-                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
+                        url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&device_platform=webapp&aid=6383')
                 elif mode == "like":
                     url = self.urls.USER_FAVORITE_A + self.utils.getXbogus(
-                        url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+                        url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&device_platform=webapp&aid=6383')
                 else:
                     return None
 
@@ -299,10 +300,10 @@ class TikTok(object):
                 try:
                     if mode == "post":
                         url = self.urls.USER_POST + self.utils.getXbogus(
-                            url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}')
+                            url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&device_platform=webapp&aid=6383')
                     elif mode == "like":
                         url = self.urls.USER_FAVORITE_A + self.utils.getXbogus(
-                            url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&aid=1128&version_name=23.5.0&device_platform=android&os_version=2333')
+                            url=f'sec_user_id={sec_uid}&count={count}&max_cursor={max_cursor}&device_platform=webapp&aid=6383')
                     else:
                         print("[  错误  ]:模式选择错误, 仅支持post、like、mix, 请检查后重新运行!\r")
                         return None
@@ -532,7 +533,7 @@ class TikTok(object):
         while True:
             try:
                 url = self.urls.USER_MIX + self.utils.getXbogus(
-                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
+                    url=f'mix_id={mix_id}&cursor={cursor}&count={count}&device_platform=webapp&aid=6383')
 
                 res = requests.get(url=url, headers=self.headers)
                 datadict = json.loads(res.text)
@@ -589,7 +590,7 @@ class TikTok(object):
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
                     url = self.urls.USER_MIX + self.utils.getXbogus(
-                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&mix_id={mix_id}&cursor={cursor}&count={count}')
+                        url=f'mix_id={mix_id}&cursor={cursor}&count={count}&device_platform=webapp&aid=6383')
 
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
@@ -659,7 +660,7 @@ class TikTok(object):
         while True:
             try:
                 url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
-                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
+                    url=f'sec_user_id={sec_uid}&count={count}&cursor={cursor}&device_platform=webapp&aid=6383')
 
                 res = requests.get(url=url, headers=self.headers)
                 datadict = json.loads(res.text)
@@ -702,7 +703,7 @@ class TikTok(object):
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
                     url = self.urls.USER_MIX_LIST + self.utils.getXbogus(
-                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&sec_user_id={sec_uid}&count={count}&cursor={cursor}')
+                        url=f'sec_user_id={sec_uid}&count={count}&cursor={cursor}&device_platform=webapp&aid=6383')
 
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
@@ -750,7 +751,7 @@ class TikTok(object):
         while True:
             try:
                 url = self.urls.MUSIC + self.utils.getXbogus(
-                    url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
+                    url=f'music_id={music_id}&cursor={cursor}&count={count}&device_platform=webapp&aid=6383')
 
                 res = requests.get(url=url, headers=self.headers)
                 datadict = json.loads(res.text)
@@ -806,7 +807,7 @@ class TikTok(object):
                 # 接口不稳定, 有时服务器不返回数据, 需要重新获取
                 try:
                     url = self.urls.MUSIC + self.utils.getXbogus(
-                        url=f'device_platform=webapp&aid=6383&os_version=10&version_name=17.4.0&music_id={music_id}&cursor={cursor}&count={count}')
+                        url=f'music_id={music_id}&cursor={cursor}&count={count}&device_platform=webapp&aid=6383')
 
                     res = requests.get(url=url, headers=self.headers)
                     datadict = json.loads(res.text)
