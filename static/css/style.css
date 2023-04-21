@@ -154,7 +154,7 @@ button:hover {
 
 /*--//wrapper--*/
 .error-61-mian {
-    background: url(https://testingcf.jsdelivr.net/gh/imgyh/tiktok/static/img/banner.jpg) no-repeat bottom;
+    background: url(../img/banner.jpg) no-repeat bottom;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -342,7 +342,7 @@ button:hover {
 
 @media (max-width: 600px) {
     .error-61-mian {
-        background: url(https://testingcf.jsdelivr.net/gh/imgyh/tiktok/static/img/banner.jpg) no-repeat right;
+        background: url(../img/banner.jpg) no-repeat right;
         background-size: cover;
         -webkit-background-size: cover;
         -moz-background-size: cover;
