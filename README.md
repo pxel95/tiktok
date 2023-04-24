@@ -40,6 +40,7 @@
 * 支持指定下载作品数量
 * 多线程下载
 * 支持多链接下载
+* 增量更新与数据持久化到数据库, 保存每条作品信息到数据库, 并根据数据库是否存在来增量请求下载
 
 ![](img/tiktokcommand1.jpg)
 ![](img/tiktokcommand2.jpg)
@@ -160,15 +161,12 @@ link:
   - https://live.douyin.com/759547612580
   - https://v.douyin.com/BugmVVD/
   - https://v.douyin.com/BugrFTN/
-  - https://v.douyin.com/B72pdU5/
-  - https://v.douyin.com/B72QgDw/
-  - https://v.douyin.com/AJp8D3f/
   - https://v.douyin.com/B38oovu/
   - https://v.douyin.com/S6YMNXs/
 
 # 下载保存位置, 默认当前文件位置
 # 必选
-path: /path/to/downdir
+path: C:\project\test333
 
 # 是否下载视频中的音乐(True/False), 默认为True
 # 可选
@@ -201,6 +199,20 @@ number:
   allmix: 1   # 主页下合集下载个数设置, 默认为0 全部下载
   mix: 5      # 单个合集下作品下载个数设置, 默认为0 全部下载
   music: 5    # 音乐(原声)下作品下载个数设置, 默认为0 全部下载
+
+# 增量下载, 下载作品范围: 抖音最新作品到本地的最新作品之间的作品, 如果本地没有该链接的任何视频则全部下载
+# 可配合 number 选项一起使用
+# 情况1: number(假如设置5) 和 increase(假如抖音博主更新了3条作品,本地并未下载) 则会获取5条数据并下载(已下载就跳过)
+# 情况2: number(假如设置5) 和 increase(假如抖音博主更新了6条作品,本地并未下载) 则会获取6条数据并下载(已下载就跳过)
+# 情况3: number(假如设置5) 和 increase(假如本地并未下载该博主视频) 则会获取所有的视频
+# 情况4: 当获取主页所有mix时(mode是mix模式)比较特殊, number(allmix) 控制下载多少个合集, increase(allmix) 对每个合集进行增量更新
+# 可选
+increase:
+  post: False     # 是否开启主页作品增量下载(True/False), 默认为False
+  like: False     # 是否开启主页喜欢增量下载(True/False), 默认为False
+  allmix: False   # 是否开启主页合集增量下载(True/False), 默认为False
+  mix: False      # 是否开启单个合集下作品增量下载(True/False), 默认为False
+  music: False    # 是否开启音乐(原声)下作品增量下载(True/False), 默认为False
 
 # 设置线程数, 默认5个线程
 # 可选
@@ -243,23 +255,28 @@ python TikTokCommand.py -h
 - 参数介绍
 
 ```
--h, --help                  展示帮助页
---cmd CMD, -C CMD           使用命令行(True)或者配置文件(False), 默认为False
---link LINK, -l LINK        作品(视频或图集)、直播、合集、音乐集合、个人主页的分享链接或者电脑浏览器网址, 可以设置多个链接
-                            (删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/ 或者 https://www.douyin.com/开头的)
---path PATH, -p PATH        下载保存位置, 默认当前文件位置
---music MUSIC, -m MUSIC     是否下载视频中的音乐(True/False), 默认为True
---cover COVER, -c COVER     是否下载视频的封面(True/False), 默认为True, 当下载视频时有效
---avatar AVATAR, -a AVATAR  是否下载作者的头像(True/False), 默认为True
---json JSON, -j JSON        是否保存获取到的数据(True/False), 默认为True
---mode MODE, -M MODE        link是个人主页时, 设置下载发布的作品(post)或喜欢的作品(like)或者用户所有合集(mix), 默认为post, 可以设置多种模式
---postnumber POSTNUMBER     主页下作品下载个数设置, 默认为0 全部下载
---likenumber LIKENUMBER     主页下喜欢下载个数设置, 默认为0 全部下载
---allmixnumber ALLMIXNUMBER 主页下合集下载个数设置, 默认为0 全部下载
---mixnumber MIXNUMBER       单个合集下作品下载个数设置, 默认为0 全部下载
---musicnumber MUSICNUMBER   音乐(原声)下作品下载个数设置, 默认为0 全部下载
---thread THREAD, -t THREAD  设置线程数, 默认5个线程
---cookie COOKIE             设置cookie, 格式: "name1=value1; name2=value2;" 注意要加冒号
+-h, --help                       展示帮助页
+--cmd CMD, -C CMD                使用命令行(True)或者配置文件(False), 默认为False
+--link LINK, -l LINK             作品(视频或图集)、直播、合集、音乐集合、个人主页的分享链接或者电脑浏览器网址, 可以设置多个链接
+                                 (删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/ 或者 https://www.douyin.com/开头的)
+--path PATH, -p PATH             下载保存位置, 默认当前文件位置
+--music MUSIC, -m MUSIC          是否下载视频中的音乐(True/False), 默认为True
+--cover COVER, -c COVER          是否下载视频的封面(True/False), 默认为True, 当下载视频时有效
+--avatar AVATAR, -a AVATAR       是否下载作者的头像(True/False), 默认为True
+--json JSON, -j JSON             是否保存获取到的数据(True/False), 默认为True
+--mode MODE, -M MODE             link是个人主页时, 设置下载发布的作品(post)或喜欢的作品(like)或者用户所有合集(mix), 默认为post, 可以设置多种模式
+--postnumber POSTNUMBER          主页下作品下载个数设置, 默认为0 全部下载
+--likenumber LIKENUMBER          主页下喜欢下载个数设置, 默认为0 全部下载
+--allmixnumber ALLMIXNUMBER      主页下合集下载个数设置, 默认为0 全部下载
+--mixnumber MIXNUMBER            单个合集下作品下载个数设置, 默认为0 全部下载
+--musicnumber MUSICNUMBER        音乐(原声)下作品下载个数设置, 默认为0 全部下载
+--postincrease POSTINCREASE      是否开启主页作品增量下载(True/False), 默认为False
+--likeincrease LIKEINCREASE      是否开启主页喜欢增量下载(True/False), 默认为False
+--allmixincrease ALLMIXINCREASE  是否开启主页合集增量下载(True/False), 默认为False
+--mixincrease MIXINCREASE        是否开启单个合集下作品增量下载(True/False), 默认为False
+--musicincrease MUSICINCREASE    是否开启音乐(原声)下作品增量下载(True/False), 默认为False
+--thread THREAD, -t THREAD       设置线程数, 默认5个线程
+--cookie COOKIE                  设置cookie, 格式: "name1=value1; name2=value2;" 注意要加冒号
 ```
 
 - 多链接多模式混合下载, 可以传入多个链接和多个模式(post、like、mix)
@@ -552,7 +569,7 @@ python TikTokCommand.py -C True -l https://v.douyin.com/SnXMoh2/ -p /path/to/dow
 - [ ] 获取热搜榜数据
 - [x] 多链接批量下载
 - [x] 多线程下载
-- [ ] 保存数据至数据库
+- [x] 保存数据至数据库
 - [x] 制作成接口
 - [ ] 获取收藏与观看历史
 - [ ] 直播间数据
