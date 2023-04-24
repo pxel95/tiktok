@@ -39,6 +39,7 @@ from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 from TikTokUtils import Utils
 from TikTokUrls import Urls
 from TikTokResult import Result
+from TikTokDataBase import db
 
 
 class TikTok(object):
@@ -47,6 +48,7 @@ class TikTok(object):
         self.urls = Urls()
         self.utils = Utils()
         self.result = Result()
+        self.db = db()
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
             'referer': 'https://www.douyin.com/',
@@ -272,7 +274,7 @@ class TikTok(object):
 
     # 传入 url 支持 https://www.iesdouyin.com 与 https://v.douyin.com
     # mode : post | like 模式选择 like为用户点赞 post为用户发布
-    def getUserInfo(self, sec_uid, mode="post", count=35, number=0):
+    def getUserInfo(self, sec_uid, mode="post", count=35, number=0, increase=False):
         print('[  提示  ]:正在请求的用户 id = %s\r\n' % sec_uid)
         if sec_uid is None:
             return None
@@ -283,6 +285,8 @@ class TikTok(object):
 
         max_cursor = 0
         awemeList = []
+        increaseflag = False
+        numberis0 = False
 
         print("[  提示  ]:正在获取所有作品数据请稍后...\r")
         print("[  提示  ]:会进行多次请求，等待时间较长...\r\n")
@@ -320,6 +324,35 @@ class TikTok(object):
                     # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
+                # 退出条件
+                if increase is False and numflag and numberis0:
+                    break
+                if increase and numflag and numberis0 and increaseflag:
+                    break
+                # 增量更新, 找到非置顶的最新的作品发布时间
+                if mode == "post":
+                    if self.db.get_user_post(sec_uid=sec_uid, aweme_id=aweme['aweme_id']) is not None:
+                        if increase and aweme['is_top'] == 0:
+                            increaseflag = True
+                    else:
+                        self.db.insert_user_post(sec_uid=sec_uid, aweme_id=aweme['aweme_id'], data=aweme)
+                elif mode == "like":
+                    if self.db.get_user_like(sec_uid=sec_uid, aweme_id=aweme['aweme_id']) is not None:
+                        if increase and aweme['is_top'] == 0:
+                            increaseflag = True
+                    else:
+                        self.db.insert_user_like(sec_uid=sec_uid, aweme_id=aweme['aweme_id'], data=aweme)
+
+                # 退出条件
+                if increase and numflag is False and increaseflag:
+                    break
+                if increase and numflag and numberis0 and increaseflag:
+                    break
+
+                if numflag:
+                    number -= 1
+                    if number == 0:
+                        numberis0 = True
                 # 获取 aweme_id
                 # aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
@@ -342,12 +375,14 @@ class TikTok(object):
                 if self.result.awemeDict is not None and self.result.awemeDict != {}:
                     awemeList.append(copy.deepcopy(self.result.awemeDict))
 
-                if numflag:
-                    number -= 1
-                    if number == 0:
-                        break
-            if numflag and number == 0:
+            if increase and numflag is False and increaseflag:
+                print("\r\n[  提示  ]: [主页] 下作品增量更新数据获取完成...\r\n")
+                break
+            elif increase is False and numflag and numberis0:
                 print("\r\n[  提示  ]: [主页] 下指定数量作品数据获取完成...\r\n")
+                break
+            elif increase and numflag and numberis0 and increaseflag:
+                print("\r\n[  提示  ]: [主页] 下指定数量作品数据获取完成, 增量更新数据获取完成...\r\n")
                 break
 
             # 更新 max_cursor
@@ -563,7 +598,7 @@ class TikTok(object):
 
         return awemeList, datadict, datadict["cursor"], datadict["has_more"]
 
-    def getMixInfo(self, mix_id: str, count=35, number=0):
+    def getMixInfo(self, mix_id: str, count=35, number=0, increase=False, sec_uid=''):
         print('[  提示  ]:正在请求的合集 id = %s\r\n' % mix_id)
         if mix_id is None:
             return None
@@ -574,6 +609,8 @@ class TikTok(object):
 
         cursor = 0
         awemeList = []
+        increaseflag = False
+        numberis0 = False
 
         print("[  提示  ]:正在获取合集下的所有作品数据请稍后...\r")
         print("[  提示  ]:会进行多次请求，等待时间较长...\r\n")
@@ -604,6 +641,28 @@ class TikTok(object):
                     # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
+                # 退出条件
+                if increase is False and numflag and numberis0:
+                    break
+                if increase and numflag and numberis0 and increaseflag:
+                    break
+                # 增量更新, 找到非置顶的最新的作品发布时间
+                if self.db.get_mix(sec_uid=sec_uid, mix_id=mix_id, aweme_id=aweme['aweme_id']) is not None:
+                    if increase and aweme['is_top'] == 0:
+                        increaseflag = True
+                else:
+                    self.db.insert_mix(sec_uid=sec_uid, mix_id=mix_id, aweme_id=aweme['aweme_id'], data=aweme)
+
+                # 退出条件
+                if increase and numflag is False and increaseflag:
+                    break
+                if increase and numflag and numberis0 and increaseflag:
+                    break
+
+                if numflag:
+                    number -= 1
+                    if number == 0:
+                        numberis0 = True
                 # 获取 aweme_id
                 # aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
@@ -626,12 +685,14 @@ class TikTok(object):
                 if self.result.awemeDict is not None and self.result.awemeDict != {}:
                     awemeList.append(copy.deepcopy(self.result.awemeDict))
 
-                if numflag:
-                    number -= 1
-                    if number == 0:
-                        break
-            if numflag and number == 0:
-                print("\r\n[  提示  ]:[合集] 下指定数量作品数据获取完成...\r\n")
+            if increase and numflag is False and increaseflag:
+                print("\r\n[  提示  ]: [合集] 下作品增量更新数据获取完成...\r\n")
+                break
+            elif increase is False and numflag and numberis0:
+                print("\r\n[  提示  ]: [合集] 下指定数量作品数据获取完成...\r\n")
+                break
+            elif increase and numflag and numberis0 and increaseflag:
+                print("\r\n[  提示  ]: [合集] 下指定数量作品数据获取完成, 增量更新数据获取完成...\r\n")
                 break
 
             # 更新 max_cursor
@@ -778,7 +839,7 @@ class TikTok(object):
 
         return awemeList, datadict, datadict["cursor"], datadict["has_more"]
 
-    def getMusicInfo(self, music_id: str, count=35, number=0):
+    def getMusicInfo(self, music_id: str, count=35, number=0, increase=False):
         print('[  提示  ]:正在请求的音乐集合 id = %s\r\n' % music_id)
         if music_id is None:
             return None
@@ -789,6 +850,8 @@ class TikTok(object):
 
         cursor = 0
         awemeList = []
+        increaseflag = False
+        numberis0 = False
 
         print("[  提示  ]:正在获取音乐集合下的所有作品数据请稍后...\r")
         print("[  提示  ]:会进行多次请求，等待时间较长...\r\n")
@@ -819,6 +882,27 @@ class TikTok(object):
                     # print("[  警告  ]:接口未返回数据, 正在重新请求!\r")
 
             for aweme in datadict["aweme_list"]:
+                if increase is False and numflag and numberis0:
+                    break
+                if increase and numflag and numberis0 and increaseflag:
+                    break
+                # 增量更新, 找到非置顶的最新的作品发布时间
+                if self.db.get_music(music_id=music_id, aweme_id=aweme['aweme_id']) is not None:
+                    if increase and aweme['is_top'] == 0:
+                        increaseflag = True
+                else:
+                    self.db.insert_music(music_id=music_id, aweme_id=aweme['aweme_id'], data=aweme)
+
+                # 退出条件
+                if increase and numflag is False and increaseflag:
+                    break
+                if increase and numflag and numberis0 and increaseflag:
+                    break
+
+                if numflag:
+                    number -= 1
+                    if number == 0:
+                        numberis0 = True
                 # 获取 aweme_id
                 # aweme_id = aweme["aweme_id"]
                 # 深拷贝 dict 不然list里面全是同样的数据
@@ -841,12 +925,14 @@ class TikTok(object):
                 if self.result.awemeDict is not None and self.result.awemeDict != {}:
                     awemeList.append(copy.deepcopy(self.result.awemeDict))
 
-                if numflag:
-                    number -= 1
-                    if number == 0:
-                        break
-            if numflag and number == 0:
-                print("\r\n[  提示  ]:[音乐集合] 下指定数量作品数据获取完成...\r\n")
+            if increase and numflag is False and increaseflag:
+                print("\r\n[  提示  ]: [音乐集合] 下作品增量更新数据获取完成...\r\n")
+                break
+            elif increase is False and numflag and numberis0:
+                print("\r\n[  提示  ]: [音乐集合] 下指定数量作品数据获取完成...\r\n")
+                break
+            elif increase and numflag and numberis0 and increaseflag:
+                print("\r\n[  提示  ]: [音乐集合] 下指定数量作品数据获取完成, 增量更新数据获取完成...\r\n")
                 break
 
             # 更新 cursor
@@ -1006,7 +1092,7 @@ class TikTok(object):
                     pass
                 else:
                     try:
-                        url = awemeDict["video"]["origin_cover"]["url_list"][0]
+                        url = awemeDict["video"]["cover"]["url_list"][0]
                         if url != "":
                             self.isdwownload = False
                             # task_id = self.progress.add_task("download", filename="[ 封面 ]:" + desc, start=False)
