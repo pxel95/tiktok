@@ -1,3 +1,18 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.6.2...v) (2023-04-24)
+
+
+### Bug Fixes
+
+* **tiktok:** 优化视频链接获取 ([321d462](https://github.com/imgyh/tiktok/commit/321d4622a16a26cc8587e16c0e5b9f8601c16f99))
+* **web:** 解决浏览器提示不安全问题 ([87b48ae](https://github.com/imgyh/tiktok/commit/87b48aec06bce777c427d03ab02590fd7089bb9b))
+
+
+### Features
+
+* **tiktok:** 增加数据库功能与增量更新功能 ([ebf6671](https://github.com/imgyh/tiktok/commit/ebf6671d336767595a01941562db397546ab2fe9)), closes [#24](https://github.com/imgyh/tiktok/issues/24)
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.6.1...v) (2023-04-21)
 
 
