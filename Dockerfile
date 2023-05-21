@@ -9,7 +9,7 @@ ADD . $WORKDIR
 
 RUN sed -i s/deb.debian.org/mirrors.aliyun.com/g /etc/apt/sources.list
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements_docker.txt
 
 ENV TZ=Asia/Shanghai
 
