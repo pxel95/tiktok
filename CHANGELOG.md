@@ -1,3 +1,13 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.6.3...v) (2023-05-21)
+
+
+### Features
+
+* **tiktok:** 规范包目录结构 ([942bc35](https://github.com/imgyh/tiktok/commit/942bc359126a0ce9241b44576063bf42b161d02a))
+* **tiktok:** 删除多余文件 ([2114bc9](https://github.com/imgyh/tiktok/commit/2114bc925edf8c050834f1ba2f3ddb4be22b6ed3))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.6.2...v) (2023-04-24)
 
 
