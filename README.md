@@ -7,6 +7,7 @@
 代码已经开源在我的GitHub上，欢迎大家star。
 
 开源地址：https://github.com/imgyh/tiktok
+
 博客文档：https://www.imgyh.com/archives/41.html
 
 抖音去水印工具Web demo：https://dy.gyh.im/
@@ -14,9 +15,12 @@
 **联系方式:**
 
 > [TG](https://t.me/gyh9527)
+
 > [TG群组](https://t.me/GYHgroup)
+
 > [Email](mailto:admin@imgyh.com)
-> [Blog](htts://www.imgyh.com)
+
+> [Blog](https://www.imgyh.com)
 
 ## 抖音去水印工具 Feature
 
