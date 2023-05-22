@@ -78,7 +78,7 @@ class Download(object):
             # 保存获取到的字典信息
             if self.resjson:
                 try:
-                    with open(os.path.join(aweme_path, "result_" + file_name + ".json"), "w", encoding='utf-8') as f:
+                    with open(os.path.join(aweme_path, file_name + "_result.json"), "w", encoding='utf-8') as f:
                         f.write(json.dumps(awemeDict, ensure_ascii=False, indent=2))
                         f.close()
                 except Exception as e:
@@ -87,7 +87,7 @@ class Download(object):
             desc = file_name[:30]
             # 下载  视频
             if awemeDict["awemeType"] == 0:
-                video_path = os.path.join(aweme_path, "video_" + file_name + ".mp4")
+                video_path = os.path.join(aweme_path, file_name + "_video.mp4")
 
                 if os.path.exists(video_path):
                     pass
@@ -104,7 +104,7 @@ class Download(object):
             # 下载 图集
             if awemeDict["awemeType"] == 1:
                 for ind, image in enumerate(awemeDict["images"]):
-                    image_path = os.path.join(aweme_path, "image_" + file_name + "_" + str(ind) + ".jpeg")
+                    image_path = os.path.join(aweme_path, file_name + "_image_" + str(ind) + ".jpeg")
                     if os.path.exists(image_path):
                         pass
                     else:
@@ -120,7 +120,7 @@ class Download(object):
             # 下载  音乐
             if self.music:
                 music_name = utils.replaceStr(awemeDict["music"]["title"])
-                music_path = os.path.join(aweme_path, "music_" + music_name + "_" + file_name + ".mp3")
+                music_path = os.path.join(aweme_path, file_name + "_music_" + music_name + ".mp3")
 
                 if os.path.exists(music_path):
                     pass
@@ -136,7 +136,7 @@ class Download(object):
 
             # 下载  cover
             if self.cover and awemeDict["awemeType"] == 0:
-                cover_path = os.path.join(aweme_path, "cover_" + file_name + ".jpeg")
+                cover_path = os.path.join(aweme_path, file_name + "_cover.jpeg")
 
                 if os.path.exists(cover_path):
                     pass
@@ -152,7 +152,7 @@ class Download(object):
 
             # 下载  avatar
             if self.avatar:
-                avatar_path = os.path.join(aweme_path, "avatar_" + file_name + ".jpeg")
+                avatar_path = os.path.join(aweme_path, file_name + "_avatar.jpeg")
 
                 if os.path.exists(avatar_path):
                     pass
