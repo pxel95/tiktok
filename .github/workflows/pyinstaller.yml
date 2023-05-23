@@ -29,7 +29,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
           pyinstaller -i ./static/img/favicon.ico -F DouYinCommand.py
-          pyinstaller -i ./static/img/favicon.ico -F WebApi.py --add-data "templates;templates"
+          pyinstaller -i ./static/img/favicon.ico -F WebApi.py --add-data "templates;templates" --add-data "static;static"
 
       - name: Create Release and Upload Release Asset
         uses: softprops/action-gh-release@v1
