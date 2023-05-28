@@ -56,14 +56,12 @@ def douyinwork(share_link, max_cursor, mode, cookie):
 
     datadict = {}
 
-    if data is not None and data != []:
-        datadict["data"] = data
-        datadict["rawdata"] = rawdata
-        datadict["cursor"] = cursor
-        datadict["has_more"] = has_more
-        datadict["status_code"] = 200
-    else:
-        datadict["status_code"] = 500
+
+    datadict["data"] = data
+    datadict["rawdata"] = rawdata
+    datadict["cursor"] = cursor
+    datadict["has_more"] = has_more
+
     return datadict
 
 
