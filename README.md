@@ -111,6 +111,8 @@ python WebApi.py -p 5001
 
 默认使用配置文件方式
 
+> !!!!!! 请先获取cookie再使用
+
 ### 安装依赖
 
 windows用户下载 Releases 中的 [DouYinCommand.exe](https://github.com/imgyh/tiktok/releases) 文件运行
@@ -125,6 +127,8 @@ python -m pip install -r requirements.txt
 
 ### 使用Docker
 
+> !!!!!! 请先获取cookie再使用
+
 请映射以下两个目录(三个位置需要修改), 根据实际情况修改目录地址
 
 `/path/to/tiktok` 源代码目录
@@ -138,16 +142,19 @@ docker run -d -p 5000:5000 --name tiktok --restart=always -v /path/to/tiktok:/ap
 
 ### 配置文件方式
 
+> !!!!!! 请自己登录网页版抖音后F12获取cookie
+> !!!!!! 请仔细阅读配置示例[config.yml](./config.yml)中的描述
+
 配置文件名必须叫 `config.yml`, 并将其放在DouYinCommand.py或者DouYinCommand.exe同一个目录下
 
 直接运行DouYinCommand.py或者DouYinCommand.exe, 无需在命令中加入任何参数, 所有参数都从配置文件中读取
 
-基本配置示例[config.yml](./config.yml), 请自己登录网页版抖音后F12获取cookie
+基本配置示例[config.yml](./config.yml)
 
 
 ### 命令行方式
 
-运行示例:
+> 以下为命令行的一些信息, 每个选项的详细说明参见配置示例[config.yml](./config.yml)中的描述
 
 - 获取帮助信息
 
@@ -251,7 +258,34 @@ linux与mac用户:
 python DouYinCommand.py -C True -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
 
-- 下载主页前n个作品
+- 增量更新主页下作品(postincrease 选项)
+
+```
+windows用户:
+.\DouYinCommand.exe -C True -l https://v.douyin.com/kcvSCe9/ -p C:\project\test --postincrease True --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
+linux与mac用户:
+python DouYinCommand.py -C True -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir --postincrease True --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
+```
+
+- 关闭数据库, 增量更新不可用(database 选项)
+
+```
+windows用户:
+.\DouYinCommand.exe -C True -l https://v.douyin.com/kcvSCe9/ -p C:\project\test --database False --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
+linux与mac用户:
+python DouYinCommand.py -C True -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir --database False --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
+```
+
+- 所有视频在一个文件夹下(folderstyle 选项)
+
+```
+windows用户:
+.\DouYinCommand.exe -C True -l https://v.douyin.com/kcvSCe9/ -p C:\project\test --folderstyle False --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
+linux与mac用户:
+python DouYinCommand.py -C True -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir --folderstyle False --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
+```
+
+- 下载主页前n个作品(postnumber 选项)
 
 ```
 windows用户:
@@ -260,7 +294,7 @@ linux与mac用户:
 python DouYinCommand.py -C True -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir --postnumber 30 --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
 
-- 下载主页全部喜欢
+- 下载主页全部喜欢(-M like 选项)
 
 ```
 windows用户:
@@ -269,7 +303,7 @@ linux与mac用户:
 python DouYinCommand.py -C True -l https://v.douyin.com/kcvSCe9/ -p /path/to/downdir -M like --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
 
-- 下载主页前n个喜欢
+- 下载主页前n个喜欢(-M like --likenumber 选项)
 
 ```
 windows用户:
@@ -287,7 +321,7 @@ linux与mac用户:
 python DouYinCommand.py -C True -l https://v.douyin.com/B3J63Le/ -p /path/to/downdir --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
 
-- 下载单个合集前n个作品
+- 下载单个合集前n个作品(--mixnumber 选项)
 
 ```
 windows用户:
@@ -296,7 +330,7 @@ linux与mac用户:
 python DouYinCommand.py -C True -l https://v.douyin.com/B3J63Le/ -p /path/to/downdir --mixnumber 30 --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
 
-- 下载主页全部合集下所有作品
+- 下载主页全部合集下所有作品(-M mix 选项)
 
 ```
 windows用户:
@@ -305,7 +339,7 @@ linux与mac用户:
 python DouYinCommand.py -C True -l https://v.douyin.com/B38oovu/ -p /path/to/downdir -M mix --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
 
-- 下载主页前n个合集下所有作品
+- 下载主页前n个合集下所有作品(-M mix --allmixnumber 选项)
 
 ```
 windows用户:
@@ -323,7 +357,7 @@ linux与mac用户:
 python DouYinCommand.py -C True -l https://v.douyin.com/S6YMNXs/ -p /path/to/downdir --cookie "msToken=xxx; ttwid=xxx; odin_tt=xxx; passport_csrf_token=xxx; sid_guard=xxx;"
 ```
 
-- 下载音乐(原声)集合下前n个作品
+- 下载音乐(原声)集合下前n个作品(--musicnumber 选项)
 
 ```
 windows用户:
@@ -366,6 +400,8 @@ python DouYinCommand.py -C True -l https://v.douyin.com/SnXMoh2/ -p /path/to/dow
 
 
 # Web版接口
+
+> !!!!!! 请传入cookie再使用
 
 1. 单个作品、图集接口
 
