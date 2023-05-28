@@ -1,3 +1,17 @@
+# [](https://github.com/imgyh/tiktok/compare/v1.6.4...v) (2023-05-28)
+
+
+### Bug Fixes
+
+* **webapi:** 修复作品列表为空时不返回cursor ([1e69ee8](https://github.com/imgyh/tiktok/commit/1e69ee8a140b7761f3ebdebf1b1d9e31af79bd2c)), closes [#40](https://github.com/imgyh/tiktok/issues/40)
+
+
+### Features
+
+* **douyin:** 修改文件名命名风格 ([b38e210](https://github.com/imgyh/tiktok/commit/b38e2109271a07e408bbbad2454ebc99f48437fe))
+
+
+
 # [](https://github.com/imgyh/tiktok/compare/v1.6.3...v) (2023-05-21)
 
 
