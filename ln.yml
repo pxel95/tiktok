@@ -1,0 +1,87 @@
+# 作品(视频或图集)、直播、合集、音乐集合、个人主页的分享链接或者电脑浏览器网址
+# (删除文案, 保证只有URL, https://v.douyin.com/kcvMpuN/ 或者 https://www.douyin.com/开头的)
+# 可以设置多个链接, 确保至少一个链接
+# 必选
+link:
+  # 天天
+  - https://www.douyin.com/user/MS4wLjABAAAAwHtjywj_VTOT4Dp39tw2mImU-U07lelwfuZ-z4Qk4Dd7gJAEyzRMpzy2GUl2-oaD?relation=1&vid=7203668696299031845
+  # 澜朋友质量教学
+  - https://www.douyin.com/user/MS4wLjABAAAAy8U3NEXoprv_3vuN3y8ncKjrsj1d7vHcMn4GgF_lUOE?relation=1&vid=7094223742284352808
+  # 王者荣耀陌殇（橱窗有教学）
+  - https://www.douyin.com/user/MS4wLjABAAAAKCeWIwcnQ63jZlnB9kySDIFU9r-XQY2RaJYNKlGbwb0?relation=1&vid=7236957743091862787
+  # 痕啊痕
+  - https://www.douyin.com/user/MS4wLjABAAAAOBoUnY7jlkTkbDntYT9LDZck9-YwZOfJkwdLcDiLQ-g?relation=1&vid=7222557390061980943
+  # 今心
+  - https://www.douyin.com/user/MS4wLjABAAAA-pC8CVk-_ZXHt4XIT8qzwRRLcWnCb-XojS9O2NLUWQw?vid=7237125221013097789
+  # 倾慕
+  - https://www.douyin.com/user/MS4wLjABAAAA_836nEUp_faXkQg4GOdvFqQGySvjmHOobGp0OrcEvd4?vid=7236252458186444087
+  # 尢
+  - https://www.douyin.com/user/MS4wLjABAAAAb75LfR7aI2l2xhxfbYtzTiLhL0sJT-BlRcf63vuowu1N3NvEWQzmTcqAhlMHheZ-?vid=7205442432937364773
+  # 宋词露娜(会咏春的国服露娜)
+  - https://www.douyin.com/user/MS4wLjABAAAAbj4JlERzzEeQRrk66WLdaqUWGQi8WWznQj6WpMtR5Os?relation=1&vid=7155107271322733861
+  # 晓卓鸽鸽
+  - https://www.douyin.com/user/MS4wLjABAAAAEsFCZkCJwsJPiwqQbcYw3DPklVb0B2X9ZPt5KVWl7dE
+  # 快乐者
+  - https://www.douyin.com/user/MS4wLjABAAAAYjCPUazPPJK41375Zf9FbeKyZ-A8f2kgEprgFBLnOjg?relation=1&vid=7223817342965370164
+  # 片月.
+  - https://www.douyin.com/user/MS4wLjABAAAAMIdpMV9SiyjigCb3RMsn7qjk1sTpfQgWzy-K8C3W2Z0?relation=1&vid=7208499587894480189
+  # 玖月凌陌
+  - https://www.douyin.com/user/MS4wLjABAAAAc61oFKLTxtddc96KOvXe-9JXnM2Ts_S-DCe6uLNHCNffxrVUlYTLZeuHmg6mTYCo?relation=1&vid=7222619644358642996
+  # 礼物.
+  - https://www.douyin.com/user/MS4wLjABAAAAZCvymATY-YN9_rXhtPCb3ebYsTGs2OPWUZWRxoHWi7f7eom_9Flz1PFYWPCe_E-O?relation=1&vid=7229930862261947685
+  # 羊（露娜）
+  - https://www.douyin.com/user/MS4wLjABAAAARI71q1mD9G1KujPxk62XnV6RzHn7JPKkihYMnG-6PNA?relation=1&vid=7230274201368808737
+  # 难敌
+  - https://www.douyin.com/user/MS4wLjABAAAAOPIT96yXkJtURMGk4HHiEe0aMa3E5NWi_dbboXhPuhblw3L5HM3yEc1a0OvUUSsg?relation=2&vid=7231243896691445050
+  # 楚
+  - https://www.douyin.com/user/MS4wLjABAAAAhwaWhCyO0Ig7_mL6-jPLPNebY01Wj1dTdZkZCHxYpYCsgFGe29b_9_7WE_JSzSTk?relation=1&vid=7232548585613675787
+  # 浮世清欢阿白
+  - https://www.douyin.com/user/MS4wLjABAAAA_q23NpGdJ3rNL1cHGb2mx_K6XMG6FWQZGfQs_xTaNYo?relation=1&vid=7232581863070584101
+  # 凌风kk
+  - https://www.douyin.com/user/MS4wLjABAAAAehp--ma4QSHml1F-sLQdAIYRwbCKvB42Js0vYNSIqO4?relation=1&vid=7208520197022436667
+  # 浮世清欢孤沐
+  - https://www.douyin.com/user/MS4wLjABAAAApuXj6luovttC7Ws0OZweGcwQXnrefx5jcfKJr8yrNrQ?relation=1&vid=7233703276468882692
+  # 如意所愿
+  - https://www.douyin.com/user/MS4wLjABAAAAwGBTS6nrJLlMNQOtO2nHe50TSpEjshJCmZtsDxiyXRtMewn_qsqBC0JrslXa2M6g?relation=1&vid=7234917489958866180
+  # 逸轩露娜
+  - https://www.douyin.com/user/MS4wLjABAAAAFtV_FwKcp1d2kXItyYKPod1nOo1_m8RhvhVzzo95D_A?relation=0&vid=7235551114337225984
+  # 沙袋威化饼干
+  - https://www.douyin.com/user/MS4wLjABAAAAVunQa6cYfef8Pn2EdMFzfJd-lF53SlLancr1h1kSStY?relation=1&vid=7228436874421898511
+  # 见过我家的大白吗•᷄ࡇ•᷅
+  - https://www.douyin.com/user/MS4wLjABAAAAYWCn6vujeFh1wbFwsBsGYf1RY4In4ShbLJV3NtAz0VD-VpyDNInrGeSpCLKJaIvY?relation=1&vid=7234753785871060282
+  # 天机2
+  - https://www.douyin.com/user/MS4wLjABAAAADt5wcLFTYKlqGIBy08Cy-9f7CQlkLeVDT_2lMX33sYk?relation=1&vid=7238405703684164897
+  # Jly
+  - https://www.douyin.com/user/MS4wLjABAAAA8PAmW5meRdBbCv6rj6Mo5Nxqq1U_Q2BRM79HfdQEdpA?relation=1&vid=7238465929472920888
+
+  # 单个视频
+  # 苏晨露娜
+  - https://www.douyin.com/video/7223368287592238393
+
+  # 王者荣耀欧豪「国服露露」
+  - https://www.douyin.com/video/7232251273733590331
+
+
+# 下载保存位置, 默认当前文件位置
+# 必选
+path: D:\DY
+
+# 下载作品个数设置
+# 可选
+number:
+  post: 0     # 主页下作品下载个数设置, 默认为0 全部下载
+  like: 0     # 主页下喜欢下载个数设置, 默认为0 全部下载
+  allmix: 0   # 主页下合集下载个数设置, 默认为0 全部下载
+  mix: 0      # 单个合集下作品下载个数设置, 默认为0 全部下载
+  music: 0    # 音乐(原声)下作品下载个数设置, 默认为0 全部下载
+
+# cookie 请登录网页抖音后F12查看
+# cookies 和 cookie 二选一, 要使用这种形式, 请注释下面的cookie
+# 目前只需要msToken、ttwid、odin_tt、passport_csrf_token、sid_guard
+# 可以动态添加, 程序会根据填的键查找，并没有写死, 如果抖音需要更多的cookie自己加上就行了
+cookies:
+  msToken: xxx
+  ttwid: xxx
+  odin_tt: xxx
+  passport_csrf_token: xxx
+  sid_guard: xxx
